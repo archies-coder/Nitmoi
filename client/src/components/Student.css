@@ -1,0 +1,31 @@
+.card {
+    height: 100%;
+    font: 16px/150% Ebrima;
+    text-align: center;
+}
+
+/* .card{
+    margin: 20px auto;
+} */
+
+.card .view-details-link {
+    color: #e5e5e5;
+    text-decoration: none;
+}
+
+.card .view-details-link:hover {
+    color: white;
+}
+
+.card .view-details-link button {
+    /* background-color: #5858ff !important; */
+    border: 0;
+    font-size: 16px !important;
+    margin-top: 20px;
+}
+
+.view-details-link {
+    width: 120px;
+    margin: 20px auto;
+
+}
