@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "engines": {
+    "node": "10.15.0",
+    "npm": "6.8.0"
+  },
   "scripts": {
-    "server": "nodemon SERVER/server.js",
-    "start": "node SERVER/server.js",
+    "server": "nodemon server.js",
+    "start": "node server.js",
     "client": "npm start --prefix client"
   },
   "author": "",

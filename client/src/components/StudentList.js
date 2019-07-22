@@ -39,8 +39,10 @@ export default class StudentList extends Component {
     render() {
         return (
             <div style={gridStyle} onLoad={this.getStudents}>
-                {this.state.students.map(stud => {
-                    console.log(stud)
+                {
+                    this.state.students.sort((a,b)=>{
+                        return a.standard - b.standard;
+                    }).map(stud => {
                     return <Student key={stud._id} 
                     fName={stud.firstName} 
                     lName={stud.lastName} 

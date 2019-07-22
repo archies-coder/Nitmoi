@@ -12,7 +12,7 @@ app.use(bodypareser.json())
 app.use(cors())
 app.options('*', cors());
 
-var allowCrossDomain = function(req, res, next) {
+var allowCrossDomain = function(req, res, next) {     //Might be unnecessary
   res.header('Access-Control-Allow-Origin', "*");
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -25,7 +25,6 @@ const studentRoute = require('./app/Routes/student')
 app.use(studentRoute);
 const attendanceRoute = require('./app/Routes/attendance')
 app.use(attendanceRoute);
-
 
 //Mongo
 mongoose

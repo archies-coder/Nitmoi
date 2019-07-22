@@ -1,22 +1,47 @@
 import React, { Component } from 'react'
 import './AddStudent.css'
-import {Redirect, Link} from 'react-router-dom';
+import Modal from 'react-modal';
+import MyCalendar from './reusables/Calendar'
 
+
+const customStyles = {
+    content : {
+      top                   : '50%',
+      left                  : '50%',
+      right                 : 'auto',
+      bottom                : 'auto',
+      marginRight           : '-50%',
+      transform             : 'translate(-50%, -50%)'
+    }
+  };
 
 export default class AddStudent extends Component {
     constructor(){
         super()
-        this.firstNameEl = React.createRef();
-        this.lastNameEl = React.createRef();
-        this.addressEl = React.createRef();
-        this.standardEl = React.createRef();
-        this.boardEl = React.createRef();
-        this.physicsEl = React.createRef();
-        this.englishEl = React.createRef();
-        this.mathsEl = React.createRef();
-        this.sexEl = React.createRef();
-        this.feesEl = React.createRef();
+        this.firstNameEl = React.createRef();this.lastNameEl = React.createRef();
+        this.addressEl = React.createRef();this.standardEl = React.createRef();
+        this.boardEl = React.createRef();this.physicsEl = React.createRef();
+        this.englishEl = React.createRef();this.mathsEl = React.createRef();
+        this.sexEl = React.createRef();this.feesEl = React.createRef();
+        this.state={
+            modalIsOpen: false,
+            date: new Date()
+        }
     }
+
+    onChange = date => {
+        this.setState({ date })
+        this.closeModal()
+  }
+
+    openModal = ()=> {
+        this.setState({modalIsOpen: true});
+    }
+
+    closeModal= ()=> {
+        this.setState({modalIsOpen: false});
+    }
+
     handleLogin = (e) => {
         e.preventDefault();
         const fName = this.firstNameEl.current.value;
@@ -29,6 +54,7 @@ export default class AddStudent extends Component {
         const maths = this.mathsEl.current.value;
         const sex = this.sexEl.current.value;
         const fees = this.feesEl.current.value;
+        
         const addStudentRequest = {
             "firstName":fName,
             "lastName":lName,
@@ -60,10 +86,6 @@ export default class AddStudent extends Component {
         .then(resData => {
             console.log(resData);
         })
-        // const xhr= new XMLHttpRequest();
-        // xhr.open('POST','http://localhost:5000/student',true)
-        // xhr.setRequestHeader("Content-type", "application/json");
-        // xhr.send(addStudentRequest)
     }
 
     handleSubmit = (e)=> {
@@ -107,11 +129,18 @@ export default class AddStudent extends Component {
                         </select>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="InputPhysics">Physics</label>
+                        <label htmlFor="InputDate">Date Of Joining </label>
+                        {/* <input type="button" className="btn btn-primary btn-sm"><i class="far fa-calendar-alt"></i></input> */}
+                        <i className="far fa-calendar-alt ml-2 mb-2 btn-lg" id="InputDate"onClick={this.openModal}></i>
+                        <br/>
+                        <p>Selected Date:- {this.state.date.toLocaleDateString()}</p>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="InputPhysics">Physics Marks</label>
                         <input type="text" className="form-control" ref={this.physicsEl} id="InputPhysics" placeholder="Physics" required/>
-                        <label htmlFor="InputEnglish">English</label>
+                        <label htmlFor="InputEnglish">English Marks</label>
                         <input type="text" className="form-control" ref={this.englishEl} id="InputEnglish" placeholder="English" required/>
-                        <label htmlFor="InputMaths">Maths</label>
+                        <label htmlFor="InputMaths">Maths Marks</label>
                         <input type="text" className="form-control" ref={this.mathsEl} id="InputMaths" placeholder="Maths" required/>
                     </div>
                     <div class="form-group">
@@ -125,11 +154,19 @@ export default class AddStudent extends Component {
                         <label htmlFor="InputFees">Fees Paid</label>
                         <input type="text" className="form-control" ref={this.feesEl} id="InputFees" placeholder="Amout Of Fees Paid"/>
                     </div>
-                    <button type="submit" class="btn btn-primary" onSubmit={this.handleSubmit}>
-                        Submit</button>
-                    
-                    
+                    <button type="submit" class="btn btn-primary" onSubmit={this.handleSubmit}>Submit</button>
                 </form>
+                <Modal
+                    isOpen={this.state.modalIsOpen}
+                    onRequestClose={this.closeModal}
+                    style={customStyles}
+                    contentLabel="Date Picker Modal"
+                >
+                  <MyCalendar
+                    onChange={this.onChange}
+                    value={this.state.date}
+                    />
+                </Modal>
             </div>
         )
     }

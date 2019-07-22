@@ -21,7 +21,7 @@ router.get('/student/:std', (req, res) => {
 router.get('/students', (req, res) => {
     studentModel.find()
         .then(doc => res.json(doc))
-        .catch(err => res.status(500).json(err))
+        .catch(err => res.status(500).json(err));
 })
 
 //Get Students by First Name

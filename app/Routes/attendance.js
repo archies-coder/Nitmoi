@@ -3,8 +3,8 @@ const router = express.Router()
 const AttendanceModel = require('../models/attendance.model')
 
 //GET
-router.get('/attendance/:date',(req, res)=>{
-    AttendanceModel.find({date: req.params.date})
+router.get('/attendance/',(req, res)=>{
+    AttendanceModel.find({})
     .then(doc => {
         res.json(doc).send(doc)
     })
