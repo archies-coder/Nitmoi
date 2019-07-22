@@ -9,7 +9,7 @@
   },
   "scripts": {
     "server": "nodemon server.js",
-    "start": "node server.js",
+    "start": "node server.js && npm start --prefix client",
     "client": "npm start --prefix client"
   },
   "author": "",
