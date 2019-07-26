@@ -3,12 +3,11 @@ import Student from './Student';
 
 const gridStyle = {
     display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr",
-    gridGap: "30px",
+    gridTemplateColumns: "1fr 1fr 1fr 1fr",
+    gridGap: "10px",
     width: "100%",
-    height: "250px",
     textAlign: "center",
-    padding: "20px"
+    padding: "10px"
   };
 
 export default class StudentList extends Component {

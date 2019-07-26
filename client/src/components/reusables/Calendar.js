@@ -3,9 +3,6 @@ import Calendar from 'react-calendar';
 // import Calendar from 'react-calendar/dist/entry.nostyle';
 
 export default class MyCalendar extends Component {
-  constructor(props){
-      super(props)
-  }
 
   render() {
     return (

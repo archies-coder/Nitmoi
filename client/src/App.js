@@ -8,6 +8,8 @@ import StudentList from "./components/StudentList";
 // import StudentDetails from "./components/Details";
 import Home from "./components/Home";
 import AddStudent from "./components/AddStudent";
+import Attendance from './components/Attendance';
+
 export default class App extends Component {
  
 
@@ -22,6 +24,7 @@ export default class App extends Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/list"component={StudentList} />
             <Route exact path="/add" component={AddStudent} />
+            <Route exact path="/attendance" component={Attendance} />
             {/* {this.state.token && (
               <Route path="/details" component={StudentDetails} />
             )} */}

@@ -90,7 +90,7 @@ export default class AddStudent extends Component {
 
     handleSubmit = (e)=> {
         e.preventDefault();
-        return <div>Added SuccesFully</div>
+        alert("ADDED SUCCESSFULLY")
     }
 
     render() {
@@ -154,7 +154,7 @@ export default class AddStudent extends Component {
                         <label htmlFor="InputFees">Fees Paid</label>
                         <input type="text" className="form-control" ref={this.feesEl} id="InputFees" placeholder="Amout Of Fees Paid"/>
                     </div>
-                    <button type="submit" class="btn btn-primary" onSubmit={this.handleSubmit}>Submit</button>
+                    <button type="submit" className="btn btn-primary" onSubmit={this.handleSubmit}>Submit</button>
                 </form>
                 <Modal
                     isOpen={this.state.modalIsOpen}

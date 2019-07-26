@@ -1,31 +1,35 @@
 .card {
-    height: 100%;
-    font: 16px/150% Ebrima;
-    text-align: center;
+    background-color: #ababe6 !important;
+    border: 0;
+    font: 16px/150% Ebrima !important;
 }
 
-/* .card{
-    margin: 20px auto;
-} */
+.card:hover {
+    background-color: #b5b5ec !important;
 
-.card .view-details-link {
-    color: #e5e5e5;
-    text-decoration: none;
+}
+
+.edit-btn, .delete-btn {
+    color: #555555;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.delete-btn:hover, .edit-btn:hover {
+    color: #0f0f0f;
+}
+
+.close-btn {
+    top: 0;
+    font-size: 25px;
+    cursor: pointer;
 }
 
 .card .view-details-link:hover {
     color: white;
 }
 
-.card .view-details-link button {
-    /* background-color: #5858ff !important; */
-    border: 0;
-    font-size: 16px !important;
-    margin-top: 20px;
-}
-
 .view-details-link {
     width: 120px;
-    margin: 20px auto;
-
+    margin: auto;
 }

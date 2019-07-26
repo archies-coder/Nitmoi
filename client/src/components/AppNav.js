@@ -20,6 +20,11 @@ export default class Navbar extends Component {
               Add
             </Link>
           </li>
+          <li className="nav-item students-link">
+            <Link to='/attendance' className='nav-link'>
+              Attendance
+            </Link>
+          </li>
         </ul>
         
           <Link to='/login' className='ml-auto mr-0 nav-link'>
