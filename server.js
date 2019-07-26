@@ -1,7 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose')
 const dbURI = require("./app/config/keys").dbURI;
-const bodypareser = require('body-parser')
+const bodypareser = require('body-parser');
+const path = require('path')
 var cors = require('cors')
 
 //Express App
@@ -41,6 +42,6 @@ mongoose
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname+'/client/build/index.html'));
   });
-  
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, ()=> console.log('Running At '+PORT))
