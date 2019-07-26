@@ -10,7 +10,8 @@
   "scripts": {
     "server": "nodemon server.js",
     "start": "node server.js && npm start --prefix client",
-    "client": "npm start --prefix client"
+    "client": "npm start --prefix client",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",

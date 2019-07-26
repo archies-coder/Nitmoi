@@ -6,6 +6,9 @@ var cors = require('cors')
 
 //Express App
 const app = express();
+
+app.use(express.static(path.join(__dirname, 'client/build')));
+
 //Body Parser
 app.use(bodypareser.json())
 //CORS
