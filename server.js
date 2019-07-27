@@ -25,13 +25,15 @@ var allowCrossDomain = function(req, res, next) {     //Might be unnecessary
 }
 app.use(allowCrossDomain) ;
 
-if (app.get('env') === 'production') {
+app.use(express.static(path.join(__dirname, 'client/build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
+
+if(app.get('env') === 'production') {
   app.set('trust proxy', 1) // trust first proxy
   sess.cookie.secure = true // serve secure cookies
-  app.use(express.static(path.join(__dirname, 'client/build')));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname+'/client/build/index.html'));
-  });
+  
 }
 
 //use sessions for tracking logins
