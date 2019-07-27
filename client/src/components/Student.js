@@ -33,7 +33,7 @@ export default class Student extends Component {
     render(){
         const {fName,lName,Std,Addr,brd,phy,eng,maths,sex,fees}= this.props;
         return (
-            <div className="card">
+            <div className="card stud-card">
                 <h2 className="card-title pt-3"><b style={{color:"aliceblue",}}>{fName.toUpperCase()} {lName.toUpperCase()}</b></h2>
                 <h2 className="card-text">Standard {Std}</h2>
                 <button className='btn border-0 bg-dark text-monospace text-white view-details-link mt-3' onClick={this.openModal}>

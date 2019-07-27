@@ -3,7 +3,7 @@ const router = express.Router()
 const AttendanceModel = require('../models/attendance.model')
 
 //GET
-router.get('/attendance/',(req, res)=>{
+router.get('/api/attendance/',(req, res)=>{
     AttendanceModel.find({})
     .then(doc => {
         res.json(doc).send(doc)
@@ -13,7 +13,7 @@ router.get('/attendance/',(req, res)=>{
 
 
 //POST
-router.post('/attendance', (req, res)=>{
+router.post('/api/attendance', (req, res)=>{
     if(!req.body){
         return res.status(400).send('req body missing');
     }

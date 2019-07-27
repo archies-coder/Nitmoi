@@ -19,7 +19,7 @@ export default class StudentList extends Component {
     }
 
     componentDidMount = () => {
-        fetch('http://localhost:5000/students',{
+        fetch('/api/students',{
             method: 'GET',
             mode: 'cors',
             headers: {

@@ -1,12 +1,11 @@
-.card {
+.stud-card {
     background-color: #ababe6 !important;
     border: 0;
     font: 16px/150% Ebrima !important;
 }
 
-.card:hover {
+.stud-card:hover {
     background-color: #b5b5ec !important;
-
 }
 
 .edit-btn, .delete-btn {
