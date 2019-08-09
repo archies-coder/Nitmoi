@@ -30,32 +30,41 @@ export default class StudentList extends Component {
                 throw new Error("Failed!");
               }
               return res.json()
-        }).then(resdata => {
+        }).then(resdata => {         
             this.setState({students:resdata})
         }).catch(err => console.log(err)
         )
     }
+
+    
     render() {
-        return (
-            <div style={gridStyle} onLoad={this.getStudents}>
+       return <div>
+           {
+            //    (localStorage.token) ? (
+                   <div style={gridStyle} onLoad={this.getStudents}>
                 {
                     this.state.students.sort((a,b)=>{
                         return a.standard - b.standard;
                     }).map(stud => {
-                    return <Student key={stud._id} 
-                    fName={stud.firstName} 
-                    lName={stud.lastName} 
-                    Std={stud.standard}
-                    Addr={stud.Address}
-                    brd={stud.Board}
-                    phy={stud.lastYearmarks.physics}
-                    eng={stud.lastYearmarks.english}
-                    maths={stud.lastYearmarks.maths}
-                    sex={stud.sex}
-                    fees={stud.feesPaid}
-                    />
+                        return <Student key={stud._id} 
+                                    fName={stud.firstName} 
+                                    lName={stud.lastName} 
+                                    Std={stud.standard}
+                                    Addr={stud.Address}
+                                    brd={stud.Board}
+                                    phy={stud.lastYearmarks.physics}
+                                    eng={stud.lastYearmarks.english}
+                                    maths={stud.lastYearmarks.maths}
+                                    sex={stud.sex}
+                                    fees={stud.feesPaid}
+                                    />
                 })}
             </div>
-        )
+            //    ) :
+            //    (
+            //        <h1>Not Authorized</h1>
+            //    )
+           }
+       </div>;
     }
 }

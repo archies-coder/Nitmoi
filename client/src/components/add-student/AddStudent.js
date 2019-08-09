@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './AddStudent.css'
 import Modal from 'react-modal';
-import MyCalendar from './reusables/Calendar'
+import MyCalendar from '../reusables/Calendar'
 
 
 const customStyles = {
@@ -69,7 +69,7 @@ export default class AddStudent extends Component {
             "sex":sex,
             "feesPaid":fees
         }
-        fetch('http://localhost:5000/student',{
+        fetch('http://localhost:5000/api/student',{
             method:'POST',
             mode:'cors',
             headers:{

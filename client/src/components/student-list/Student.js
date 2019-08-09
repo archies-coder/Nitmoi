@@ -18,16 +18,26 @@ export default class Student extends Component {
     constructor(props){
         super(props);
         this.state={
-            modalIsOpen: false
+            modalDetailsIsOpen: false,
+            modalEditIsOpen: false,
+            modalDeleteIsOpen: false,
         }
     }
 
     openModal = ()=> {
-        this.setState({modalIsOpen: true});
+        this.setState({modalDetailsIsOpen: true});
+    }
+
+    openEditModal = ()=> {
+        this.setState({modalEditIsOpen: true});
+    }
+
+    openDeleteModal = ()=> {
+        this.setState({modalDeleteIsOpen: true});
     }
 
     closeModal= ()=> {
-        this.setState({modalIsOpen: false});
+        this.setState({modalDetailsIsOpen: false, modalEditIsOpen: false, modalDeleteIsOpen: false});
     }
 
     render(){
@@ -40,11 +50,11 @@ export default class Student extends Component {
                     Details
                 </button>
                 <div>
-                    <i className="fas fa-user-edit float-right mb-2 mr-2 edit-btn"></i>
-                    <i className="fas fa-trash-alt float-right mb-2 mr-3 delete-btn"></i>
+                    <i className="fas fa-user-edit float-right mb-2 mr-2 edit-btn" onClick={this.openEditModal}/>
+                    <i className="fas fa-trash-alt float-right mb-2 mr-3 delete-btn" onClick={this.openDeleteModal}/>
                 </div>
                 <Modal
-                    isOpen={this.state.modalIsOpen}
+                    isOpen={this.state.modalDetailsIsOpen}
                     onRequestClose={this.closeModal}
                     style={customStyles}
                     contentLabel="Details Modal"
@@ -63,7 +73,6 @@ export default class Student extends Component {
                         <h4>Maths Marks : {maths}</h4>
                         <h4>Fees Paid : {fees}</h4>
                     </div>
-                    
                 </Modal>
             </div>
     )

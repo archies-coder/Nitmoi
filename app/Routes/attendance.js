@@ -28,6 +28,5 @@ router.post('/api/attendance', (req, res)=>{
     .catch(err => {
         res.status(500).json(err)
     })
-    res.send(day)
 })
 module.exports = router

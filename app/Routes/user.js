@@ -12,6 +12,8 @@ router.get('/api/user',(req,res)=>{
 })
 
 router.post('/api/user',async (req,res)=>{
+
+    // req.body={email,password}
     let errors = [];
     if(!req.body){
         errors.push({message:"No Req Body"})

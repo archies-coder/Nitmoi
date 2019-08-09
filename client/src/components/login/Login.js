@@ -1,13 +1,16 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import './Login.css';
-
-
 class AppLogin extends Component {
   constructor(props) {
     super(props);
     this.emailEl = React.createRef();
     this.passwordEl = React.createRef();
+    this.state = {
+      currentUser: {},
+      token: '',
+      userId: ''
+    }
   }
 
 
@@ -18,41 +21,39 @@ class AppLogin extends Component {
     if (email.trim().length === 0 || password.trim().length === 0) {
       return;
     }
-    // const loginRequest = {
-    //   query: `{
-    //     login(email:"${email}",password:"${password}"){
-    //       userId
-    //       accessToken
-    //     }
-    //   }
-    // `};
+    const loginRequest = {
+      "email": email,
+      "password":password  
+    };
 
-    // fetch("http://localhost:5000/graphql", {
-    //   method: "POST",
-    //   body: JSON.stringify(loginRequest),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "Accept":"application/json"
-    //   }
-    // })
-    //   .then(res => {
-    //     if (res.status !== 200 && res.status !== 201) {
-    //       throw new Error("Failed!");
-    //     }
-    //     return res.json();
-    //   })
-    //   .then(resData => {
-    //     console.log(resData);
-    //     this.setState({
-    //       token: resData.data.login.accessToken,
-    //       userId: resData.data.login.userId
-    //     })
-    //   })
-    //   .catch();
+    fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify(loginRequest),
+      headers: {
+        "Content-Type": "application/json",
+        "Accept":"application/json"
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then(resData => {
+        this.setState({
+          token: resData.sid,
+          currentUser: resData.user,
+          userId: resData.userId
+        })
+        localStorage.setItem('token', resData.sid)
+      })
+      .catch(err=>console.log(err));
 
+      return <Redirect to='/home'/>
   };
+  
   render() {
-
     return (
       <React.Fragment>
         <div className="login-container">
@@ -97,6 +98,7 @@ class AppLogin extends Component {
                       type="password"
                       className="form-control"
                       placeholder="password"
+                      autoComplete="current-password"
                       ref={this.passwordEl}
                     />
                   </div>
@@ -105,11 +107,7 @@ class AppLogin extends Component {
                     Remember Me
                   </div>
                   <div className="form-group">
-                    <input
-                      type="submit"
-                      value="Login"
-                      className="btn float-right login_btn bg-dark text-white"
-                    />
+                    <button type='submit' className="btn float-right login_btn bg-dark text-white">Login</button>
                   </div>
                 </form>
               </div>

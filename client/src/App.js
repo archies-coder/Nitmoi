@@ -1,37 +1,35 @@
 import React, {Component} from 'react';
-import Navbar from './components/AppNav';
+import Navbar from './components/navigation/AppNav';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 //Components
-import AppLogin from "./components/Login";
-import StudentList from "./components/StudentList";
-// import StudentDetails from "./components/Details";
-import Home from "./components/Home";
-import AddStudent from "./components/AddStudent";
-import Attendance from './components/Attendance';
+import AppLogin from "./components/login/Login";
+import {Logout} from "./components/login/Logout";
+import StudentList from "./components/student-list/StudentList";
+import Home from "./components/home/Home";
+import AddStudent from "./components/add-student/AddStudent";
+import Attendance from './components/attendance/Attendance';
 
 export default class App extends Component {
- 
+  constructor(props){
+    super(props)
+    this.state={
+    }
+  }
 
   render() {
     return (
       <div className='App'>
-        <React.Fragment>
-          <Navbar />
+          <Navbar/> 
           <Switch>
-            {/* {!this.state.token && <Redirect from="/" to="/login" exact />}
-            {this.state.token && <Redirect from="/login" to="/" exact />} */}
             <Route exact path="/" component={Home} />
-            <Route exact path="/list"component={StudentList} />
-            <Route exact path="/add" component={AddStudent} />
-            <Route exact path="/attendance" component={Attendance} />
-            {/* {this.state.token && (
-              <Route path="/details" component={StudentDetails} />
-            )} */}
-            <Route path="/login"  component={AppLogin} />
-            {/* <Route path="/register" component={AppRegister} /> */}
+            <Route path="/list" component={StudentList} />
+            <Route path="/add" component={AddStudent} />
+            <Route path="/attendance" component={Attendance} />
+            <Route path="/login" component={AppLogin} />
+            <Route path="/logout" component={Logout} />
           </Switch>
-      </React.Fragment>
+          {this.props.children}
       </div>
     )
   }

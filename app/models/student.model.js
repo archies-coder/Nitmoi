@@ -25,4 +25,8 @@ const StudentSchema = new mongoose.Schema({
     feesPaid: Number
   });
   
-  module.exports = Student = mongoose.model('student', StudentSchema);
+  const Student = mongoose.model('student', StudentSchema);
+  module.exports = {
+    StudentSchema,
+    Student
+  }

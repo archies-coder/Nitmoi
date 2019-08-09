@@ -15,11 +15,13 @@ router.post('/api/login',async (req, res)=>{
         req.session.userId = existingUser.id;
         req.session.user = existingUser;
         const sid= req.sessionID
-        res.send(req.sessionID)
+        res.send({
+            user: existingUser,
+            userId: existingUser.id,
+            sid: sid
+        })
     return {
-        userId: existingUser.id,
-        user: existingUser,
-        sid: sid
+        userId: existingUser.id
     }
 })
 
