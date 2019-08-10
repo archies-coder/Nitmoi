@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Navbar from './components/navigation/AppNav';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route} from "react-router-dom";
 //Components
 import AppLogin from "./components/login/Login";
 import {Logout} from "./components/login/Logout";

@@ -34,7 +34,9 @@ export default class AddAttendance extends Component {
             students: [],
             date: new Date(),
             checked: false,
-            present: []
+            present: [],
+            viewVisible: false,
+            addVisible: false
         }
     }
 
@@ -98,6 +100,20 @@ export default class AddAttendance extends Component {
         this.setState({modalIsOpen: false});
     };
 
+    toggleView=()=>{
+        this.setState({viewVisible: !this.state.viewVisible})
+        if(this.state.addVisible){
+            this.setState({addVisible: false})
+        }
+    }
+
+    toggleAdd=()=>{
+        this.setState({addVisible: !this.state.addVisible})
+        if(this.state.viewVisible){
+            this.setState({viewVisible: false})
+        }
+    }
+
     render() {
       const listItem = this.state.students.map(stud => (
             <div >
@@ -106,8 +122,9 @@ export default class AddAttendance extends Component {
       ))
         return (
             <div style={customStylesContainer}>
-                <h1>Add Attendance </h1>
-                <form onSubmit={this.handleFormSubmit}>
+                <button type="submit" className="btn btn-info mb-3" onClick={this.toggleView}>View Attendance</button><br/>
+                <button type="submit" className="btn btn-info" onClick={this.toggleAdd}>Mark Attendance</button>
+                {this.state.addVisible &&<form onSubmit={this.handleFormSubmit}>
                     <div class="form-group">
                         <label htmlFor="InputDate"><h4>Pick Date</h4></label>
                         <i className="far fa-calendar-alt ml-2 mb-2 btn-lg date-picker" id="InputDate"onClick={this.openModal}/>
@@ -117,7 +134,8 @@ export default class AddAttendance extends Component {
                         </div>
                         <button type='submit' className="btn btn-success">Save</button>
                     </div>
-                </form>
+                </form>}
+                {this.state.viewVisible && <div>Hello</div>}
                 <Modal
                     isOpen={this.state.modalIsOpen}
                     onRequestClose={this.closeModal}

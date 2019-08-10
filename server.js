@@ -1,4 +1,5 @@
 const express     = require('express');
+const env         = require('dotenv').config();
 const mongoose    = require('mongoose');
 const dbURI       = require("./app/config/keys").dbURI;
 const SECRET      = require("./app/config/keys").SECRET;
@@ -24,15 +25,17 @@ var allowCrossDomain = function(req, res, next) {     //Might be unnecessary
 }
 app.use(allowCrossDomain) ;
 
-// app.use(express.static(path.join(__dirname, 'client/build')));
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname+'/client/build/index.html'));
-// });
-
-if(app.get('env') === 'production') {
-  app.set('trust proxy', 1) // trust first proxy
-  sess.cookie.secure = true // serve secure cookies
+if(process.env.NODE_ENV==='production'){
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+  });
 }
+
+// if(process.env.NODE_ENV === 'production') {
+//   app.set('trust proxy', 1) // trust first proxy
+//   sess.cookie.secure = true // serve secure cookies
+// }
 
 //use sessions for tracking login
 app.use(session({
@@ -42,7 +45,8 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     maxAge: 1000*60*60*24*7,
-    httpOnly: false
+    httpOnly: false,
+    secure: true
 }
 }));
 
@@ -66,4 +70,4 @@ mongoose
   .catch(err => console.log(err));
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, ()=> console.log('Running At '+PORT))
+app.listen(PORT, ()=> console.log(`Running ${process.env.NODE_ENV} build on port ${PORT}`))
