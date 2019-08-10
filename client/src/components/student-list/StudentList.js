@@ -35,7 +35,6 @@ export default class StudentList extends Component {
         }).catch(err => console.log(err)
         )
     }
-
     
     render() {
        return <div>

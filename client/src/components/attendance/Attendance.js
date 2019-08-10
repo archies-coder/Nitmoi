@@ -135,7 +135,7 @@ export default class AddAttendance extends Component {
                         <button type='submit' className="btn btn-success">Save</button>
                     </div>
                 </form>}
-                {this.state.viewVisible && <div>Hello</div>}
+                {this.state.viewVisible && <div>work in progress</div>}
                 <Modal
                     isOpen={this.state.modalIsOpen}
                     onRequestClose={this.closeModal}
