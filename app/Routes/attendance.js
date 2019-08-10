@@ -4,6 +4,10 @@ const AttendanceModel = require('../models/attendance.model')
 
 //GET
 router.get('/api/attendance/',(req, res)=>{
+    if(!req.session.userId){
+        res.send('not authenticated')
+        return next();
+    }
     AttendanceModel.find({})
     .then(doc => {
         res.json(doc).send(doc)
@@ -14,6 +18,10 @@ router.get('/api/attendance/',(req, res)=>{
 
 //POST
 router.post('/api/attendance', (req, res)=>{
+    if(!req.session.userId){
+        res.send('not authenticated')
+        return next();
+    }
     if(!req.body){
         return res.status(400).send('req body missing');
     }

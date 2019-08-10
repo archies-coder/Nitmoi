@@ -6,7 +6,8 @@ const bcrypt = require('bcrypt');
 router.post('/api/login',async (req, res)=>{
     const existingUser = await UserModel.findOne({ email: req.body.email });
     if (!existingUser) {
-        throw new Error("No user with that email");
+        console.log("No user with that email");
+        res.status(400).send('wrong credentials')
     }
     const valid = await bcrypt.compare(req.body.password, existingUser.password);
     if (!valid) {

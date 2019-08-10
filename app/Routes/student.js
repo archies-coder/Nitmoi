@@ -23,10 +23,10 @@ router.get('/api/student/:std', (req, res, next) => {
 
 //Get Students by standard
 router.get('/api/students', (req, res, next) => {
-    // if(!req.session.userId){
-    //     res.send('not authenticated')
-    //     return next();
-    // }
+    if(!req.session.userId){
+        res.send('not authenticated')
+        return next();
+    }
     studentModel.find()
         .then(doc => res.json(doc))
         .catch(err => res.status(500).json(err));
@@ -47,10 +47,10 @@ router.get('/api/student', (req, res, next) => {
 
 //Add Student
 router.post('/api/student', (req, res, next) => {
-    // if(!req.session.userId){
-    //     res.send('not authenticated')
-    //     return next();
-    // }
+    if(!req.session.userId){
+        res.send('not authenticated')
+        return next();
+    }
     if(!req.body){
         return res.status(400).send('req body missing');
     }
@@ -68,7 +68,7 @@ router.post('/api/student', (req, res, next) => {
         .catch(err => {
             throw new Error(err)
         })
-    res.send(student);
+    return student;
 })
 
 //Update
