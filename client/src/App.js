@@ -11,11 +11,6 @@ import AddStudent from "./components/add-student/AddStudent";
 import Attendance from './components/attendance/Attendance';
 
 export default class App extends Component {
-  constructor(props){
-    super(props)
-    this.state={
-    }
-  }
 
   render() {
     return (

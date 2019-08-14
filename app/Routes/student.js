@@ -24,7 +24,7 @@ router.get('/api/student/:std', (req, res, next) => {
 //Get Students by standard
 router.get('/api/students', (req, res, next) => {
     if(!req.session.userId){
-        res.send('not authenticated')
+        res.status(400).send('not authenticated')
         return next();
     }
     studentModel.find()

@@ -33,6 +33,7 @@ export default class AddAttendance extends Component {
         this.state = {
             students: [],
             date: new Date(),
+            viewDate: new Date(),
             checked: false,
             present: [],
             viewVisible: false,
@@ -73,7 +74,7 @@ export default class AddAttendance extends Component {
     handleFormSubmit=e=>{
         e.preventDefault();
         const attendanceRequest = {
-            "date": this.state.date,
+            "date": this.state.date.toLocaleDateString(),
             "present": this.state.present
         }
         fetch('/api/attendance',{
@@ -83,12 +84,15 @@ export default class AddAttendance extends Component {
                 'content-type': 'application/json'
             },
             body: JSON.stringify(attendanceRequest)
-        }).then(res=>res.json()).then(data=>console.log(data)).catch(err=>console.log(err)
-        )
+        }).then(res=>res.json()).then(data=>console.log(data)).catch(err=>console.log(err))
     }
 
     onChange = date => {
         this.setState({ date })
+        this.closeModal()
+  }
+    onChangeView = date => {
+        this.setState({ viewDate: date })
         this.closeModal()
   }
 
@@ -114,6 +118,21 @@ export default class AddAttendance extends Component {
         }
     }
 
+    getAttendanceByDate=(e)=>{
+        e.preventDefault();
+        // const body = {
+        //     'date': this.state.viewDate
+        // }
+        const date= this.state.viewDate.toLocaleDateString()
+        fetch(`/api/attendance/?date="${date}"`,{
+            mode: 'cors',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded'
+            }
+        }).then(res=> res.json()).then(data=>console.log(data))
+        .catch(err=>console.log(err))
+    }
+
     render() {
       const listItem = this.state.students.map(stud => (
             <div >
@@ -124,7 +143,8 @@ export default class AddAttendance extends Component {
             <div style={customStylesContainer}>
                 <button type="submit" className="btn btn-info mb-3" onClick={this.toggleView}>View Attendance</button><br/>
                 <button type="submit" className="btn btn-info" onClick={this.toggleAdd}>Mark Attendance</button>
-                {this.state.addVisible &&<form onSubmit={this.handleFormSubmit}>
+                {/* Add Attendance */}
+                {this.state.addVisible && <form onSubmit={this.handleFormSubmit}>
                     <div class="form-group">
                         <label htmlFor="InputDate"><h4>Pick Date</h4></label>
                         <i className="far fa-calendar-alt ml-2 mb-2 btn-lg date-picker" id="InputDate"onClick={this.openModal}/>
@@ -135,7 +155,19 @@ export default class AddAttendance extends Component {
                         <button type='submit' className="btn btn-success">Save</button>
                     </div>
                 </form>}
-                {this.state.viewVisible && <div>work in progress</div>}
+                {/* View Attendance */}
+                {this.state.viewVisible && 
+                    <div style={{textAlign:'center'}}>
+                        <MyCalendar
+                            className='calendar'
+                            onChange={this.onChangeView}
+                            value={this.state.viewDate}
+                        />
+                        <br/>
+                        <h4 style>Selected Date {this.state.viewDate.toDateString()}</h4>
+                        <button type="submit" className="btn btn-primary" onClick={this.getAttendanceByDate}>GET</button>
+                    </div>
+                }
                 <Modal
                     isOpen={this.state.modalIsOpen}
                     onRequestClose={this.closeModal}
@@ -164,7 +196,6 @@ class Checkbox extends Component {
         const {handleChange, stud, clearList} = this.props;
         const bool = !this.state.checked;
         this.setState({checked: bool});
-        console.log(bool)
         if(bool){
             handleChange(stud)
         } else {
@@ -175,9 +206,9 @@ class Checkbox extends Component {
     render(){
         const text = this.state.checked ? <h3 style={{color: 'green'}}>{this.props.stud.firstName}</h3> : <h3 style={{color:'red'}}>{this.props.stud.firstName}</h3>;
         return (
-            <label class="checkbox-container">
+            <label className="checkbox-container">
                 <input onChange={this.handleClick} checked={this.state.checked} value={text} type="checkbox"/>{text}
-                <span class="checkmark"></span>
+                <span className="checkmark"></span>
             </label>
         )
     }

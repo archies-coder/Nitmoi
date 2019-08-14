@@ -1,15 +1,20 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
+import {AuthContext} from '../../context';
 
 export default class Navbar extends Component {
   render() {    
     return (
+      <AuthContext.Consumer>
+        {context =>(
           <nav className="navbar navbar-expand-sm bg-dark navbar-dark px-sm-5">
             <Link to='/'>
               <span className='navbar-brand'>NitMoi</span>
             </Link>
-            
-            <ul className="navbar-nav ml-5 align-items-center">
+            {context.state.isAuth && <Redirect from='/login' to='/'></Redirect>}
+            {!context.state.isAuth && <Redirect from='/' to='/login'></Redirect>}
+
+            {context.state.isAuth && <ul className="navbar-nav ml-5 align-items-center">
               <li className="nav-item  students-link">
                 <Link to='/list' className='nav-link'>
                   Students
@@ -25,21 +30,25 @@ export default class Navbar extends Component {
                   Attendance
                 </Link>
               </li>
-            </ul>
-              <ul className="navbar-nav pull-right">
-                <li className="nav-item students-link pull-right">
+            </ul>}
+              <span className="navbar-nav pull-right">
+                  {!context.state.isAuth&&<span className="nav-item students-link pull-right">
                     <Link to='/login'
                     className='nav-link'>
-                      <i className="fas fa-user-plus"></i>
+                      {/* <i className="fas fa-user-plus"></i> */}
+                      Login
                     </Link>
-                  </li>
-                  <li className="nav-item students-link ">
-                    <Link to='/logout' className=' nav-link'>
-                      <i className="fas fa-sign-in-alt ml-3"></i>
-                    </Link>
-                  </li>
-              </ul>
+                  </span>}
+                  {context.state.isAuth&&<li className="nav-item students-link ">
+                    <a href='/' className='nav-link' onClick={context.handleLogout}>
+                      {/* <i className="fas fa-sign-in-alt ml-3"></i> */}
+                        LogOut
+                    </a>
+                  </li>}
+              </span>
           </nav>
+        )}
+      </AuthContext.Consumer>
     )
   }
 }

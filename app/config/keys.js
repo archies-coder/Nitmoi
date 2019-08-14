@@ -1,4 +1,4 @@
-const dbURI = 'mongodb://archisbhoir:Archi%40123321@ds351807.mlab.com:51807/nitmoi';
+const dbURI = 'mongodb://localhost:27017/nitmoi';
 // if(process.env.NODE_ENV==='production'){
 // } else {
 //     const dbURI = 'mongodb://localhost:27017/nitmoi';

@@ -6,7 +6,7 @@ export default class MyCalendar extends Component {
 
   render() {
     return (
-      <div style={{boxShadow: "5px 5px 25px", display:"inline-block"}}>
+      <div style={{boxShadow: "3px 3px 15px", display:"inline-block",margin:'15px auto'}}>
         <Calendar
           onChange={this.props.onChange}
           value={this.props.value}

@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component} from 'react'
 import './AddStudent.css'
 import Modal from 'react-modal';
 import MyCalendar from '../reusables/Calendar'
+import {AuthContext} from '../../context'
 
 
 const customStyles = {
@@ -94,80 +95,85 @@ export default class AddStudent extends Component {
     }
 
     render() {
+        
         return (
-            <div className="d-lg-flex border justify-content-center p-3 hello">
-                <form onSubmit={this.handleLogin}>
-                    <div class="row py-3">
-                        <div class="col">
-                        <input type="text" ref={this.firstNameEl} class="form-control" placeholder="First name" required/>
+                <AuthContext.Consumer>
+                    {context =>(
+                        <div className="d-lg-flex border justify-content-center p-3 hello">
+                            <form onSubmit={this.handleLogin}>
+                                <div class="row py-3">
+                                    <div class="col">
+                                    <input type="text" ref={this.firstNameEl} className="form-control" placeholder="First name" required/>
+                                    </div>
+                                    <div class="col">
+                                    <input type="text" ref={this.lastNameEl} className="form-control" placeholder="Last name" required/>
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="InputAddress">Address</label>
+                                    <input type="text" ref={this.addressEl} className="form-control" id="InputAddress" placeholder="Address" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label htmlFor="Inputstandard">Standard</label>
+                                    <select class="form-control form-control-sm" id="Inputstandard" ref={this.standardEl}>
+                                        <option>5</option>
+                                        <option>6</option>
+                                        <option>7</option>
+                                        <option>8</option>
+                                        <option>9</option>
+                                        <option>10</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label htmlFor="InputBoard">Board</label>
+                                    <select className="form-control form-control-sm" id="InputBoard" ref={this.boardEl}>
+                                        <option>MH</option>
+                                        <option>ICSC</option>
+                                        <option>CBSE</option>
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="InputDate">Date Of Joining </label>
+                                    {/* <input type="button" className="btn btn-primary btn-sm"><i class="far fa-calendar-alt"></i></input> */}
+                                    <i className="far fa-calendar-alt ml-2 mb-2 btn-lg" id="InputDate"onClick={this.openModal}></i>
+                                    <br/>
+                                    <p>Selected Date:- {this.state.date.toLocaleDateString()}</p>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="InputPhysics">Physics Marks</label>
+                                    <input type="text" className="form-control" ref={this.physicsEl} id="InputPhysics" placeholder="Physics" required/>
+                                    <label htmlFor="InputEnglish">English Marks</label>
+                                    <input type="text" className="form-control" ref={this.englishEl} id="InputEnglish" placeholder="English" required/>
+                                    <label htmlFor="InputMaths">Maths Marks</label>
+                                    <input type="text" className="form-control" ref={this.mathsEl} id="InputMaths" placeholder="Maths" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="InputSex">Sex</label>
+                                    <select class="form-control form-control-sm" id="InputSex" ref={this.sexEl}>
+                                        <option>Male</option>
+                                        <option>Female</option>
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="InputFees">Fees Paid</label>
+                                    <input type="text" className="form-control" ref={this.feesEl} id="InputFees" placeholder="Amout Of Fees Paid"/>
+                                </div>
+                                <button type="submit" className="btn btn-primary" onSubmit={this.handleSubmit}>Submit</button>
+                            </form>
+                            <Modal
+                                isOpen={this.state.modalIsOpen}
+                                onRequestClose={this.closeModal}
+                                style={customStyles}
+                                contentLabel="Date Picker Modal"
+                            >
+                                <MyCalendar
+                                    onChange={this.onChange}
+                                    value={this.state.date}
+                                />
+                            </Modal>
                         </div>
-                        <div class="col">
-                        <input type="text" ref={this.lastNameEl} class="form-control" placeholder="Last name" required/>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="InputAddress">Address</label>
-                        <input type="text" ref={this.addressEl} className="form-control" id="InputAddress" placeholder="Address" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="Inputstandard">Standard</label>
-                        <select class="form-control form-control-sm" id="Inputstandard" ref={this.standardEl}>
-                            <option>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                            <option>10</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputBoard">Board</label>
-                        <select class="form-control form-control-sm" id="InputBoard" ref={this.boardEl}>
-                            <option>MH</option>
-                            <option>ICSC</option>
-                            <option>CBSE</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="InputDate">Date Of Joining </label>
-                        {/* <input type="button" className="btn btn-primary btn-sm"><i class="far fa-calendar-alt"></i></input> */}
-                        <i className="far fa-calendar-alt ml-2 mb-2 btn-lg" id="InputDate"onClick={this.openModal}></i>
-                        <br/>
-                        <p>Selected Date:- {this.state.date.toLocaleDateString()}</p>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="InputPhysics">Physics Marks</label>
-                        <input type="text" className="form-control" ref={this.physicsEl} id="InputPhysics" placeholder="Physics" required/>
-                        <label htmlFor="InputEnglish">English Marks</label>
-                        <input type="text" className="form-control" ref={this.englishEl} id="InputEnglish" placeholder="English" required/>
-                        <label htmlFor="InputMaths">Maths Marks</label>
-                        <input type="text" className="form-control" ref={this.mathsEl} id="InputMaths" placeholder="Maths" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="InputSex">Sex</label>
-                        <select class="form-control form-control-sm" id="InputSex" ref={this.sexEl}>
-                            <option>Male</option>
-                            <option>Female</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="InputFees">Fees Paid</label>
-                        <input type="text" className="form-control" ref={this.feesEl} id="InputFees" placeholder="Amout Of Fees Paid"/>
-                    </div>
-                    <button type="submit" className="btn btn-primary" onSubmit={this.handleSubmit}>Submit</button>
-                </form>
-                <Modal
-                    isOpen={this.state.modalIsOpen}
-                    onRequestClose={this.closeModal}
-                    style={customStyles}
-                    contentLabel="Date Picker Modal"
-                >
-                  <MyCalendar
-                    onChange={this.onChange}
-                    value={this.state.date}
-                    />
-                </Modal>
-            </div>
+                    )}
+                </AuthContext.Consumer>
         )
     }
 }

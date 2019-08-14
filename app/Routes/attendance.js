@@ -8,11 +8,15 @@ router.get('/api/attendance/',(req, res)=>{
         res.send('not authenticated')
         return next();
     }
-    AttendanceModel.find({})
+    if(!req.query.date){
+        res.send('Please provide date!')
+        return next()
+    }
+    AttendanceModel.findOne({date: req.query.date})
     .then(doc => {
         res.json(doc).send(doc)
     })
-    .catch(err => res.status(500).json(err))
+    .catch(err => res.status(500))
 })
 
 

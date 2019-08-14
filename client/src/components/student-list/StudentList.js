@@ -27,7 +27,7 @@ export default class StudentList extends Component {
             }
         }).then(res => {
             if (res.status !== 200 && res.status !== 201) {
-                throw new Error("Failed!");
+                return <h4>Not Authenticated</h4>
               }
               return res.json()
         }).then(resdata => {         
@@ -41,8 +41,7 @@ export default class StudentList extends Component {
            {
             //    (localStorage.token) ? (
                    <div style={gridStyle} onLoad={this.getStudents}>
-                {
-                    this.state.students.sort((a,b)=>{
+                {localStorage.token && this.state.students.sort((a,b)=>{
                         return a.standard - b.standard;
                     }).map(stud => {
                         return <Student key={stud._id} 

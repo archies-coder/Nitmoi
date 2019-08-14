@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import './Login.css';
+import {AuthContext} from '../../context';
+
 class AppLogin extends Component {
   constructor(props) {
     super(props);
@@ -9,12 +11,24 @@ class AppLogin extends Component {
     this.state = {
       currentUser: {},
       token: '',
-      userId: ''
+      userId: '',
+      redirect: false
     }
   }
 
+  setRedirect = () => {
+    this.setState({
+      redirect: true
+    })
+  }
 
-  handleLogin = e => {
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Link to='/home' />
+    }
+  }
+
+  handleLogin = (context, e) => {
     e.preventDefault();
     const email = this.emailEl.current.value;
     const password = this.passwordEl.current.value;
@@ -38,6 +52,7 @@ class AppLogin extends Component {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error("Failed!");
         }
+        console.log(res)
         return res.json();
       })
       .then(resData => {
@@ -47,15 +62,20 @@ class AppLogin extends Component {
           userId: resData.userId
         })
         localStorage.setItem('token', resData.sid)
+        context.handleLogin(resData.userId)
       })
-      .catch(err=>console.log(err));
+      .catch(err=>{
+        console.log(err)
+        this.passwordEl.current.value=''
+      });
 
       return <Redirect to='/home'/>
   };
   
   render() {
     return (
-      <React.Fragment>
+      <AuthContext.Consumer>
+        {context=>(
         <div className="login-container">
           <div className="d-flex justify-content-center h-100">
             <div className="card login-card">
@@ -74,7 +94,7 @@ class AppLogin extends Component {
                 </div>
               </div>
               <div className="card-body">
-                <form onSubmit={this.handleLogin}>
+                <form onSubmit={e=> this.handleLogin(context, e)}>
                   <div className="input-group form-group">
                     <div className="input-group-prepend">
                       <span className="input-group-text">
@@ -122,7 +142,8 @@ class AppLogin extends Component {
             </div>
           </div>
         </div>
-      </React.Fragment>
+        )}
+      </AuthContext.Consumer>
     );
   }
 }
