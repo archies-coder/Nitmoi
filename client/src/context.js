@@ -6,7 +6,17 @@ export class AuthProvider extends Component{
         super(props)
         this.state={
             isAuth: false,
-            user: ''
+            user: '',
+            selectedForEdit: {}
+        }
+    }
+
+    componentDidMount=()=>{
+        if(!document.cookie){
+            localStorage.clear()
+        }
+        if(localStorage.token){
+            this.setState({isAuth: true})
         }
     }
 
@@ -20,6 +30,22 @@ export class AuthProvider extends Component{
         e.preventDefault();
         this.setState({isAuth:false})
         localStorage.clear()
+        fetch('/api/logout',{
+            method: 'POST',
+            mode: 'cors',
+            headers:{
+                'content-type': 'application/json'
+            }
+        }).then(res => {
+            if (res.status !== 200 && res.status !== 201) {
+              throw new Error("Failed!");
+            }
+            return res;
+          }).then(msg=>console.log(msg))
+    }
+
+    selectForEdit = (obj)=>{
+        this.setState({selectedForEdit: obj})
     }
     
     render(){
@@ -27,7 +53,8 @@ export class AuthProvider extends Component{
             <AuthContext.Provider value={{
                 state: this.state,
                 handleLogin: this.handleAuthSuccess,
-                handleLogout: this.handleLogout
+                handleLogout: this.handleLogout,
+                studentEdit : this.selectForEdit
             }}>
                 {this.props.children}
             </AuthContext.Provider>

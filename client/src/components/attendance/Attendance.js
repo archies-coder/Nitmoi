@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import Modal from 'react-modal';
 import MyCalendar from '../reusables/Calendar';
 import './attendance.css'
+import Student from '../student-list/Student';
+
 
 const customStylesContainer = {
-    'font-size'        : '18px',
+    'fontSize'        : '18px',
     'border'           : '1px solid black',
     'textAlign'        : 'left',
     'height'           : 'auto',
@@ -12,7 +14,7 @@ const customStylesContainer = {
     'top'              : '50%',
     'margin'           : '100px auto 0 auto',
     'padding'          : '20px',
-    'background-color' : 'white'
+    'backgroundColor' : 'white'
 }
 
 const customStyles = {
@@ -25,6 +27,16 @@ const customStyles = {
       transform             : 'translate(-50%, -50%)'
     }
   };
+  const alertModalStyles = {
+      content:{
+        top                   : '50%',
+        left                  : '50%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        marginRight           : '-50%',
+        transform             : 'translate(-50%, -50%)'
+      }
+  }
 
 
 export default class AddAttendance extends Component {
@@ -37,7 +49,11 @@ export default class AddAttendance extends Component {
             checked: false,
             present: [],
             viewVisible: false,
-            addVisible: false
+            addVisible: false,
+            presentStuds: [],
+            errors: [],
+            modalIsOpen: false,
+            alertModalIsOpen: false
         }
     }
 
@@ -90,7 +106,7 @@ export default class AddAttendance extends Component {
     onChange = date => {
         this.setState({ date })
         this.closeModal()
-  }
+    }
     onChangeView = date => {
         this.setState({ viewDate: date })
         this.closeModal()
@@ -101,8 +117,12 @@ export default class AddAttendance extends Component {
     };
 
     closeModal= ()=> {
-        this.setState({modalIsOpen: false});
+        this.setState({modalIsOpen: false, alertModalIsOpen: false});
     };
+
+    openAlertModal=()=>{
+        this.setState({alertModalIsOpen:true})
+    }
 
     toggleView=()=>{
         this.setState({viewVisible: !this.state.viewVisible})
@@ -120,32 +140,37 @@ export default class AddAttendance extends Component {
 
     getAttendanceByDate=(e)=>{
         e.preventDefault();
-        // const body = {
-        //     'date': this.state.viewDate
-        // }
         const date= this.state.viewDate.toLocaleDateString()
         fetch(`/api/attendance/?date="${date}"`,{
+            method: 'GET',
             mode: 'cors',
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             }
-        }).then(res=> res.json()).then(data=>console.log(data))
-        .catch(err=>console.log(err))
+        }).then(res=> res.json()).then(data=>{
+            this.setState({
+                presentStuds: data.present
+            })
+        })
+        .catch(err=>{this.setState({errors: [...this.state.errors, JSON.stringify(err)]})
+        console.log(err)
+        this.openAlertModal()    
+    })
     }
 
     render() {
-      const listItem = this.state.students.map(stud => (
-            <div >
-                <Checkbox key={stud._id} stud={stud} handleChange={this.handleCheckboxChange} clearList={this.clearListItem}/>
-            </div>
-      ))
+        const listItem = this.state.students.map(stud => (
+                <div >
+                    <Checkbox key={stud._id} stud={stud} handleChange={this.handleCheckboxChange} clearList={this.clearListItem}/>
+                </div>
+        ))
         return (
             <div style={customStylesContainer}>
                 <button type="submit" className="btn btn-info mb-3" onClick={this.toggleView}>View Attendance</button><br/>
                 <button type="submit" className="btn btn-info" onClick={this.toggleAdd}>Mark Attendance</button>
                 {/* Add Attendance */}
                 {this.state.addVisible && <form onSubmit={this.handleFormSubmit}>
-                    <div class="form-group">
+                    <div className="form-group">
                         <label htmlFor="InputDate"><h4>Pick Date</h4></label>
                         <i className="far fa-calendar-alt ml-2 mb-2 btn-lg date-picker" id="InputDate"onClick={this.openModal}/>
                         <h4 className='selected-date'>{this.state.date.toDateString()}</h4>
@@ -164,8 +189,20 @@ export default class AddAttendance extends Component {
                             value={this.state.viewDate}
                         />
                         <br/>
-                        <h4 style>Selected Date {this.state.viewDate.toDateString()}</h4>
+                        <h4>Selected Date {this.state.viewDate.toDateString()}</h4>
                         <button type="submit" className="btn btn-primary" onClick={this.getAttendanceByDate}>GET</button>
+                        {this.state.errors.length===0 ? this.state.presentStuds.map(stud=><Student key={stud._id} 
+                                    fName={stud.firstName} 
+                                    lName={stud.lastName} 
+                                    Std={stud.standard}
+                                    Addr={stud.Address}
+                                    brd={stud.Board}
+                                    phy={stud.lastYearmarks.physics}
+                                    eng={stud.lastYearmarks.english}
+                                    maths={stud.lastYearmarks.maths}
+                                    sex={stud.sex}
+                                    fees={stud.feesPaid}
+                                    />): this.openAlertModal}
                     </div>
                 }
                 <Modal
@@ -178,6 +215,16 @@ export default class AddAttendance extends Component {
                     onChange={this.onChange}
                     value={this.state.date}
                     />
+                </Modal>
+                <Modal
+                    isOpen={this.state.alertModalIsOpen}
+                    onRequestClose={this.closeModal}
+                    style={alertModalStyles}
+                    contentLabel="Alert Modal"
+                >
+                  {this.state.errors.map(err=>{
+                      console.log(err)
+                  })}
                 </Modal>
             </div>
         )

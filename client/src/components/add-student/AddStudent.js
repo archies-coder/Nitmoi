@@ -70,7 +70,7 @@ export default class AddStudent extends Component {
             "sex":sex,
             "feesPaid":fees
         }
-        fetch('http://localhost:5000/api/student',{
+        fetch('/api/student',{
             method:'POST',
             mode:'cors',
             headers:{
@@ -101,11 +101,11 @@ export default class AddStudent extends Component {
                     {context =>(
                         <div className="d-lg-flex border justify-content-center p-3 hello">
                             <form onSubmit={this.handleLogin}>
-                                <div class="row py-3">
-                                    <div class="col">
+                                <div className="row py-3">
+                                    <div className="col">
                                     <input type="text" ref={this.firstNameEl} className="form-control" placeholder="First name" required/>
                                     </div>
-                                    <div class="col">
+                                    <div className="col">
                                     <input type="text" ref={this.lastNameEl} className="form-control" placeholder="Last name" required/>
                                     </div>
                                 </div>
@@ -113,9 +113,9 @@ export default class AddStudent extends Component {
                                     <label htmlFor="InputAddress">Address</label>
                                     <input type="text" ref={this.addressEl} className="form-control" id="InputAddress" placeholder="Address" required/>
                                 </div>
-                                <div class="form-group">
+                                <div className="form-group">
                                     <label htmlFor="Inputstandard">Standard</label>
-                                    <select class="form-control form-control-sm" id="Inputstandard" ref={this.standardEl}>
+                                    <select className="form-control form-control-sm" id="Inputstandard" ref={this.standardEl}>
                                         <option>5</option>
                                         <option>6</option>
                                         <option>7</option>
@@ -124,7 +124,7 @@ export default class AddStudent extends Component {
                                         <option>10</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
+                                <div className="form-group">
                                     <label htmlFor="InputBoard">Board</label>
                                     <select className="form-control form-control-sm" id="InputBoard" ref={this.boardEl}>
                                         <option>MH</option>
@@ -147,9 +147,9 @@ export default class AddStudent extends Component {
                                     <label htmlFor="InputMaths">Maths Marks</label>
                                     <input type="text" className="form-control" ref={this.mathsEl} id="InputMaths" placeholder="Maths" required/>
                                 </div>
-                                <div class="form-group">
-                                    <label for="InputSex">Sex</label>
-                                    <select class="form-control form-control-sm" id="InputSex" ref={this.sexEl}>
+                                <div className="form-group">
+                                    <label htmlFor="InputSex">Sex</label>
+                                    <select className="form-control form-control-sm" id="InputSex" ref={this.sexEl}>
                                         <option>Male</option>
                                         <option>Female</option>
                                     </select>

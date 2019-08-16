@@ -40,11 +40,12 @@ export default class StudentList extends Component {
        return <div>
            {
             //    (localStorage.token) ? (
-                   <div style={gridStyle} onLoad={this.getStudents}>
-                {localStorage.token && this.state.students.sort((a,b)=>{
+            <div style={gridStyle} onLoad={this.getStudents}>
+                {localStorage.token &&this.state.students.sort((a,b)=>{
                         return a.standard - b.standard;
                     }).map(stud => {
                         return <Student key={stud._id} 
+                                    id={stud._id}
                                     fName={stud.firstName} 
                                     lName={stud.lastName} 
                                     Std={stud.standard}

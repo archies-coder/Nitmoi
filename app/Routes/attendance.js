@@ -3,7 +3,7 @@ const router = express.Router()
 const AttendanceModel = require('../models/attendance.model')
 
 //GET
-router.get('/api/attendance/',(req, res)=>{
+router.get('/api/attendance/',(req, res,next)=>{
     if(!req.session.userId){
         res.send('not authenticated')
         return next();
@@ -21,7 +21,7 @@ router.get('/api/attendance/',(req, res)=>{
 
 
 //POST
-router.post('/api/attendance', (req, res)=>{
+router.post('/api/attendance', (req, res, next)=>{
     if(!req.session.userId){
         res.send('not authenticated')
         return next();
