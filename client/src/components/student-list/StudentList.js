@@ -18,6 +18,24 @@ export default class StudentList extends Component {
         }
     }
 
+    getStudents=()=>{
+        fetch('/api/students',{
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            if (res.status !== 200 && res.status !== 201) {
+                return <h4>Not Authenticated</h4>
+              }
+              return res.json()
+        }).then(resdata => {         
+            this.setState({students:resdata})
+        }).catch(err => console.log(err)
+        )
+    }
+
     componentDidMount = () => {
         fetch('/api/students',{
             method: 'GET',
@@ -34,6 +52,19 @@ export default class StudentList extends Component {
             this.setState({students:resdata})
         }).catch(err => console.log(err)
         )
+    }
+
+    deleteStudent=(id, e)=>{
+        e.preventDefault();
+        fetch(`/api/student?id=${id}`,{
+            method: 'DELETE',
+            mode: 'cors',
+            headers: {
+                'content-type': 'application/json'
+            }
+        }).then(res=>res.json()).then(data=>console.log(data)).catch(err=>console.log(err))
+        this.getStudents()
+        
     }
     
     render() {
@@ -56,6 +87,7 @@ export default class StudentList extends Component {
                                     maths={stud.lastYearmarks.maths}
                                     sex={stud.sex}
                                     fees={stud.feesPaid}
+                                    deleteStudent={this.deleteStudent}
                                     />
                 })}
             </div>

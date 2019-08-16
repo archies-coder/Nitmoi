@@ -95,12 +95,12 @@ router.delete('/api/student', (req, res, next) => {
     //     res.send('not authenticated')
     //     return next();
     // }
-    if(!req.query.fname) {
+    if(!req.query.id) {
       return res.status(400).send('Missing URL parameter: fname')
     }
   
     studentModel.findOneAndRemove({
-      firstName: req.query.fname
+      _id: req.query.id
     })
       .then(doc => {
         res.json(doc)

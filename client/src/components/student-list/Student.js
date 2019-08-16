@@ -18,7 +18,7 @@ const customStyles = {
     }
   };
 
-const customStylesEdit = {
+const customStylesDelete = {
     content : {
       top                   : '50%',
       left                  : '50%',
@@ -26,7 +26,8 @@ const customStylesEdit = {
       bottom                : 'auto',
       marginRight           : '-50%',
       transform             : 'translate(-50%, -50%)',
-      width                 :'500px'
+      width                 :'500px',
+      height                :'200px',
     }
   };
 
@@ -39,7 +40,7 @@ export default class Student extends Component {
         }
     }
 
-    openModal = ()=> {
+    openModal = () => {
         this.setState({modalDetailsIsOpen: true});
     }
 
@@ -51,6 +52,18 @@ export default class Student extends Component {
     closeModal= ()=> {
         this.setState({modalDetailsIsOpen: false, modalDeleteIsOpen: false});
     }
+
+    // deleteStudent=(e)=>{
+    //     e.preventDefault();
+    //     fetch(`/api/student?id=${this.props.id}`,{
+    //         method: 'DELETE',
+    //         mode: 'cors',
+    //         headers: {
+    //             'content-type': 'application/json'
+    //         }
+    //     }).then(res=>res.json()).then(data=>console.log(data)).catch(err=>console.log(err))
+        
+    // }
 
     render(){
         const {id,fName,lName,Std,Addr,brd,phy,eng,maths,sex,fees}= this.props;
@@ -94,12 +107,21 @@ export default class Student extends Component {
                         
                         {/* Delete modal */}
                         <Modal
-                            isOpen={this.state.openDeleteModal}
+                            isOpen={this.state.modalDeleteIsOpen}
                             onRequestClose={this.closeModal}
-                            style={customStylesEdit}
+                            style={customStylesDelete}
                             contentLabel="Edit Modal"
                         >
-                            <h1>Hello</h1>
+                            <div className="panel panel-danger">
+                                <div className="panel-heading"><b>Alert!</b><span className="float-right" style={{cursor:'pointer'}} onClick={this.closeModal}>X</span></div>
+                                <hr/>
+                                <div className="panel-body">Are You Sure You Want To Delete?</div>
+                                <hr/>
+                                <div className="panel-footer align-items-right">
+                                    <div className="btn btn-light float-right ml-3" onClick={this.closeModal}>Cancel</div>
+                                    <div className="btn btn-danger float-right" onClick={e=>this.props.deleteStudent(this.props.id, e)}>Confirm</div>
+                                </div>
+                            </div>
                         </Modal>
                     </div>
                 }

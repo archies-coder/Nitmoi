@@ -47,7 +47,7 @@ export class AuthProvider extends Component{
     selectForEdit = (obj)=>{
         this.setState({selectedForEdit: obj})
     }
-    
+
     render(){
         return (
             <AuthContext.Provider value={{
