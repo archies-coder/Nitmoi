@@ -41,7 +41,7 @@ export class AuthProvider extends Component{
               throw new Error("Failed!");
             }
             return res;
-          }).then(msg=>console.log(msg))
+          })
     }
 
     selectForEdit = (obj)=>{

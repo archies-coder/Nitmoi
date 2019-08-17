@@ -12,24 +12,13 @@ class AppLogin extends Component {
       currentUser: {},
       token: '',
       userId: '',
-      redirect: false
-    }
-  }
-
-  setRedirect = () => {
-    this.setState({
-      redirect: true
-    })
-  }
-
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Link to='/home' />
+      loading: false
     }
   }
 
   handleLogin = (context, e) => {
     e.preventDefault();
+    this.setState({loading: true})
     const email = this.emailEl.current.value;
     const password = this.passwordEl.current.value;
     if (email.trim().length === 0 || password.trim().length === 0) {
@@ -52,6 +41,7 @@ class AppLogin extends Component {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error("Failed!");
         }
+        this.setState({loading: false})
         return res.json();
       })
       .then(resData => {
@@ -62,86 +52,88 @@ class AppLogin extends Component {
         })
         localStorage.setItem('token', resData.sid)
         context.handleLogin(resData.userId)
+        this.props.history.push('/')
       })
       .catch(err=>{
         console.log(err)
         this.passwordEl.current.value=''
       });
-
-      return <Redirect to='/home'/>
   };
   
   render() {
     return (
       <AuthContext.Consumer>
-        {context=>(
-        <div className="login-container">
-          <div className="d-flex justify-content-center h-100">
-            <div className="card login-card">
-              <div className="card-header">
-                <h3 className="float-left">Sign In</h3>
-                <div className="d-flex justify-content-end social_icon">
-                  <span>
-                    <i className="fab fa-facebook-square" />
-                  </span>
-                  <span>
-                    <i className="fab fa-google-plus-square" />
-                  </span>
-                  <span>
-                    <i className="fab fa-twitter-square" />
-                  </span>
+        { context=>
+          {return !this.state.loading ? (<div className="login-container">
+            <div className="d-flex justify-content-center h-100">
+              <div className="card login-card">
+                <div className="card-header">
+                  <h3 className="float-left">Sign In</h3>
+                  <div className="d-flex justify-content-end social_icon">
+                    <span>
+                      <i className="fab fa-facebook-square" />
+                    </span>
+                    <span>
+                      <i className="fab fa-google-plus-square" />
+                    </span>
+                    <span>
+                      <i className="fab fa-twitter-square" />
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className="card-body">
-                <form onSubmit={e=> this.handleLogin(context, e)}>
-                  <div className="input-group form-group">
-                    <div className="input-group-prepend">
-                      <span className="input-group-text">
-                        <i className="fas fa-at" />
-                      </span>
+                <div className="card-body">
+                  <form onSubmit={e=> this.handleLogin(context, e)}>
+                    <div className="input-group form-group">
+                      <div className="input-group-prepend">
+                        <span className="input-group-text">
+                          <i className="fas fa-at" />
+                        </span>
+                      </div>
+                      <input
+                        type="email"
+                        className="form-control"
+                        placeholder="email"
+                        ref={this.emailEl}
+                      />
                     </div>
-                    <input
-                      type="email"
-                      className="form-control"
-                      placeholder="email"
-                      ref={this.emailEl}
-                    />
-                  </div>
-                  <div className="input-group form-group">
-                    <div className="input-group-prepend">
-                      <span className="input-group-text">
-                        <i className="fas fa-key" />
-                      </span>
+                    <div className="input-group form-group">
+                      <div className="input-group-prepend">
+                        <span className="input-group-text">
+                          <i className="fas fa-key" />
+                        </span>
+                      </div>
+                      <input
+                        type="password"
+                        className="form-control"
+                        placeholder="password"
+                        autoComplete="current-password"
+                        ref={this.passwordEl}
+                      />
                     </div>
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="password"
-                      autoComplete="current-password"
-                      ref={this.passwordEl}
-                    />
-                  </div>
-                  <div className="row align-items-center remember">
-                    <input type="checkbox" />
-                    Remember Me
-                  </div>
-                  <div className="form-group">
-                    <button type='submit' className="btn float-right login_btn bg-dark text-white">Login</button>
-                  </div>
-                </form>
-              </div>
-              <div className="card-footer">
-                <div className="d-flex justify-content-center links">
-                  Don't have an account?<Link to="/register">Sign Up</Link>
+                    <div className="row align-items-center remember">
+                      <input type="checkbox" />
+                      Remember Me
+                    </div>
+                    <div className="form-group">
+                      <button type='submit' className="btn float-right login_btn bg-dark text-white">Login</button>
+                    </div>
+                  </form>
                 </div>
-                <div className="d-flex justify-content-center">
-                  <a href='google.com'>Forgot your password?</a>
+                <div className="card-footer">
+                  <div className="d-flex justify-content-center links">
+                    Don't have an account?<Link to="/register">Sign Up</Link>
+                  </div>
+                  <div className="d-flex justify-content-center">
+                    <a href='google.com'>Forgot your password?</a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        )}
+          </div>) :
+          (<div className='container text-align-center'>
+            Loading
+          </div>)}
+        }
       </AuthContext.Consumer>
     );
   }

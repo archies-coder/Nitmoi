@@ -26,7 +26,8 @@ export default class AddStudent extends Component {
         this.sexEl = React.createRef();this.feesEl = React.createRef();
         this.state={
             modalIsOpen: false,
-            date: new Date()
+            date: new Date(),
+            addedStudent: {}
         }
     }
 
@@ -43,7 +44,7 @@ export default class AddStudent extends Component {
         this.setState({modalIsOpen: false});
     }
 
-    handleLogin = (e) => {
+    handleAddForm = (e) => {
         e.preventDefault();
         const fName = this.firstNameEl.current.value;
         const lName = this.lastNameEl.current.value;
@@ -85,13 +86,10 @@ export default class AddStudent extends Component {
             return res.json();
         })
         .then(resData => {
-            console.log(resData);
+            this.setState({addedStudent: resData})
+            this.props.history.push('/list')
         })
-    }
-
-    handleSubmit = (e)=> {
-        e.preventDefault();
-        alert("ADDED SUCCESSFULLY")
+        .catch(err=>console.log(err))
     }
 
     render() {
@@ -100,7 +98,7 @@ export default class AddStudent extends Component {
                 <AuthContext.Consumer>
                     {context =>(
                         <div className="d-lg-flex border justify-content-center p-3 hello">
-                            <form onSubmit={this.handleLogin}>
+                            <form onSubmit={this.handleAddForm}>
                                 <div className="row py-3">
                                     <div className="col">
                                     <input type="text" ref={this.firstNameEl} className="form-control" placeholder="First name" required/>
@@ -158,7 +156,7 @@ export default class AddStudent extends Component {
                                     <label htmlFor="InputFees">Fees Paid</label>
                                     <input type="text" className="form-control" ref={this.feesEl} id="InputFees" placeholder="Amout Of Fees Paid"/>
                                 </div>
-                                <button type="submit" className="btn btn-primary" onSubmit={this.handleSubmit}>Submit</button>
+                                <button type="submit" className="btn btn-primary">Submit</button>
                             </form>
                             <Modal
                                 isOpen={this.state.modalIsOpen}

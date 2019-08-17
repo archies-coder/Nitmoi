@@ -44,7 +44,6 @@ export default class Student extends Component {
         this.setState({modalDetailsIsOpen: true});
     }
 
-
     openDeleteModal = ()=> {
         this.setState({modalDeleteIsOpen: true});
     }
@@ -52,18 +51,6 @@ export default class Student extends Component {
     closeModal= ()=> {
         this.setState({modalDetailsIsOpen: false, modalDeleteIsOpen: false});
     }
-
-    // deleteStudent=(e)=>{
-    //     e.preventDefault();
-    //     fetch(`/api/student?id=${this.props.id}`,{
-    //         method: 'DELETE',
-    //         mode: 'cors',
-    //         headers: {
-    //             'content-type': 'application/json'
-    //         }
-    //     }).then(res=>res.json()).then(data=>console.log(data)).catch(err=>console.log(err))
-        
-    // }
 
     render(){
         const {id,fName,lName,Std,Addr,brd,phy,eng,maths,sex,fees}= this.props;
@@ -73,14 +60,14 @@ export default class Student extends Component {
                     <div className="card stud-card">
                         <h2 className="card-title pt-3"><b style={{color:"aliceblue",}}>{fName.toUpperCase()} {lName.toUpperCase()}</b></h2>
                         <h2 className="card-text">Standard {Std}</h2>
-                        <button className='btn border-0 bg-dark text-monospace text-white view-details-link mt-3' onClick={this.openModal}>
+                        <button className='btn border-0 bg-dark text-monospace text-white view-details-link mt-3' title='Details' onClick={this.openModal}>
                             Details
                         </button>
                         <div>
                             <Link to='/edit'>
-                                <i className="fas fa-user-edit float-right mb-2 mr-2 edit-btn" onClick={e=>context.studentEdit(this.props)}/>
+                                <i className="fas fa-user-edit float-right mb-2 mr-2 edit-btn" title='Edit' onClick={e=>context.studentEdit(this.props)}/>
                             </Link>
-                            <i className="fas fa-trash-alt float-right mb-2 mr-3 delete-btn" onClick={this.openDeleteModal}/>
+                            <i className="fas fa-trash-alt float-right mb-2 mr-3 delete-btn" title='Delete' onClick={this.openDeleteModal}/>
                         </div>
                         
                         <Modal
@@ -119,7 +106,7 @@ export default class Student extends Component {
                                 <hr/>
                                 <div className="panel-footer align-items-right">
                                     <div className="btn btn-light float-right ml-3" onClick={this.closeModal}>Cancel</div>
-                                    <div className="btn btn-danger float-right" onClick={e=>this.props.deleteStudent(this.props.id, e)}>Confirm</div>
+                                    <div className="btn btn-danger float-right" onClick={e=>this.props.deleteStudent(id, e)}>Confirm</div>
                                 </div>
                             </div>
                         </Modal>
