@@ -27,9 +27,7 @@ app.options('*', cors());
 
 if(process.env.NODE_ENV==='production'){
   app.use(express.static(path.join(__dirname, 'client/build')));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname+'/client/build/index.html'));
-  });
+  
 }
 
 if(process.env.NODE_ENV === 'production') {
@@ -59,6 +57,12 @@ const attendanceRoute = require('./app/Routes/attendance')
 app.use(attendanceRoute);
 const userRoute = require('./app/Routes/user')
 app.use(userRoute);
+
+if(process.env.NODE_ENV==='production'){
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+  });
+}
 
 
 //Mongo
