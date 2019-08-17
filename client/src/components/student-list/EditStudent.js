@@ -72,8 +72,8 @@ const EditStudent = (props)=> {
         <React.Fragment>
             <div>
                 <Link to='/list'>
-                    <button className='btn btn-primary float-left mx-3 my-3' title='back to list'>
-                        <i className="fas fa-arrow-left" style={{fontSize:'15px',marginRight:'10px'}}></i>Back To List
+                    <button className='btn btn-link float-left mx-3 my-3' title='back to list'>
+                        <i className="fas fa-arrow-left" style={{fontSize:'18px',marginRight:'10px'}}></i>Back To List
                     </button>
                 </Link>
             </div>

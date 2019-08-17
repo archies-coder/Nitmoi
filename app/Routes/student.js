@@ -10,10 +10,10 @@ const cors = require('cors')
 
 //Get Students by standard
 router.get('/api/student/:std', (req, res, next) => {
-    // if(!req.session.userId){
-    //     res.send('not authenticated')
-    //     return next();
-    // }
+    if(!req.session.userId){
+        res.send('not authenticated')
+        return next();
+    }
     studentModel.find({
         standard: req.params.std
     })
@@ -23,10 +23,10 @@ router.get('/api/student/:std', (req, res, next) => {
 
 //Get Students by standard
 router.get('/api/students', (req, res, next) => {
-    // if(!req.session.userId){
-    //     res.status(400).send('not authenticated')
-    //     return next();
-    // }
+    if(!req.session.userId){
+        res.status(400).send('not authenticated')
+        return next();
+    }
     studentModel.find()
         .then(doc => res.json(doc))
         .catch(err => res.status(500).json(err));
@@ -34,10 +34,10 @@ router.get('/api/students', (req, res, next) => {
 
 //Get Students by First Name
 router.get('/api/student', (req, res, next) => {
-    // if(!req.session.userId){
-    //     res.send('not authenticated')
-    //     return next();
-    // }
+    if(!req.session.userId){
+        res.send('not authenticated')
+        return next();
+    }
     studentModel.find({
         firstName: req.query.fname
     })
@@ -47,10 +47,10 @@ router.get('/api/student', (req, res, next) => {
 
 //Add Student
 router.post('/api/student', (req, res, next) => {
-    // if(!req.session.userId){
-    //     res.status(401).send('not authenticated')
-    //     return next();
-    // }
+    if(!req.session.userId){
+        res.status(401).send('not authenticated')
+        return next();
+    }
     if(!req.body){
         return res.status(400).send('req body missing');
     }
@@ -73,10 +73,10 @@ router.post('/api/student', (req, res, next) => {
 
 //Update
 router.put('/api/student', (req, res, next) => {
-    // if(!req.session.userId){
-    //     res.send('not authenticated')
-    //     return next();
-    // }
+    if(!req.session.userId){
+        res.send('not authenticated')
+        return next();
+    }
     if(!req.query.id) {
         return res.status(400).send('Missing URL parameter: fname')
     }
@@ -91,10 +91,10 @@ router.put('/api/student', (req, res, next) => {
 
 // DELETE
 router.delete('/api/student', (req, res, next) => {
-    // if(!req.session.userId){
-    //     res.send('not authenticated')
-    //     return next();
-    // }
+    if(!req.session.userId){
+        res.send('not authenticated')
+        return next();
+    }
     if(!req.query.id) {
       return res.status(400).send('Missing URL parameter: fname')
     }

@@ -34,7 +34,8 @@ const customStyles = {
         right                 : 'auto',
         bottom                : 'auto',
         marginRight           : '-50%',
-        transform             : 'translate(-50%, -50%)'
+        transform             : 'translate(-50%, -50%)',
+        width                 : '500px'
       }
   }
 
@@ -152,7 +153,7 @@ export default class AddAttendance extends Component {
                 presentStuds: data.present
             })
         })
-        .catch(err=>{this.setState({errors: [...this.state.errors, JSON.stringify(err)]})
+        .catch(err=>{this.setState({errors: [...this.state.errors,err]})
         console.log(err)
         this.openAlertModal()    
     })
@@ -160,19 +161,17 @@ export default class AddAttendance extends Component {
 
     render() {
         const listItem = this.state.students.map(stud => (
-                <div >
                     <Checkbox key={stud._id} stud={stud} handleChange={this.handleCheckboxChange} clearList={this.clearListItem}/>
-                </div>
         ))
         return (
             <div style={customStylesContainer}>
                 <button type="submit" className="btn btn-info mb-3" onClick={this.toggleView}>View Attendance</button><br/>
-                <button type="submit" className="btn btn-info" onClick={this.toggleAdd}>Mark Attendance</button>
+                <button type="submit" className="btn btn-info mb-3" onClick={this.toggleAdd}>Mark Attendance</button>
                 {/* Add Attendance */}
                 {this.state.addVisible && <form onSubmit={this.handleFormSubmit}>
                     <div className="form-group">
-                        <label htmlFor="InputDate"><h4>Pick Date</h4></label>
-                        <i className="far fa-calendar-alt ml-2 mb-2 btn-lg date-picker" id="InputDate"onClick={this.openModal}/>
+                        <label htmlFor="InputDate"><h5>Pick Date</h5></label>
+                        <i className="far fa-calendar-alt ml-2 mb-2 date-picker" id="InputDate"onClick={this.openModal}/>
                         <h4 className='selected-date'>{this.state.date.toDateString()}</h4>
                         <div>
                             <ul style={{listStyle: 'none'}}><li>{listItem}</li></ul>
@@ -182,14 +181,14 @@ export default class AddAttendance extends Component {
                 </form>}
                 {/* View Attendance */}
                 {this.state.viewVisible && 
-                    <div style={{textAlign:'center'}}>
+                    (<div style={{textAlign:'center'}}>
                         <MyCalendar
                             className='calendar'
                             onChange={this.onChangeView}
                             value={this.state.viewDate}
                         />
                         <br/>
-                        <h4>Selected Date {this.state.viewDate.toDateString()}</h4>
+                        <h4 className='selected-date'>Selected Date {this.state.viewDate.toDateString()}</h4>
                         <button type="submit" className="btn btn-primary" onClick={this.getAttendanceByDate}>GET</button>
                         {this.state.errors.length===0 ? this.state.presentStuds.map(stud=><Student key={stud._id} 
                                     fName={stud.firstName} 
@@ -203,7 +202,7 @@ export default class AddAttendance extends Component {
                                     sex={stud.sex}
                                     fees={stud.feesPaid}
                                     />): this.openAlertModal}
-                    </div>
+                    </div>)
                 }
                 <Modal
                     isOpen={this.state.modalIsOpen}
@@ -221,10 +220,18 @@ export default class AddAttendance extends Component {
                     onRequestClose={this.closeModal}
                     style={alertModalStyles}
                     contentLabel="Alert Modal"
+                    ariaHideApp={false}
                 >
-                  {this.state.errors.map(err=>{
-                      console.log(err)
-                  })}
+                  {this.state.errors!==0 &&
+                    <div className="panel panel-danger">
+                        <div className='panel-heading'>
+                            Error
+                            <span className="float-right" style={{cursor:'pointer'}} onClick={this.closeModal}>X</span>
+                        </div><hr/>
+                        <div className="panel-body"><p>Something Went Wrong!!</p></div><hr/>
+                        <div className="panel-footer"><span className='float-right mr-2 text-danger'>{this.state.errors.length} Errors</span></div>
+                    </div>
+                    }
                 </Modal>
             </div>
         )
@@ -235,7 +242,7 @@ class Checkbox extends Component {
     constructor(props){
         super(props);
         this.state = {
-            checked: false
+            checked: false 
         }
     }
     
@@ -251,10 +258,10 @@ class Checkbox extends Component {
     }
 
     render(){
-        const text = this.state.checked ? <h3 style={{color: 'green'}}>{this.props.stud.firstName}</h3> : <h3 style={{color:'red'}}>{this.props.stud.firstName}</h3>;
+        const text = this.state.checked ? <h3 style={{color: 'green'}} className='list-names'>{this.props.stud.firstName}</h3> : <h3 style={{color:'red'}} className='list-names'>{this.props.stud.firstName}</h3>;
         return (
             <label className="checkbox-container">
-                <input onChange={this.handleClick} checked={this.state.checked} value={text} type="checkbox"/>{text}
+                <input onChange={this.handleClick} checked={this.state.checked} value={text} type="checkbox"/><h5 className='list-names'>{text}</h5>
                 <span className="checkmark"></span>
             </label>
         )

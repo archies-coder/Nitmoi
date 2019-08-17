@@ -56,7 +56,7 @@ class AppLogin extends Component {
       })
       .catch(err=>{
         console.log(err)
-        this.passwordEl.current.value=''
+        this.setState({loading: false})
       });
   };
   

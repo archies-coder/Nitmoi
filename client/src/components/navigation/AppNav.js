@@ -11,8 +11,8 @@ export default class Navbar extends Component {
             <Link to='/'>
               <span className='navbar-brand'>NitMoi</span>
             </Link>
-            {/* {context.state.isAuth && <Redirect from='/login' to='/'></Redirect>}
-            {!context.state.isAuth && <Redirect from='/' to='/login'></Redirect>} */}
+            {context.state.isAuth && <Redirect from='/login' to='/'></Redirect>}
+            {!context.state.isAuth && <Redirect from='/' to='/login'></Redirect>}
 
             {context.state.isAuth && <ul className="navbar-nav ml-5 align-items-center">
               <li className="nav-item  students-link">
@@ -31,7 +31,7 @@ export default class Navbar extends Component {
                 </Link>
               </li>
             </ul>}
-              <span className="navbar-nav pull-right">
+              <span className="navbar-nav ml-auto pull-right">
                   {!context.state.isAuth&&<span className="nav-item students-link pull-right">
                     <Link to='/login'
                     className='nav-link'>
