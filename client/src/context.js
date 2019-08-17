@@ -12,10 +12,10 @@ export class AuthProvider extends Component{
     }
 
     componentDidMount=()=>{
-        if(!document.cookie){
-            localStorage.clear()
-            this.handleLogout()
-        }
+        // if(!document.cookie){
+        //     localStorage.clear()
+        //     this.handleLogout()
+        // }
         if(localStorage.token){
             this.setState({isAuth: true})
         }
