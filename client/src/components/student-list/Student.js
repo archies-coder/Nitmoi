@@ -4,8 +4,6 @@ import Modal from 'react-modal';
 import {Link} from 'react-router-dom';
 import {AuthContext} from '../../context';
 
-
-
 const customStyles = {
     content : {
       top                   : '50%',
@@ -58,16 +56,16 @@ export default class Student extends Component {
             <AuthContext.Consumer>
                 {context=>
                     <div className="card stud-card">
-                        <h2 className="card-title pt-3"><b style={{color:"aliceblue",}}>{fName.toUpperCase()} {lName.toUpperCase()}</b></h2>
-                        <h2 className="card-text">Standard {Std}</h2>
-                        <button className='btn border-0 bg-dark text-monospace text-white view-details-link mt-3' title='Details' onClick={this.openModal}>
+                        <h4 className="card-title pt-2"><b style={{color:"aliceblue",}}>{fName.toUpperCase()} {lName.toUpperCase()}</b></h4>
+                        <h5 className="card-text">Standard {Std}</h5>
+                        <button className='btn border-0 bg-dark text-monospace text-white view-details-link' title='Details' onClick={this.openModal}>
                             Details
                         </button>
-                        <div>
+                        <div className='mt-2'>
                             <Link to='/edit'>
-                                <i className="fas fa-user-edit float-right mb-2 mr-2 edit-btn" title='Edit' onClick={e=>context.studentEdit(this.props)}/>
+                                <i className="fas fa-user-edit float-right mb-1 mr-1 edit-btn" title='Edit' onClick={e=>context.studentEdit(this.props)}/>
                             </Link>
-                            <i className="fas fa-trash-alt float-right mb-2 mr-3 delete-btn" title='Delete' onClick={this.openDeleteModal}/>
+                            <i className="fas fa-trash-alt float-right mb-1 mr-3 delete-btn" title='Delete' onClick={this.openDeleteModal}/>
                         </div>
                         
                         <Modal
@@ -78,17 +76,17 @@ export default class Student extends Component {
                         >
                             <div className="container">
                                 <header>
-                                    <span style={{font:'bold 25px/150% Helvetica',letterSpacing:'2px',textAlign:'center',color:'#8989dc'}}>DETAILS</span>    
+                                    <span style={{font:'bold 20px/150% Helvetica',letterSpacing:'2px',textAlign:'center',color:'#8989dc'}}>Details</span>    
                                     <span className="float-right close-btn" onClick={this.closeModal}>x</span>
                                 </header>
                                 <hr/>
-                                <h4>Address : {Addr}</h4>
-                                <h4>Sex : {sex}</h4>
-                                <h4>Board : {brd}</h4>
-                                <h4>Physics Marks : {phy}</h4>
-                                <h4>English Marks : {eng}</h4>
-                                <h4>Maths Marks : {maths}</h4>
-                                <h4>Fees Paid : {fees}</h4>
+                                <h5>Address : {Addr}</h5>
+                                <h5>Sex : {sex}</h5>
+                                <h5>Board : {brd}</h5>
+                                <h5>Physics Marks : {phy}</h5>
+                                <h5>English Marks : {eng}</h5>
+                                <h5>Maths Marks : {maths}</h5>
+                                <h5>Fees Paid : {fees}</h5>
                             </div>
                         </Modal>
                         

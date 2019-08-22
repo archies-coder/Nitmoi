@@ -1,17 +1,16 @@
 .stud-card {
     background-color: #ababe6 !important;
-    border: 0;
-    font: 16px/150% Ebrima !important
+    font: 16px/100% Ebrima !important
 }
 
 .stud-card:hover {
-    background-color: #b5b5ec !important;
+    background-color: #9292e2 !important;
 }
 
 .edit-btn, .delete-btn {
     color: #555555;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .delete-btn:hover, .edit-btn:hover {
@@ -20,7 +19,7 @@
 
 .close-btn {
     top: 0;
-    font-size: 25px;
+    font-size: 20px;
     cursor: pointer;
 }
 
@@ -29,6 +28,7 @@
 }
 
 .view-details-link {
-    width: 120px;
+    width: 100px;
+    text-align: center;
     margin: auto;
 }

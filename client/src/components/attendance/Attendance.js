@@ -4,7 +4,6 @@ import MyCalendar from '../reusables/Calendar';
 import './attendance.css'
 import Student from '../student-list/Student';
 
-
 const customStylesContainer = {
     'fontSize'        : '18px',
     'border'           : '1px solid black',
@@ -38,6 +37,17 @@ const customStyles = {
         width                 : '500px'
       }
   }
+  const successModalStyles = {
+      content:{
+        top                   : '50%',
+        left                  : '50%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        marginRight           : '-50%',
+        transform             : 'translate(-50%, -50%)',
+        width                 : '500px'
+      }
+  }
 
 
 export default class AddAttendance extends Component {
@@ -54,7 +64,8 @@ export default class AddAttendance extends Component {
             presentStuds: [],
             errors: [],
             modalIsOpen: false,
-            alertModalIsOpen: false
+            alertModalIsOpen: false,
+            successModalIsOpen: false
         }
     }
 
@@ -72,7 +83,7 @@ export default class AddAttendance extends Component {
               }
               return res.json()
         }).then(resdata => {         
-            this.setState({students:resdata})
+            this.setState({students:resdata, errors: []})
         }).catch(err => console.log(err)
         )
     }
@@ -101,7 +112,9 @@ export default class AddAttendance extends Component {
                 'content-type': 'application/json'
             },
             body: JSON.stringify(attendanceRequest)
-        }).then(res=>res.json()).then(data=>console.log(data)).catch(err=>console.log(err))
+        }).then(res=>res.json())
+        .then(data=>this.openSuccessModal())
+        .catch(err=>console.log(err))
     }
 
     onChange = date => {
@@ -118,11 +131,15 @@ export default class AddAttendance extends Component {
     };
 
     closeModal= ()=> {
-        this.setState({modalIsOpen: false, alertModalIsOpen: false});
+        this.setState({modalIsOpen: false, alertModalIsOpen: false, successModalIsOpen: false});
     };
 
     openAlertModal=()=>{
         this.setState({alertModalIsOpen:true})
+    }
+
+    openSuccessModal=()=>{
+        this.setState({successModalIsOpen:true})
     }
 
     toggleView=()=>{
@@ -150,7 +167,8 @@ export default class AddAttendance extends Component {
             }
         }).then(res=> res.json()).then(data=>{
             this.setState({
-                presentStuds: data.present
+                presentStuds: data.present,
+                errors: []
             })
         })
         .catch(err=>{this.setState({errors: [...this.state.errors,err]})
@@ -161,7 +179,7 @@ export default class AddAttendance extends Component {
 
     render() {
         const listItem = this.state.students.map(stud => (
-                    <Checkbox key={stud._id} stud={stud} handleChange={this.handleCheckboxChange} clearList={this.clearListItem}/>
+            <Checkbox key={stud._id} stud={stud} handleChange={this.handleCheckboxChange} clearList={this.clearListItem}/>
         ))
         return (
             <div style={customStylesContainer}>
@@ -176,7 +194,7 @@ export default class AddAttendance extends Component {
                         <div>
                             <ul style={{listStyle: 'none'}}><li>{listItem}</li></ul>
                         </div>
-                        <button type='submit' className="btn btn-success">Save</button>
+                        <button type='button' className="btn btn-success" onClick={this.toggleAdd}>Save</button>
                     </div>
                 </form>}
                 {/* View Attendance */}
@@ -189,8 +207,8 @@ export default class AddAttendance extends Component {
                         />
                         <br/>
                         <h4 className='selected-date'>Selected Date {this.state.viewDate.toDateString()}</h4>
-                        <button type="submit" className="btn btn-primary" onClick={this.getAttendanceByDate}>GET</button>
-                        {this.state.errors.length===0 ? this.state.presentStuds.map(stud=><Student key={stud._id} 
+                        <button type="submit" className="btn btn-primary" onClick={this.getAttendanceByDate}>Find Attendance</button>
+                        {this.state.errors.length===0 && this.state.presentStuds.map(stud=><div style={{margin:'20px auto'}}><Student key={stud._id} 
                                     fName={stud.firstName} 
                                     lName={stud.lastName} 
                                     Std={stud.standard}
@@ -201,9 +219,12 @@ export default class AddAttendance extends Component {
                                     maths={stud.lastYearmarks.maths}
                                     sex={stud.sex}
                                     fees={stud.feesPaid}
-                                    />): this.openAlertModal}
+                                    />
+                            </div>
+                            )}
                     </div>)
                 }
+                {/* Calendar Modal */}
                 <Modal
                     isOpen={this.state.modalIsOpen}
                     onRequestClose={this.closeModal}
@@ -215,6 +236,7 @@ export default class AddAttendance extends Component {
                     value={this.state.date}
                     />
                 </Modal>
+                {/* Alert Modal*/}
                 <Modal
                     isOpen={this.state.alertModalIsOpen}
                     onRequestClose={this.closeModal}
@@ -233,6 +255,23 @@ export default class AddAttendance extends Component {
                     </div>
                     }
                 </Modal>
+                {/* Modal Success */}
+                <Modal
+                    isOpen={this.state.successModalIsOpen}
+                    onRequestClose={this.closeModal}
+                    style={successModalStyles}
+                    contentLabel="Success Modal"
+                    ariaHideApp={false}
+                >
+                    <div className="panel panel-success">
+                        <div className='panel-heading'>
+                            Success
+                            <span className="float-right" style={{cursor:'pointer'}} onClick={this.closeModal}>X</span>
+                        </div><hr/>
+                        <div className="panel-body"><p>SuccessFully Marked Attendance!!</p></div><hr/>
+                        <div className="panel-footer"><button className="btn btn-success">Ok</button></div>
+                    </div>
+                </Modal>
             </div>
         )
     }
@@ -242,7 +281,7 @@ class Checkbox extends Component {
     constructor(props){
         super(props);
         this.state = {
-            checked: false 
+            checked: true 
         }
     }
     
@@ -261,7 +300,7 @@ class Checkbox extends Component {
         const text = this.state.checked ? <h3 style={{color: 'green'}} className='list-names'>{this.props.stud.firstName}</h3> : <h3 style={{color:'red'}} className='list-names'>{this.props.stud.firstName}</h3>;
         return (
             <label className="checkbox-container">
-                <input onChange={this.handleClick} checked={this.state.checked} value={text} type="checkbox"/><h5 className='list-names'>{text}</h5>
+                <input onChange={this.handleClick} checked={this.state.checked} value={text} type="checkbox"/>{text}
                 <span className="checkmark"></span>
             </label>
         )

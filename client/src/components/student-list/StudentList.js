@@ -3,8 +3,8 @@ import Student from './Student';
 
 const gridStyle = {
     display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr 1fr",
-    gridGap: "10px",
+    gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+    gridGap: "8px",
     width: "100%",
     textAlign: "center",
     padding: "10px"

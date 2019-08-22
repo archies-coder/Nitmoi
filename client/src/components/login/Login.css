@@ -24,12 +24,13 @@ html,body{
 .social_icon span{
     font-size: 60px;
     margin-left: 10px;
-    color: #FFC312;
+    color: #292b2c !important;
 }
 
 .social_icon span:hover{
     color: white;
     cursor: pointer;
+    color: #464646 !important;
 }
 
 .card-header h3{
@@ -44,7 +45,7 @@ html,body{
 
 .input-group-prepend span{
     width: 50px;
-    background-color: #FFC312;
+    background-color: rgba(255, 196, 18, 0.911);
     color: black;
 }
 

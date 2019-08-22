@@ -57,6 +57,8 @@ const attendanceRoute = require('./app/Routes/attendance')
 app.use(attendanceRoute);
 const userRoute = require('./app/Routes/user')
 app.use(userRoute);
+const feeRoute = require('./app/Routes/fees')
+app.use(feeRoute);
 
 if(process.env.NODE_ENV==='production'){
   app.get('*', (req, res) => {
@@ -64,10 +66,9 @@ if(process.env.NODE_ENV==='production'){
   });
 }
 
-
 //Mongo
 mongoose
-  .connect(dbURI, { useNewUrlParser: true, useCreateIndex: true })
+  .connect(dbURI, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false })
   .then(() => {
     console.log("connected ");
   })

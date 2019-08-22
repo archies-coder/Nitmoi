@@ -65,9 +65,9 @@ const EditStudent = (props)=> {
             },
             body: JSON.stringify(updateStudentData)
         }).then(res=>res.json())
-        .then(resData=>console.log(resData)).catch(err=>console.log(err))
+        .then(resData=>props.history.push('/list')).catch(err=>console.log(err))
     }
-
+    const {id,fName,lName,Std,Addr,brd,phy,eng,maths,sex,fees} = studentContext.state.selectedForEdit;
     return (
         <React.Fragment>
             <div>
@@ -81,19 +81,19 @@ const EditStudent = (props)=> {
                 <form onSubmit={handleUpdateSubmit}>
                     <div className="row py-3">
                         <div className="col">
-                        <input type="text" ref={firstNameEl} className="form-control" placeholder="First name" required/>
+                        <input type="text" ref={firstNameEl} defaultValue ={fName} className="form-control" placeholder="First name" required/>
                         </div>
                         <div className="col">
-                        <input type="text" ref={lastNameEl} className="form-control" placeholder="Last name" required/>
+                        <input type="text" ref={lastNameEl} defaultValue ={lName} className="form-control" placeholder="Last name" required/>
                         </div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="InputAddress">Address</label>
-                        <input type="text" ref={addressEl} className="form-control" id="InputAddress" placeholder="Address" required/>
+                        <input type="text" ref={addressEl} defaultValue ={Addr} className="form-control" id="InputAddress" placeholder="Address" required/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="Inputstandard">Standard</label>
-                        <select className="form-control form-control-sm" id="Inputstandard" ref={standardEl}>
+                        <select className="form-control form-control-sm" id="Inputstandard" defaultValue ={Std} ref={standardEl}>
                             <option>5</option>
                             <option>6</option>
                             <option>7</option>
@@ -104,7 +104,7 @@ const EditStudent = (props)=> {
                     </div>
                     <div className="form-group">
                         <label htmlFor="InputBoard">Board</label>
-                        <select className="form-control form-control-sm" id="InputBoard" ref={boardEl}>
+                        <select className="form-control form-control-sm" id="InputBoard" defaultValue ={brd} ref={boardEl}>
                             <option>MH</option>
                             <option>ICSC</option>
                             <option>CBSE</option>
@@ -119,22 +119,22 @@ const EditStudent = (props)=> {
                     </div>
                     <div className="form-group">
                         <label htmlFor="InputPhysics">Physics Marks</label>
-                        <input type="text" className="form-control" ref={physicsEl} id="InputPhysics" placeholder="Physics" required/>
+                        <input type="text" className="form-control" ref={physicsEl} defaultValue ={phy} id="InputPhysics" placeholder="Physics" required/>
                         <label htmlFor="InputEnglish">English Marks</label>
-                        <input type="text" className="form-control" ref={englishEl} id="InputEnglish" placeholder="English" required/>
+                        <input type="text" className="form-control" ref={englishEl} defaultValue ={eng} id="InputEnglish" placeholder="English" required/>
                         <label htmlFor="InputMaths">Maths Marks</label>
-                        <input type="text" className="form-control" ref={mathsEl} id="InputMaths" placeholder="Maths" required/>
+                        <input type="text" className="form-control" ref={mathsEl} defaultValue ={maths} id="InputMaths" placeholder="Maths" required/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="InputSex">Sex</label>
-                        <select className="form-control form-control-sm" id="InputSex" ref={sexEl}>
+                        <select className="form-control form-control-sm" id="InputSex" defaultValue ={sex} ref={sexEl}>
                             <option>Male</option>
                             <option>Female</option>
                         </select>
                     </div>
                     <div className="form-group">
                         <label htmlFor="InputFees">Fees Paid</label>
-                        <input type="text" className="form-control" ref={feesEl} id="InputFees" placeholder="Amout Of Fees Paid"/>
+                        <input type="text" className="form-control" ref={feesEl} defaultValue ={fees} id="InputFees" placeholder="Amout Of Fees Paid"/>
                     </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </form>

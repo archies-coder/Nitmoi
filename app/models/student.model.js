@@ -22,11 +22,21 @@ const StudentSchema = new mongoose.Schema({
       maths: Number
     },
     sex: String,
-    feesPaid: Number
+    fees: {
+      total: Number,
+      installments: [{
+          date: {
+              type: Date,
+          },
+          amount: Number
+      }], 
+    }
   });
-  
-  const Student = mongoose.model('student', StudentSchema);
-  module.exports = {
-    StudentSchema,
-    Student
-  }
+
+
+
+const Student = mongoose.model('student', StudentSchema);
+module.exports = {
+  StudentSchema,
+  Student
+}

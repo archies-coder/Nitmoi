@@ -71,7 +71,7 @@ class AppLogin extends Component {
                   <h3 className="float-left">Sign In</h3>
                   <div className="d-flex justify-content-end social_icon">
                     <span>
-                      <i className="fab fa-facebook-square" />
+                      <i className="fab fa-facebook-square dark" />
                     </span>
                     <span>
                       <i className="fab fa-google-plus-square" />

@@ -4,10 +4,10 @@ const AttendanceModel = require('../models/attendance.model')
 
 //GET
 router.get('/api/attendance/',(req, res,next)=>{
-    if(!req.session.userId){
-        res.send('not authenticated')
-        return next();
-    }
+    // if(!req.session.userId){
+    //     res.send('not authenticated')
+    //     return next();
+    // }
     if(!req.query.date){
         res.send('Please provide date!')
         return next()

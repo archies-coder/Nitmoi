@@ -12,10 +12,9 @@ export class AuthProvider extends Component{
     }
 
     componentDidMount=()=>{
-        // if(!document.cookie){
-        //     localStorage.clear()
-        //     this.handleLogout()
-        // }
+        if(!document.cookie){
+            localStorage.clear()
+        }
         if(localStorage.token){
             this.setState({isAuth: true})
         }
@@ -27,7 +26,8 @@ export class AuthProvider extends Component{
         }
     }
 
-    handleLogout = ()=>{
+    handleLogout = (e)=>{
+        e.preventDefault();
         this.setState({isAuth:false})
         localStorage.clear()
         fetch('/api/logout',{
