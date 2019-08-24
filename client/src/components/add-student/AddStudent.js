@@ -69,7 +69,9 @@ export default class AddStudent extends Component {
                 "maths":maths
             },
             "sex":sex,
-            "feesPaid":fees
+            "fees":{
+                "total": fees
+            }
         }
         fetch('/api/student',{
             method:'POST',
@@ -87,7 +89,7 @@ export default class AddStudent extends Component {
         })
         .then(resData => {
             this.setState({addedStudent: resData})
-            this.props.history.push('/list')
+            // this.props.history.push('/list')
         })
         .catch(err=>console.log(err))
     }
@@ -153,7 +155,7 @@ export default class AddStudent extends Component {
                                     </select>
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="InputFees">Fees Paid</label>
+                                    <label htmlFor="InputFees">Total Fees</label>
                                     <input type="text" className="form-control" ref={this.feesEl} id="InputFees" placeholder="Amout Of Fees Paid"/>
                                 </div>
                                 <button type="submit" className="btn btn-primary">Submit</button>

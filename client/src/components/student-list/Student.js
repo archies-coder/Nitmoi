@@ -86,7 +86,7 @@ export default class Student extends Component {
                                 <h5>Physics Marks : {phy}</h5>
                                 <h5>English Marks : {eng}</h5>
                                 <h5>Maths Marks : {maths}</h5>
-                                <h5>Fees Paid : {fees}</h5>
+                                <h5>Total Fee : {fees}</h5>
                             </div>
                         </Modal>
                         

@@ -64,15 +64,12 @@ export default class StudentList extends Component {
             }
         }).then(res=>res.json()).then(data=>console.log(data)).catch(err=>console.log(err))
         this.getStudents()
-        
     }
     
     render() {
-       return <div>
-           {
-            //    (localStorage.token) ? (
-            <div style={gridStyle} onLoad={this.getStudents}>
-                {localStorage.token &&this.state.students.sort((a,b)=>{
+       return (
+            <div style={gridStyle}>
+                {this.state.students.sort((a,b)=>{
                         return a.standard - b.standard;
                     }).map(stud => {
                         return <Student key={stud._id} 
@@ -86,16 +83,10 @@ export default class StudentList extends Component {
                                     eng={stud.lastYearmarks.english}
                                     maths={stud.lastYearmarks.maths}
                                     sex={stud.sex}
-                                    fees={stud.feesPaid}
+                                    fees={stud.fees.total}
                                     deleteStudent={this.deleteStudent}
                                     />
                 })}
-            </div>
-            //    ) :
-            //    (
-            //        <h1>Not Authorized</h1>
-            //    )
-           }
-       </div>;
+       </div>);
     }
 }
