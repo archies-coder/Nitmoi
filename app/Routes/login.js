@@ -8,10 +8,12 @@ router.post('/api/login',async (req, res)=>{
     if (!existingUser) {
         console.log("No user with that email");
         res.status(400).send('wrong credentials')
+        return req.next()
     }
     const valid = await bcrypt.compare(req.body.password, existingUser.password);
     if (!valid) {
         res.status(401).send('Wrong pass Bro');
+        return req.next()
     }
         req.session.userId = existingUser.id;
         req.session.user = existingUser;
