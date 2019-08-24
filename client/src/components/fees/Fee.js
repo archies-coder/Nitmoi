@@ -109,7 +109,7 @@ const Fee = () => {
     const remainingFees = ()=>{
         const {total, installments} = selectedStudent.fees;
         let temp = total;
-        installments.map(inst => {temp = temp - inst.amount})
+        installments.map(inst => (temp = temp - inst.amount))
         return <h6>{temp}</h6>
     }
     
@@ -132,7 +132,7 @@ const Fee = () => {
                         <tbody>
                         {
                             students.sort((a,b)=> {return a.standard-b.standard}).map((stud, i)=>(
-                                <tr key={stud.firstName} onClick={e=>selectStudent(stud,e)}>
+                                <tr key={i} onClick={e=>selectStudent(stud,e)}>
                                     <th scope='row'>{i}</th>
                                     <td>{stud.firstName} {stud.lastName}</td>
                                 </tr>

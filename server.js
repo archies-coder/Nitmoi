@@ -18,15 +18,12 @@ app.use(bodypareser.json());
 app.use(cors());
 app.options('*', cors());
 
-
 if(process.env.NODE_ENV==='production'){
   app.use(express.static(path.join(__dirname, 'client/build')));
-  
 }
 
 if(process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1) // trust first proxy
-  sess.cookie.secure = true // serve secure cookies
 }
 
 const options = {
@@ -36,14 +33,11 @@ const options = {
 
 const sess = {
   store: new MongoStore(options),
-  // name: 'SESS_SID',
+  secure: process.env.NODE_ENV==='production',
+  name: 'SESS_SID',
   secret: SECRET,
   resave: false,
   saveUninitialized: false,
-//   cookie: {
-//     maxAge: 1000*60*60*24*7,
-//     // httpOnly: false
-// }
 }
 
 //use sessions for tracking login

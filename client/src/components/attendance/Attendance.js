@@ -209,18 +209,18 @@ export default class AddAttendance extends Component {
                         <br/>
                         <h4 className='selected-date'>Selected Date {this.state.viewDate.toDateString()}</h4>
                         <button type="submit" className="btn btn-primary" onClick={this.getAttendanceByDate}>Find Attendance</button>
-                        {this.state.errors.length===0 && this.state.presentStuds.map(stud=><div style={{margin:'20px auto'}}><Student key={stud._id} 
-                                    fName={stud.firstName} 
-                                    lName={stud.lastName} 
-                                    Std={stud.standard}
-                                    Addr={stud.Address}
-                                    brd={stud.Board}
-                                    phy={stud.lastYearmarks.physics}
-                                    eng={stud.lastYearmarks.english}
-                                    maths={stud.lastYearmarks.maths}
-                                    sex={stud.sex}
-                                    fees={stud.fees.total}
-                                    />
+                        {this.state.errors.length===0 && this.state.presentStuds.map((stud,i)=><div style={{margin:'20px auto'}}><Student key={i} 
+                                fName={stud.firstName} 
+                                lName={stud.lastName} 
+                                Std={stud.standard}
+                                Addr={stud.Address}
+                                brd={stud.Board}
+                                phy={stud.lastYearmarks.physics}
+                                eng={stud.lastYearmarks.english}
+                                maths={stud.lastYearmarks.maths}
+                                sex={stud.sex}
+                                fees={stud.fees.total}
+                                />
                             </div>
                             )}
                     </div>)

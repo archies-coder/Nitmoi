@@ -67,7 +67,7 @@ const EditStudent = (props)=> {
         }).then(res=>res.json())
         .then(resData=>props.history.push('/list')).catch(err=>console.log(err))
     }
-    const {id,fName,lName,Std,Addr,brd,phy,eng,maths,sex,fees} = studentContext.state.selectedForEdit;
+    const {fName,lName,Std,Addr,brd,phy,eng,maths,sex,fees} = studentContext.state.selectedForEdit;
     return (
         <React.Fragment>
             <div>
