@@ -101,6 +101,7 @@ export default class AddAttendance extends Component {
 
     handleFormSubmit=e=>{
         e.preventDefault();
+        console.log(this.state.present)
         const attendanceRequest = {
             "date": this.state.date.toLocaleDateString(),
             "present": this.state.present
@@ -183,8 +184,8 @@ export default class AddAttendance extends Component {
         ))
         return (
             <div style={customStylesContainer}>
-                <button type="submit" className="btn btn-info mb-3" onClick={this.toggleView}>View Attendance</button><br/>
-                <button type="submit" className="btn btn-info mb-3" onClick={this.toggleAdd}>Mark Attendance</button>
+                <button type="submit" className="btn btn-dark mb-3" onClick={this.toggleView}>View Attendance</button><br/>
+                <button type="submit" className="btn btn-dark mb-3" onClick={this.toggleAdd}>Mark Attendance</button>
                 {/* Add Attendance */}
                 {this.state.addVisible && <form onSubmit={this.handleFormSubmit}>
                     <div className="form-group">
@@ -194,7 +195,7 @@ export default class AddAttendance extends Component {
                         <div>
                             <ul style={{listStyle: 'none'}}><li>{listItem}</li></ul>
                         </div>
-                        <button type='button' className="btn btn-success" onClick={this.toggleAdd}>Save</button>
+                        <button type='submit' className="btn btn-success">Save</button>
                     </div>
                 </form>}
                 {/* View Attendance */}
@@ -218,7 +219,7 @@ export default class AddAttendance extends Component {
                                     eng={stud.lastYearmarks.english}
                                     maths={stud.lastYearmarks.maths}
                                     sex={stud.sex}
-                                    fees={stud.feesPaid}
+                                    fees={stud.fees.total}
                                     />
                             </div>
                             )}
@@ -269,7 +270,7 @@ export default class AddAttendance extends Component {
                             <span className="float-right" style={{cursor:'pointer'}} onClick={this.closeModal}>X</span>
                         </div><hr/>
                         <div className="panel-body"><p>SuccessFully Marked Attendance!!</p></div><hr/>
-                        <div className="panel-footer"><button className="btn btn-success">Ok</button></div>
+                        <div className="panel-footer"><button className="btn btn-success" onClick={this.closeModal}>Ok</button></div>
                     </div>
                 </Modal>
             </div>
@@ -281,7 +282,7 @@ class Checkbox extends Component {
     constructor(props){
         super(props);
         this.state = {
-            checked: true 
+            checked: false 
         }
     }
     

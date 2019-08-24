@@ -7,6 +7,7 @@ const bodypareser = require('body-parser');
 const path        = require('path');
 const cors        = require('cors');
 const session     = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 //Express App
 const app = express();
@@ -27,15 +28,22 @@ if(process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1) // trust first proxy
   sess.cookie.secure = true // serve secure cookies
 }
+
+const options = {
+  url: dbURI,
+  ttl: 7*24*60*60
+}
+
 const sess = {
-  name: 'SESS_SID',
+  store: new MongoStore(options),
+  // name: 'SESS_SID',
   secret: SECRET,
   resave: false,
   saveUninitialized: false,
-  cookie: {
-    maxAge: 1000*60*60*24*7,
-    // httpOnly: false
-}
+//   cookie: {
+//     maxAge: 1000*60*60*24*7,
+//     // httpOnly: false
+// }
 }
 
 //use sessions for tracking login
