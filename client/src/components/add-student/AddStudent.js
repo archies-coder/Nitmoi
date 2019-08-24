@@ -1,5 +1,4 @@
 import React, { Component} from 'react'
-import './AddStudent.css'
 import Modal from 'react-modal';
 import MyCalendar from '../reusables/Calendar'
 import {AuthContext} from '../../context'
@@ -89,7 +88,7 @@ export default class AddStudent extends Component {
         })
         .then(resData => {
             this.setState({addedStudent: resData})
-            // this.props.history.push('/list')
+            this.props.history.push('/list')
         })
         .catch(err=>console.log(err))
     }
@@ -135,7 +134,7 @@ export default class AddStudent extends Component {
                                 <div className="form-group">
                                     <label htmlFor="InputDate">Date Of Joining </label>
                                     {/* <input type="button" className="btn btn-primary btn-sm"><i class="far fa-calendar-alt"></i></input> */}
-                                    <i className="far fa-calendar-alt ml-2 mb-2 btn-lg" id="InputDate"onClick={this.openModal}></i>
+                                    <i className="far fa-calendar-alt ml-2 mb-2 btn-lg" id="InputDate" onClick={this.openModal}></i>
                                     <br/>
                                     <p>Selected Date:- {this.state.date.toLocaleDateString()}</p>
                                 </div>

@@ -1,0 +1,23 @@
+.main-heading {
+    margin: 10px auto;
+}
+
+.fees {
+    height: 500px;
+}
+
+.paid, .new, .total, .rem {
+    height: 200px;
+}
+
+.spinner-container {
+    font-size: 50px;
+}
+
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -25px;
+    margin-left: -25px;
+}

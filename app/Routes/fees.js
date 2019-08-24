@@ -20,8 +20,8 @@ router.put('/api/fee/:id',(req, res)=>{
 })
 
 // Add Installment
-router.put('/api/fee/installment/:id', (req, res)=>{
-    return StudentModel.findById({_id: req.params.id})
+router.put('/api/fee/installment/:id',async (req, res)=>{
+    return await StudentModel.findById({_id: req.params.id})
     .then(doc=>{
         doc.fees.installments.push(req.body)
         doc.save()

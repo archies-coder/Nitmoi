@@ -10,10 +10,9 @@ import Home from "./components/home/Home";
 import AddStudent from "./components/add-student/AddStudent";
 import Attendance from './components/attendance/Attendance';
 import EditStudent from './components/student-list/EditStudent';
-
-
+import Fee from './components/fees/Fee';
+import './index.css'
 export default class App extends Component {
-
   render() {
     return (
       <div className='App'>
@@ -26,6 +25,7 @@ export default class App extends Component {
             <Route path="/login" component={AppLogin} />
             <Route path="/logout" component={Logout} />
             <Route path="/edit" component={EditStudent} />
+            <Route path="/fees" component={Fee} />
           </Switch>
           {this.props.children}
       </div>

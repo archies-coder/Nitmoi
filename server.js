@@ -17,13 +17,6 @@ app.use(bodypareser.json());
 app.use(cors());
 app.options('*', cors());
 
-// var allowCrossDomain = function(req, res, next) {     //Might be unnecessary
-//   res.header('Access-Control-Allow-Origin', "*");
-//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type');
-//   next();
-// }
-// app.use(allowCrossDomain) ;
 
 if(process.env.NODE_ENV==='production'){
   app.use(express.static(path.join(__dirname, 'client/build')));
@@ -32,21 +25,21 @@ if(process.env.NODE_ENV==='production'){
 
 if(process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1) // trust first proxy
-  // sess.cookie.secure = true // serve secure cookies
+  sess.cookie.secure = true // serve secure cookies
 }
-
-//use sessions for tracking login
-app.use(session({
+const sess = {
   name: 'SESS_SID',
   secret: SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
     maxAge: 1000*60*60*24*7,
-    httpOnly: false
+    // httpOnly: false
 }
-}));
+}
 
+//use sessions for tracking login
+app.use(session(sess));
 
 //Routes
 const loginRoute = require('./app/Routes/login');

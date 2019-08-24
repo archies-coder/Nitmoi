@@ -3,10 +3,6 @@ const router = express.Router()
 const studentModel = require('../models/student.model').Student;
 const cors = require('cors')
 
-// var corsOptions = {
-//     origin: 'http://localhost:3000',
-//     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-//   }
 
 //Get Students by standard
 router.get('/api/student/:std', (req, res, next) => {
@@ -23,10 +19,10 @@ router.get('/api/student/:std', (req, res, next) => {
 
 //Get Students by standard
 router.get('/api/students', (req, res, next) => {
-    // if(!req.session.userId){
-    //     res.status(400).send('not authenticated')
-    //     return next();
-    // }
+    if(!req.session.userId){
+        res.status(400).send('not authenticated')
+        return next();
+    }
     studentModel.find()
         .then(doc => res.json(doc))
         .catch(err => res.status(500).json(err));
@@ -34,10 +30,10 @@ router.get('/api/students', (req, res, next) => {
 
 //Get Students by First Name
 router.get('/api/student', (req, res, next) => {
-    // if(!req.session.userId){
-    //     res.send('not authenticated')
-    //     return next();
-    // }
+    if(!req.session.userId){
+        res.send('not authenticated')
+        return next();
+    }
     studentModel.find({
         firstName: req.query.fname
     })

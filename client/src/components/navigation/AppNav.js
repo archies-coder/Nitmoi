@@ -30,6 +30,11 @@ export default class Navbar extends Component {
                   Attendance
                 </Link>
               </li>
+              <li className="nav-item students-link">
+                <Link to='/fees' className='nav-link'>
+                  Fee
+                </Link>
+              </li>
             </ul>}
               <span className="navbar-nav ml-auto pull-right">
                   {!context.state.isAuth&&<span className="nav-item students-link pull-right">
