@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import './Login.css';
 import {AuthContext} from '../../context';
+import MyLoader from '../reusables/MyLoader';
+
 
 class AppLogin extends Component {
   constructor(props) {
@@ -130,9 +132,8 @@ class AppLogin extends Component {
               </div>
             </div>
           </div>) :
-          (<div className='container text-align-center'>
-            Loading
-          </div>)}
+          <MyLoader loading={this.state.loading} />
+        }
         }
       </AuthContext.Consumer>
     );

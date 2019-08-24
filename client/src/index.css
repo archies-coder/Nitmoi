@@ -7,9 +7,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-y: auto;
-  font-size: '18px';
-  color: white;
-  background-size: cover;
+  font-size: '16px';
 }
 
 code {

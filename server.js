@@ -33,8 +33,7 @@ const options = {
 
 const sess = {
   store: new MongoStore(options),
-  secure: process.env.NODE_ENV==='production',
-  name: 'SESS_SID',
+  // secure: process.env.NODE_ENV==='production',
   secret: SECRET,
   resave: false,
   saveUninitialized: false,

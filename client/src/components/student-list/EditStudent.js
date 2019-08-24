@@ -2,8 +2,8 @@ import React, {useContext, useState} from 'react'
 import {AuthContext} from '../../context';
 import Modal from 'react-modal';
 import MyCalendar from '../reusables/Calendar';
+import MyLoader from '../reusables/MyLoader';
 import {Link} from 'react-router-dom';
-
 
 const customStyles = {
     content : {
@@ -19,6 +19,7 @@ const customStyles = {
 const EditStudent = (props)=> {
     const studentContext = useContext(AuthContext);
     const [modalOpen, setModalOpen] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [date, setDate] = useState(new Date())
 
     const openModal = () =>{
@@ -42,6 +43,7 @@ const EditStudent = (props)=> {
 
     const handleUpdateSubmit=(e)=>{
         e.preventDefault();
+        setLoading(true)
         const fName = firstNameEl.current.value;const lName = lastNameEl.current.value;
         const std = standardEl.current.value;const addr = addressEl.current.value;
         const brd = boardEl.current.value;const phy = physicsEl.current.value;
@@ -65,10 +67,16 @@ const EditStudent = (props)=> {
             },
             body: JSON.stringify(updateStudentData)
         }).then(res=>res.json())
-        .then(resData=>props.history.push('/list')).catch(err=>console.log(err))
+        .then(resData=>{
+            setLoading(false)
+            props.history.push('/list')
+        }).catch(err=>{
+            setLoading(false)
+            throw new Error(err)            
+        })
     }
     const {fName,lName,Std,Addr,brd,phy,eng,maths,sex,fees} = studentContext.state.selectedForEdit;
-    return (
+    return (loading) ? <MyLoader loading={loading} /> :
         <React.Fragment>
             <div>
                 <Link to='/list'>
@@ -152,7 +160,6 @@ const EditStudent = (props)=> {
                 </Modal>
             </div>
         </React.Fragment>
-    )
 }
 
 export default EditStudent;

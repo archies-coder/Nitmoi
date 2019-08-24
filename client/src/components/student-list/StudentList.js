@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import Student from './Student';
+import MyLoader from '../reusables/MyLoader';
+
 
 const gridStyle = {
     display: "grid",
@@ -15,10 +17,12 @@ export default class StudentList extends Component {
         super()
         this.state = {
             students : [],
+            loading: false
         }
     }
 
     getStudents=()=>{
+        this.setState({loading: true})
         fetch('/api/students',{
             method: 'GET',
             mode: 'cors',
@@ -31,12 +35,16 @@ export default class StudentList extends Component {
               }
               return res.json()
         }).then(resdata => {         
+            this.setState({loading: false})
             this.setState({students:resdata})
-        }).catch(err => console.log(err)
-        )
+        }).catch(err =>{
+            this.setState({loading: false})
+            throw new Error(err)
+        })
     }
 
     componentDidMount = () => {
+        this.setState({loading: true})
         fetch('/api/students',{
             method: 'GET',
             mode: 'cors',
@@ -49,27 +57,38 @@ export default class StudentList extends Component {
               }
               return res.json()
         }).then(resdata => {         
-            this.setState({students:resdata})
-        }).catch(err => console.log(err)
-        )
+            this.setState({students:resdata, loading: false})
+        }).catch(err => {
+            this.setState({loading:false})
+            throw new Error(err)
+        })
     }
 
     deleteStudent=(id, e)=>{
         e.preventDefault();
+        this.setState({loading: true})
         fetch(`/api/student?id=${id}`,{
             method: 'DELETE',
             mode: 'cors',
             headers: {
                 'content-type': 'application/json'
             }
-        }).then(res=>res.json()).then(data=>console.log(data)).catch(err=>console.log(err))
+        }).then(res=>res.json()).then(data=>{
+            this.setState({loading: false})
+        }).catch(err=>{
+            this.setState({loading: false})
+            throw new Error(err)
+        })
         this.getStudents()
     }
     
     render() {
-       return (
+       return (this.state.loading) ? 
+                <MyLoader loading={this.state.loading} />
+                 : 
             <div style={gridStyle}>
-                {this.state.students.sort((a,b)=>{
+                {this.state.students.length === 0 ? <div>No Students To Display</div>
+                :this.state.students.sort((a,b)=>{
                         return a.standard - b.standard;
                     }).map(stud => {
                         return <Student key={stud._id} 
@@ -87,6 +106,6 @@ export default class StudentList extends Component {
                                     deleteStudent={this.deleteStudent}
                                     />
                 })}
-       </div>);
+       </div>;
     }
 }

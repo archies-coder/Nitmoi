@@ -2,6 +2,7 @@ import React, { Component} from 'react'
 import Modal from 'react-modal';
 import MyCalendar from '../reusables/Calendar'
 import {AuthContext} from '../../context'
+import MyLoader from '../reusables/MyLoader';
 
 
 const customStyles = {
@@ -26,7 +27,8 @@ export default class AddStudent extends Component {
         this.state={
             modalIsOpen: false,
             date: new Date(),
-            addedStudent: {}
+            addedStudent: {},
+            loading: false
         }
     }
 
@@ -45,6 +47,7 @@ export default class AddStudent extends Component {
 
     handleAddForm = (e) => {
         e.preventDefault();
+        this.setState({loading:true})
         const fName = this.firstNameEl.current.value;
         const lName = this.lastNameEl.current.value;
         const std = this.standardEl.current.value;
@@ -87,15 +90,18 @@ export default class AddStudent extends Component {
             return res.json();
         })
         .then(resData => {
-            this.setState({addedStudent: resData})
+            this.setState({addedStudent: resData, loading: false})
             this.props.history.push('/list')
         })
-        .catch(err=>console.log(err))
+        .catch(err=>{
+            this.setState({loading: false})
+            throw new Error(err)
+        })
     }
 
     render() {
         
-        return (
+        return (this.state.loading) ? <MyLoader loading={this.state.loading} /> :
                 <AuthContext.Consumer>
                     {context =>(
                         <div className="d-lg-flex border justify-content-center p-3 hello">
@@ -173,6 +179,5 @@ export default class AddStudent extends Component {
                         </div>
                     )}
                 </AuthContext.Consumer>
-        )
     }
 }
