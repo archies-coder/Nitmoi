@@ -76,7 +76,12 @@ export default class Student extends Component {
                         >
                             <div className="container">
                                 <header>
-                                    <span style={{font:'bold 20px/150% Helvetica',letterSpacing:'2px',textAlign:'center',color:'#8989dc'}}>Details</span>    
+                                    <span style={{
+                                        font:'bold 20px/150% Helvetica',
+                                        letterSpacing:'2px',
+                                        textAlign:'center',
+                                        color:'#8989dc'
+                                        }}>{fName} {lName}</span>    
                                     <span className="float-right close-btn" onClick={this.closeModal}>x</span>
                                 </header>
                                 <hr/>
