@@ -1,57 +1,92 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import {AuthContext} from '../../context';
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink
+} from 'reactstrap';
 
-export default class Navbar extends Component {
+
+export default class AppNavbar extends Component {
+  constructor(props) {
+    super(props);
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      isOpen: false
+    };
+  }
+  toggle() {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  }
   render() {    
     return (
       <AuthContext.Consumer>
         {context =>(
-          <nav className="navbar navbar-expand-sm bg-dark navbar-dark px-sm-5">
-            <Link to='/'>
-              <span className='navbar-brand'>NitMoi</span>
-            </Link>
+          <Navbar color='dark' dark expand='md'>
             {context.state.isAuth && <Redirect from='/login' to='/' />}
             {!context.state.isAuth && <Redirect from='/' to='/login' />}
-
-            {context.state.isAuth && <ul className="navbar-nav ml-5 align-items-center">
-              <li className="nav-item  students-link">
-                <Link to='/list' className='nav-link'>
-                  Students
-                </Link>
-              </li>
-              <li className="nav-item students-link">
-                <Link to='/add' className='nav-link'>
-                  Add
-                </Link>
-              </li>
-              <li className="nav-item students-link">
-                <Link to='/attendance' className='nav-link'>
-                  Attendance
-                </Link>
-              </li>
-              <li className="nav-item students-link">
-                <Link to='/fees' className='nav-link'>
-                  Fee
-                </Link>
-              </li>
-            </ul>}
-              <span className="navbar-nav ml-auto pull-right">
-                  {!context.state.isAuth&&<span className="nav-item students-link pull-right">
-                    <Link to='/login'
-                    className='nav-link'>
-                      {/* <i className="fas fa-user-plus"></i> */}
-                      Login
-                    </Link>
-                  </span>}
-                  {context.state.isAuth&&<li className="nav-item students-link ">
-                    <a href='/' className='nav-link' onClick={context.handleLogout}>
-                      {/* <i className="fas fa-sign-in-alt ml-3"></i> */}
-                        LogOut
-                    </a>
-                  </li>}
-              </span>
-          </nav>
+            <NavbarBrand>
+              <Link to='/'>
+                <span className='navbar-brand'>NitMoi</span>
+              </Link>
+            </NavbarBrand>
+            <NavbarToggler onClick={this.toggle} />
+            <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav className="mr-auto" navbar>
+              <NavItem>
+                <NavLink onClick={this.toggle}>
+                  <Link to='/list' className='nav-link'>
+                    Students
+                  </Link>
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink onClick={this.toggle}>
+                  <Link to='/add' className='nav-link'>
+                    Add
+                  </Link>
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink onClick={this.toggle}>
+                  <Link to='/attendance' className='nav-link'>
+                    Attendance
+                  </Link>
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink onClick={this.toggle}>
+                  <Link to='/fees' className='nav-link'>
+                    Fee
+                  </Link>
+                </NavLink>
+              </NavItem>
+            </Nav>
+            <Nav className="ml-auto" navbar>
+            <NavItem>
+                <NavLink onClick={this.toggle}>
+                {!context.state.isAuth&&<Link to='/login' className='nav-link'>
+                    Login
+                  </Link>}
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink onClick={this.toggle}>
+                {context.state.isAuth&&<Link to='/logout' className='nav-link' onClick={context.handleLogout}>
+                    Logout
+                  </Link>}
+                </NavLink>
+              </NavItem>
+            </Nav>
+          </Collapse>
+          </Navbar>
         )}
       </AuthContext.Consumer>
     )

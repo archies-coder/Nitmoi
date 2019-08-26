@@ -1,6 +1,11 @@
 .stud-card {
+    width: 100%;
     background-color: #ababe6 !important;
-    font: 16px/100% Ebrima !important
+    font: 16px/100% Ebrima !important;
+    min-width: 230px;
+    display: inline-block;
+    margin: 6px;
+    text-align: center;
 }
 
 .stud-card:hover {
@@ -31,4 +36,10 @@
     width: 100px;
     text-align: center;
     margin: auto;
+}
+
+@media screen and (min-width: 1px) and (max-width: 767px){
+    .stud-card {
+        min-width: 350px;
+    }
 }

@@ -1,15 +1,7 @@
 import React, { Component } from 'react'
 import Student from './Student';
 import MyLoader from '../reusables/MyLoader';
-
-const gridStyle = {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
-    gridGap: "8px",
-    width: "100%",
-    textAlign: "center",
-    padding: "10px"
-  };
+import './list.css'
 
 export default class StudentList extends Component {
     constructor(){
@@ -63,7 +55,6 @@ export default class StudentList extends Component {
                     this.setState({loading: false})
                     return <h4>Not Found !!</h4>
                 }
-                throw new Error(res.status)
             }
               return res.json()
         }).then(resdata => {         
@@ -93,12 +84,15 @@ export default class StudentList extends Component {
        return (this.state.loading) ? 
                 <MyLoader loading={this.state.loading} />
                  : 
-            <div style={gridStyle}>
-                {this.state.students.length === 0 ? <div>No Students To Display</div>
-                :this.state.students.sort((a,b)=>{
-                        return a.standard - b.standard;
-                    }).map(stud => {
-                        return <Student key={stud._id} 
+                 <div className="container">
+                     <div className='row w-100 justify-content-left justify-content-sm-center'>
+                        {this.state.students.length === 0 ? <div>No Students To Display</div>
+                        :this.state.students.sort((a,b)=>{
+                            return a.standard - b.standard;
+                        }).map(stud => {
+                        return <div className='col col-md-auto col-sm-auto'>
+                            <Student className=''
+                                    key={stud._id} 
                                     id={stud._id}
                                     fName={stud.firstName} 
                                     lName={stud.lastName} 
@@ -112,7 +106,10 @@ export default class StudentList extends Component {
                                     fees={stud.fees.total}
                                     deleteStudent={this.deleteStudent}
                                     />
+                        </div> 
                 })}
-       </div>;
+       </div>
+                 </div>
+            ;
     }
 }
