@@ -60,24 +60,20 @@ export default class AddStudent extends Component {
         const fees = this.feesEl.current.value;
         
         const addStudentRequest = {
-            "firstName":fName,
-            "lastName":lName,
-            "Address":addr,
-            "standard":std,
+            "firstName":fName,"lastName":lName,
+            "Address":addr,"standard":std,
             "Board":brd,
             "lastYearmarks":{
                 "physics":phy,
                 "english":eng,
                 "maths":maths
-            },
-            "sex":sex,
+            },"sex":sex,
             "fees":{
                 "total": fees
             }
         }
         fetch('/api/student',{
-            method:'POST',
-            mode:'cors',
+            method:'POST',mode:'cors',
             headers:{
                 'Content-Type':'application/json',
                 'Accept': 'application/json'
@@ -85,7 +81,11 @@ export default class AddStudent extends Component {
             body: JSON.stringify(addStudentRequest)
         }).then(res=>{
             if (res.status !== 200 && res.status !== 201) {
-                throw new Error("Post Failed!");
+                if(res.status === 401){
+                    this.setState({loading: false})
+                    this.props.history.push('/login')
+                }
+                throw new Error(res.status)
             }
             return res.json();
         })

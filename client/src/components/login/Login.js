@@ -21,6 +21,7 @@ class AppLogin extends Component {
   handleLogin = (context, e) => {
     e.preventDefault();
     this.setState({loading: true})
+    localStorage.clear()
     const email = this.emailEl.current.value;
     const password = this.passwordEl.current.value;
     if (email.trim().length === 0 || password.trim().length === 0) {

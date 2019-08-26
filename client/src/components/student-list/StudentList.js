@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import Student from './Student';
 import MyLoader from '../reusables/MyLoader';
 
-
 const gridStyle = {
     display: "grid",
     gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
@@ -30,9 +29,12 @@ export default class StudentList extends Component {
                 'Content-Type': 'application/json'
             }
         }).then(res => {
-            if (res.status !== 200 && res.status !== 201) {
-                return <h4>Not Authenticated</h4>
-              }
+            if(res.status === 401){
+                this.props.history.push('/login')
+            }
+            if(res.status === 404){
+                return <h4>Not Found !!</h4>
+            }
               return res.json()
         }).then(resdata => {         
             this.setState({loading: false})
@@ -53,14 +55,19 @@ export default class StudentList extends Component {
             }
         }).then(res => {
             if (res.status !== 200 && res.status !== 201) {
-                return <h4>Not Authenticated</h4>
-              }
+                if(res.status === 401){
+                    this.setState({loading: false})
+                    this.props.history.push('/login')
+                }
+                if(res.status === 404){
+                    this.setState({loading: false})
+                    return <h4>Not Found !!</h4>
+                }
+                throw new Error(res.status)
+            }
               return res.json()
         }).then(resdata => {         
             this.setState({students:resdata, loading: false})
-        }).catch(err => {
-            this.setState({loading:false})
-            throw new Error(err)
         })
     }
 
@@ -73,8 +80,8 @@ export default class StudentList extends Component {
             headers: {
                 'content-type': 'application/json'
             }
-        }).then(res=>res.json()).then(data=>{
-            this.setState({loading: false})
+        }).then(res=>{
+            this.setState({loading:false})
         }).catch(err=>{
             this.setState({loading: false})
             throw new Error(err)

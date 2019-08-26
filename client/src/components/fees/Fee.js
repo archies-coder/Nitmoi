@@ -15,7 +15,7 @@ const customStyles = {
     }
 };
 
-const Fee = () => {
+const Fee = (props) => {
     const [students, setStudents] = useState([])
     const [loading, setLoading] = useState(false)
     const [selectedStudent, setSelectedStudent] = useState({})
@@ -36,8 +36,17 @@ const Fee = () => {
         })
         .then(res => {
             if (res.status !== 200 && res.status !== 201) {
-                return <h4>Not Authenticated</h4>
-              }
+                if(res.status === 401){
+                    setLoading(false)
+                    props.history.push('/login')
+                }
+                if(res.status === 404){
+                    setLoading(false)
+                    return <h4>Not Found !!</h4>
+                }
+                setLoading(false)
+                throw new Error(res.status)
+            }
               return res.json()
         })
         .then(resdata => {  
@@ -76,11 +85,11 @@ const Fee = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
+        setLoading(true)
         const body = {
             "date": date,
             "amount": amount
         }
-        setLoading(true)
         fetch('/api/fee/installment/'+ selectedStudent._id,{
             method: 'PUT' ,
             mode: 'cors',
@@ -91,7 +100,16 @@ const Fee = () => {
         })
         .then(res=>{
             if (res.status !== 200 && res.status !== 201) {
-                throw new Error("Adding Installment Failed!");
+                if(res.status === 401){
+                    setLoading(false)
+                    props.history.push('/login')
+                }
+                if(res.status === 404){
+                    setLoading(false)
+                    return <h4>Not Found !!</h4>
+                }
+                setLoading(false)
+                throw new Error(res.status)
             }
             return res.json();
         })

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Modal from 'react-modal';
 import MyCalendar from '../reusables/Calendar';
+import MyLoader from '../reusables/MyLoader';
 import './attendance.css'
 import Student from '../student-list/Student';
 
@@ -54,22 +55,18 @@ export default class AddAttendance extends Component {
     constructor(){
         super();
         this.state = {
-            students: [],
-            date: new Date(),
-            viewDate: new Date(),
-            checked: false,
-            present: [],
-            viewVisible: false,
-            addVisible: false,
-            presentStuds: [],
-            errors: [],
-            modalIsOpen: false,
-            alertModalIsOpen: false,
-            successModalIsOpen: false
+            students: [], date: new Date(),
+            viewDate: new Date(), checked: false,
+            present: [], viewVisible: false,
+            addVisible: false, presentStuds: [],
+            errors: [], modalIsOpen: false,
+            alertModalIsOpen: false, successModalIsOpen: false, 
+            loading: false
         }
     }
 
     componentWillMount = () => {
+        this.setState({loading: true})
         fetch('/api/students',{
             method: 'GET',
             mode: 'cors',
@@ -79,13 +76,23 @@ export default class AddAttendance extends Component {
             }
         }).then(res => {
             if (res.status !== 200 && res.status !== 201) {
-                throw new Error("Failed!");
-              }
+                if(res.status === 401){
+                    this.setState({loading: false})
+                    this.props.history.push('/login')
+                }
+                if(res.status === 404){
+                    this.setState({loading: false})
+                    return <h4>Not Found !!</h4>
+                }
+                throw new Error(res.status)
+            }
               return res.json()
         }).then(resdata => {         
-            this.setState({students:resdata, errors: []})
-        }).catch(err => console.log(err)
-        )
+            this.setState({students:resdata, errors: [], loading: false})
+        }).catch(err => {
+           console.log(err) 
+           this.setState({loading: false})
+        })
     }
 
     handleCheckboxChange = (student) => {
@@ -113,9 +120,23 @@ export default class AddAttendance extends Component {
                 'content-type': 'application/json'
             },
             body: JSON.stringify(attendanceRequest)
-        }).then(res=>res.json())
+        }).then(res=>{
+            if (res.status !== 200 && res.status !== 201) {
+                if(res.status === 401){
+                    this.setState({loading: false})
+                    this.props.history.push('/login')
+                }
+                this.setState({loading:false})
+                throw new Error(res.status)
+            }
+            this.setState({loading: false})
+            return res.json()
+        })
         .then(data=>this.openSuccessModal())
-        .catch(err=>console.log(err))
+        .catch(err=>{
+            this.setState({loading: false})
+            console.log(err)
+        })
     }
 
     onChange = date => {
@@ -166,15 +187,31 @@ export default class AddAttendance extends Component {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             }
-        }).then(res=> res.json()).then(data=>{
+        }).then(res=>{
+            if (res.status !== 200 && res.status !== 201) {
+                if(res.status === 401){
+                    this.setState({loading: false})
+                    this.props.history.push('/login')
+                }
+                if(res.status === 404){
+                    throw new Error(res.status)
+
+                }
+                this.setState({loading:true})
+                throw new Error(res.status)
+            }
+            return res.json()
+        }).then(data=>{
             this.setState({
                 presentStuds: data.present,
-                errors: []
+                errors: [],
+                loading: false
             })
         })
-        .catch(err=>{this.setState({errors: [...this.state.errors,err]})
-        console.log(err)
-        this.openAlertModal()    
+        .catch(err=>{
+            this.setState({loading: false, errors: [...this.state.errors,err]})
+            console.log(err)
+            this.openAlertModal()    
     })
     }
 
@@ -182,7 +219,7 @@ export default class AddAttendance extends Component {
         const listItem = this.state.students.map(stud => (
             <Checkbox key={stud._id} stud={stud} handleChange={this.handleCheckboxChange} clearList={this.clearListItem}/>
         ))
-        return (
+        return (this.state.loading) ? <MyLoader loading={this.state.loading} /> :
             <div style={customStylesContainer}>
                 <button type="submit" className="btn btn-dark mb-3" onClick={this.toggleView}>View Attendance</button><br/>
                 <button type="submit" className="btn btn-dark mb-3" onClick={this.toggleAdd}>Mark Attendance</button>
@@ -274,7 +311,6 @@ export default class AddAttendance extends Component {
                     </div>
                 </Modal>
             </div>
-        )
     }
 }
 

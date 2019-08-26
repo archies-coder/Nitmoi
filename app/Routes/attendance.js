@@ -4,16 +4,19 @@ const AttendanceModel = require('../models/attendance.model')
 
 //GET
 router.get('/api/attendance/',(req, res,next)=>{
-    // if(!req.session.userId){
-    //     res.send('not authenticated')
-    //     return next();
-    // }
+    if(!req.session.userId){
+        res.status(401).send('not authenticated')
+        return next();
+    }
     if(!req.query.date){
         res.send('Please provide date!')
         return next()
     }
     AttendanceModel.findOne({date: req.query.date})
     .then(doc => {
+        if(!doc){
+            res.sendStatus(404)
+        }
         res.json(doc).send(doc)
     })
     .catch(err => res.status(500))
@@ -23,7 +26,7 @@ router.get('/api/attendance/',(req, res,next)=>{
 //POST
 router.post('/api/attendance', (req, res, next)=>{
     if(!req.session.userId){
-        res.send('not authenticated')
+        res.status(401).send('not authenticated')
         return next();
     }
     if(!req.body){

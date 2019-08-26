@@ -66,7 +66,16 @@ const EditStudent = (props)=> {
                 'content-type': 'application/json'
             },
             body: JSON.stringify(updateStudentData)
-        }).then(res=>res.json())
+        }).then(res=>{
+            if (res.status !== 200 && res.status !== 201) {
+                if(res.status === 401){
+                    setLoading(false)
+                    props.history.push('/login')
+                }
+                throw new Error(res.status)
+            }
+            return res.json();
+        })
         .then(resData=>{
             setLoading(false)
             props.history.push('/list')
