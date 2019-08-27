@@ -85,8 +85,10 @@ export default class AddStudent extends Component {
                     this.setState({loading: false})
                     this.props.history.push('/login')
                 }
+                this.setState({loading: false})
                 throw new Error(res.status)
             }
+            this.setState({loading:false})
             return res.json();
         })
         .then(resData => {
@@ -104,7 +106,7 @@ export default class AddStudent extends Component {
         return (this.state.loading) ? <MyLoader loading={this.state.loading} /> :
                 <AuthContext.Consumer>
                     {context =>(
-                        <div className="d-lg-flex border justify-content-center p-3 hello">
+                        <div className="d-lg-flex border justify-content-center p-3">
                             <form onSubmit={this.handleAddForm}>
                                 <div className="row py-3">
                                     <div className="col">
@@ -146,11 +148,11 @@ export default class AddStudent extends Component {
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="InputPhysics">Physics Marks</label>
-                                    <input type="text" className="form-control" ref={this.physicsEl} id="InputPhysics" placeholder="Physics" required/>
+                                    <input type="number" className="form-control" ref={this.physicsEl} id="InputPhysics" placeholder="Physics" required/>
                                     <label htmlFor="InputEnglish">English Marks</label>
-                                    <input type="text" className="form-control" ref={this.englishEl} id="InputEnglish" placeholder="English" required/>
+                                    <input type="number" className="form-control" ref={this.englishEl} id="InputEnglish" placeholder="English" required/>
                                     <label htmlFor="InputMaths">Maths Marks</label>
-                                    <input type="text" className="form-control" ref={this.mathsEl} id="InputMaths" placeholder="Maths" required/>
+                                    <input type="number" className="form-control" ref={this.mathsEl} id="InputMaths" placeholder="Maths" required/>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="InputSex">Sex</label>
@@ -170,6 +172,7 @@ export default class AddStudent extends Component {
                                 onRequestClose={this.closeModal}
                                 style={customStyles}
                                 contentLabel="Date Picker Modal"
+                                ariaHideApp={false}
                             >
                                 <MyCalendar
                                     onChange={this.onChange}

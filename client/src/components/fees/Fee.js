@@ -139,7 +139,7 @@ const Fee = (props) => {
         <div className="container">
             <h1 className='main-heading'>Fees</h1>
             <div className="row">
-                <div className="col-4">
+                <div className="col-md-4">
                     <table className="table table-dark">
                         <thead onClick={e=> setSelectedStudent({})}>
                             <tr>
@@ -160,7 +160,7 @@ const Fee = (props) => {
                     </table>
                 </div>
                 {!isEmpty(selectedStudent) && <div className="col bg-dark text-white pt-3 fees">
-                    <div className="col total">
+                    <div className="col-md total">
                         <h5>Total Fees</h5>
                         <hr className='border'/>                    
                         {!isEmpty(selectedStudent) && <h6>{fees.total}</h6>}
@@ -168,11 +168,11 @@ const Fee = (props) => {
                     <div className="col rem">
                         <h5>Remaining Fees</h5>
                         <hr className='border'/>                                        
-                        {!isEmpty(selectedStudent) && <h5>{remainingFees()}</h5>}
+                        {!isEmpty(selectedStudent) && <span>{remainingFees()}</span>}
                     </div>
                 </div>}
                 <div className="h-100 border"></div>
-                {!isEmpty(selectedStudent) && <div className="col bg-dark text-white pt-3 fees">
+                {!isEmpty(selectedStudent) && <div className="col-md bg-dark text-white pt-3 fees">
                     <div className="col paid">
                         <h5>Installments Paid</h5>
                         <hr className='border'/>                    
@@ -202,6 +202,7 @@ const Fee = (props) => {
                 onRequestClose={closeModal}
                 style={customStyles}
                 contentLabel="Date Picker Modal"
+                ariaHideApp={false}
             >
                 <MyCalendar
                     onChange={onChange}

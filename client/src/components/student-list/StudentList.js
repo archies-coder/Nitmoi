@@ -84,15 +84,14 @@ export default class StudentList extends Component {
        return (this.state.loading) ? 
                 <MyLoader loading={this.state.loading} />
                  : 
-                 <div className="container">
+                 <div className="container d-lg-flex">
                      <div className='row w-100 justify-content-left justify-content-sm-center'>
                         {this.state.students.length === 0 ? <div>No Students To Display</div>
                         :this.state.students.sort((a,b)=>{
                             return a.standard - b.standard;
                         }).map(stud => {
-                        return <div className='col col-md-auto col-sm-auto'>
+                        return <div key={stud._id} className='col col-md-auto col-sm-auto'>
                             <Student className=''
-                                    key={stud._id} 
                                     id={stud._id}
                                     fName={stud.firstName} 
                                     lName={stud.lastName} 

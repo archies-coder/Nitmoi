@@ -73,6 +73,7 @@ export default class Student extends Component {
                             onRequestClose={this.closeModal}
                             style={customStyles}
                             contentLabel="Details Modal"
+                            ariaHideApp={false}
                         >
                             <div className="container">
                                 <header>
@@ -101,6 +102,7 @@ export default class Student extends Component {
                             onRequestClose={this.closeModal}
                             style={customStylesDelete}
                             contentLabel="Edit Modal"
+                            ariaHideApp={false}
                         >
                             <div className="panel panel-danger">
                                 <div className="panel-heading"><b>Alert!</b><span className="float-right" style={{cursor:'pointer'}} onClick={this.closeModal}>X</span></div>

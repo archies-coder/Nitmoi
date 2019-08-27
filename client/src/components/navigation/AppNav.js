@@ -15,12 +15,11 @@ import {
 export default class AppNavbar extends Component {
   constructor(props) {
     super(props);
-    this.toggle = this.toggle.bind(this);
     this.state = {
       isOpen: false
     };
   }
-  toggle() {
+  toggle = ()=> {
     this.setState({
       isOpen: !this.state.isOpen
     });
@@ -41,49 +40,61 @@ export default class AppNavbar extends Component {
             <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="mr-auto" navbar>
               <NavItem>
-                <NavLink onClick={this.toggle}>
-                  <Link to='/list' className='nav-link'>
-                    Students
-                  </Link>
-                </NavLink>
+                  <React.Fragment>
+                    <NavLink>
+                      <Link to='/list' className='nav-link'>
+                        Students
+                      </Link>
+                    </NavLink>
+                  </React.Fragment>
               </NavItem>
               <NavItem>
-                <NavLink onClick={this.toggle}>
-                  <Link to='/add' className='nav-link'>
-                    Add
-                  </Link>
-                </NavLink>
+                <React.Fragment>
+                    <NavLink>
+                      <Link to='/add' className='nav-link'>
+                        Add
+                      </Link>
+                    </NavLink>
+                </React.Fragment>
               </NavItem>
               <NavItem>
-                <NavLink onClick={this.toggle}>
-                  <Link to='/attendance' className='nav-link'>
-                    Attendance
-                  </Link>
-                </NavLink>
+                <React.Fragment>
+                    <NavLink>
+                      <Link to='/attendance' className='nav-link'>
+                        Attendance
+                      </Link>
+                    </NavLink>
+                </React.Fragment>
               </NavItem>
               <NavItem>
-                <NavLink onClick={this.toggle}>
-                  <Link to='/fees' className='nav-link'>
-                    Fee
-                  </Link>
-                </NavLink>
+                <React.Fragment>
+                  <NavLink>
+                    <Link to='/fees' className='nav-link'>
+                      Fee
+                    </Link>
+                  </NavLink>
+                </React.Fragment>
               </NavItem>
             </Nav>
             <Nav className="ml-auto" navbar>
             <NavItem>
-                <NavLink onClick={this.toggle}>
+              <React.Fragment>
+                <NavLink>
                 {!context.state.isAuth&&<Link to='/login' className='nav-link'>
                     Login
                   </Link>}
                 </NavLink>
+              </React.Fragment>
               </NavItem>
-              <NavItem>
-                <NavLink onClick={this.toggle}>
-                {context.state.isAuth&&<Link to='/logout' className='nav-link' onClick={context.handleLogout}>
-                    Logout
-                  </Link>}
-                </NavLink>
-              </NavItem>
+                <NavItem>
+                  <React.Fragment>
+                    <NavLink>
+                      {context.state.isAuth && <Link to='/logout' className='nav-link' onClick={context.handleLogout}>
+                        Logout
+                      </Link>}
+                    </NavLink>
+                  </React.Fragment>
+                </NavItem>
             </Nav>
           </Collapse>
           </Navbar>
