@@ -39,7 +39,7 @@
 }
 
 @media screen and (min-width: 1px) and (max-width: 767px){
-    .stud-card {
+    .stud-card{
         min-width: 350px;
     }
 }

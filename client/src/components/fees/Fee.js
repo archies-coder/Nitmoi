@@ -25,7 +25,7 @@ const Fee = (props) => {
     
     useEffect(()=> getStudents(),[])
 
-    const getStudents= ()=>{
+    const getStudents = ()=>{
         setLoading(true)
         fetch('/api/students',{
             method: 'GET',
@@ -133,9 +133,8 @@ const Fee = (props) => {
     
     const {fees} = selectedStudent;
 
-    return (loading) ?<div className='container spinner-container'>
-            <MyLoader loading={loading} />
-        </div>:
+    return (loading) ?
+            <MyLoader loading={loading} />:
         <div className="container">
             <h1 className='main-heading'>Fees</h1>
             <div className="row">

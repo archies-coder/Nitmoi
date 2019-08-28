@@ -179,6 +179,7 @@ export default class AddStudent extends Component {
                                     value={this.state.date}
                                 />
                             </Modal>
+                            
                         </div>
                     )}
                 </AuthContext.Consumer>
