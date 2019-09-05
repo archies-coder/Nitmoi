@@ -188,7 +188,7 @@ const Fee = (props) => {
                                 <input type="tel" onChange={e=> setAmount(e.target.value)} className='form-control form-control-sm' name="installment" required/>
                                 <label htmlFor="date">Date</label>
                                 <i className="far fa-calendar-alt btn-lg" id="date" onClick={openModal}></i>
-                                <p>Selected Date:- {date.toLocaleDateString()}</p>
+                                <p>Selected Date:- {date.toLocaleString('en-IN').split(',')[0]}</p>
                             </div>
                             <input type="submit" className='btn btn-sm btn-light mt-3' value="Add Installment"/>
                         </form>

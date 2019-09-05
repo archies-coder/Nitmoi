@@ -102,11 +102,11 @@ export default class AddStudent extends Component {
     }
 
     render() {
-
         return (this.state.loading) ? <MyLoader loading={this.state.loading} /> :
             <AuthContext.Consumer>
                 {context => (
                     <div className="d-lg-flex border justify-content-center p-3">
+                        <h3>Add New Student</h3>
                         <form onSubmit={this.handleAddForm}>
                             <div className="row py-3">
                                 <div className="col">
@@ -147,7 +147,7 @@ export default class AddStudent extends Component {
                             <div className="form-group">
                                 <label htmlFor="InputDate">Date Of Joining </label>
                                 <i className="far fa-calendar-alt ml-2 mr-4 mb-2 btn-lg" id="InputDate" onClick={this.openModal} />
-                                <span>Selected Date:- {this.state.date.toLocaleDateString()}</span>
+                                <span>Selected Date:- {this.state.date.toLocaleString('en-IN').split(',')[0]}</span>
                             </div>
                             <div>
                                 <h5>Last Year Marks</h5>

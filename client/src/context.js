@@ -7,7 +7,8 @@ export class AuthProvider extends Component{
         this.state={
             isAuth: false,
             user: '',
-            selectedForEdit: {}
+            selectedForEdit: {},
+            students: []
         }
     }
 
@@ -25,6 +26,7 @@ export class AuthProvider extends Component{
             this.setState({isAuth: true, user: name})
         }
     }
+
 
     handleLogout = (e)=>{
         e.preventDefault();
@@ -66,5 +68,3 @@ export class AuthProvider extends Component{
         )
     }
 }
-
-// export {AuthContext,AuthProvider}
