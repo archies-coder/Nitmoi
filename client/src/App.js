@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import AppNavbar from './components/navigation/AppNav';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Switch, Route} from "react-router-dom";
+
 //Components
 import AppLogin from "./components/login/Login";
 import {Logout} from "./components/login/Logout";
@@ -12,6 +13,7 @@ import Attendance from './components/attendance/Attendance';
 import EditStudent from './components/student-list/EditStudent';
 import Fee from './components/fees/Fee';
 import './index.css'
+
 export default class App extends Component {
   render() {
     return (

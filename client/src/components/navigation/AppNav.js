@@ -7,7 +7,6 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
   NavLink
 } from 'reactstrap';
 
@@ -20,6 +19,7 @@ export default class AppNavbar extends Component {
     };
   }
   toggle = ()=> {
+    let status = this.state.isOpen
     this.setState({
       isOpen: !this.state.isOpen
     });
@@ -36,29 +36,29 @@ export default class AppNavbar extends Component {
             </NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="mr-auto" navbar>
-                <NavLink tag={Link} to='/list' className='nav-link'>
-                  Students
-                </NavLink>
-                <NavLink tag={Link} to='/add' className='nav-link'>
-                  Add
-                </NavLink>
-                <NavLink tag={Link} to='/attendance' className='nav-link'>
-                  Attendance
-                </NavLink>
-                <NavLink tag={Link} to='/fees' className='nav-link'>
-                  Fee
-                </NavLink>
-            </Nav>
-            <Nav className="ml-auto" navbar>
-                {!context.state.isAuth && <NavLink tag={Link} to='/login' className='nav-link'>
-                  Login
-                </NavLink>}
-                {context.state.isAuth && <NavLink tag={Link} to='/logout' className='nav-link'>
-                  Logout
-                </NavLink>}
-            </Nav>
-          </Collapse>
+              <Nav className="mr-auto" navbar>
+                  {context.state.isAuth &&<NavLink tag={Link} to='/list' className='nav-link'>
+                    Students
+                  </NavLink>}
+                  {context.state.isAuth && <NavLink tag={Link} to='/add' className='nav-link'>
+                    Add
+                  </NavLink>}
+                  {context.state.isAuth && <NavLink tag={Link} to='/attendance' className='nav-link'>
+                    Attendance
+                  </NavLink>}
+                  {context.state.isAuth && <NavLink tag={Link} to='/fees' className='nav-link'>
+                    Fee
+                  </NavLink>}
+              </Nav>
+              <Nav className="ml-auto" navbar>
+                  {!context.state.isAuth && <NavLink tag={Link} to='/login' className='nav-link'>
+                    Login
+                  </NavLink>}
+                  {context.state.isAuth && <NavLink tag={Link} to='/logout' className='nav-link'>
+                    Logout
+                  </NavLink>}
+              </Nav>
+            </Collapse>
           </Navbar>
         )}
       </AuthContext.Consumer>

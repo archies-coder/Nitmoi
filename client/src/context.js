@@ -48,12 +48,17 @@ export class AuthProvider extends Component{
         this.setState({selectedForEdit: obj})
     }
 
+    handleIsAuthChange = () => {
+        this.setState({isAuth: false})
+    }
+
     render(){
         return (
             <AuthContext.Provider value={{
                 state: this.state,
                 handleLogin: this.handleAuthSuccess,
                 handleLogout: this.handleLogout,
+                authChange: this.handleIsAuthChange,
                 studentEdit : this.selectForEdit
             }}>
                 {this.props.children}

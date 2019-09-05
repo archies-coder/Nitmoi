@@ -1,30 +1,30 @@
-import React, { Component} from 'react'
+import React, { Component } from 'react'
 import Modal from 'react-modal';
 import MyCalendar from '../reusables/Calendar'
-import {AuthContext} from '../../context'
+import { AuthContext } from '../../context'
 import MyLoader from '../reusables/MyLoader';
 
 
 const customStyles = {
-    content : {
-      top                   : '50%',
-      left                  : '50%',
-      right                 : 'auto',
-      bottom                : 'auto',
-      marginRight           : '-50%',
-      transform             : 'translate(-50%, -50%)'
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)'
     }
-  };
+};
 
 export default class AddStudent extends Component {
-    constructor(){
+    constructor() {
         super()
-        this.firstNameEl = React.createRef();this.lastNameEl = React.createRef();
-        this.addressEl = React.createRef();this.standardEl = React.createRef();
-        this.boardEl = React.createRef();this.physicsEl = React.createRef();
-        this.englishEl = React.createRef();this.mathsEl = React.createRef();
-        this.sexEl = React.createRef();this.feesEl = React.createRef();
-        this.state={
+        this.firstNameEl = React.createRef(); this.lastNameEl = React.createRef();
+        this.addressEl = React.createRef(); this.standardEl = React.createRef();
+        this.boardEl = React.createRef(); this.physicsEl = React.createRef();
+        this.englishEl = React.createRef(); this.mathsEl = React.createRef();
+        this.sexEl = React.createRef(); this.feesEl = React.createRef();
+        this.state = {
             modalIsOpen: false,
             date: new Date(),
             addedStudent: {},
@@ -35,19 +35,19 @@ export default class AddStudent extends Component {
     onChange = date => {
         this.setState({ date })
         this.closeModal()
-  }
-
-    openModal = ()=> {
-        this.setState({modalIsOpen: true});
     }
 
-    closeModal= ()=> {
-        this.setState({modalIsOpen: false});
+    openModal = () => {
+        this.setState({ modalIsOpen: true });
+    }
+
+    closeModal = () => {
+        this.setState({ modalIsOpen: false });
     }
 
     handleAddForm = (e) => {
         e.preventDefault();
-        this.setState({loading:true})
+        this.setState({ loading: true })
         const fName = this.firstNameEl.current.value;
         const lName = this.lastNameEl.current.value;
         const std = this.standardEl.current.value;
@@ -58,69 +58,73 @@ export default class AddStudent extends Component {
         const maths = this.mathsEl.current.value;
         const sex = this.sexEl.current.value;
         const fees = this.feesEl.current.value;
-        
+
         const addStudentRequest = {
-            "firstName":fName,"lastName":lName,
-            "Address":addr,"standard":std,
-            "Board":brd,
-            "lastYearmarks":{
-                "physics":phy,
-                "english":eng,
-                "maths":maths
-            },"sex":sex,
-            "fees":{
+            "firstName": fName, "lastName": lName,
+            "Address": addr, "standard": std,
+            "Board": brd,
+            "lastYearmarks": {
+                "physics": phy,
+                "english": eng,
+                "maths": maths
+            }, "sex": sex,
+            "fees": {
                 "total": fees
             }
         }
-        fetch('/api/student',{
-            method:'POST',mode:'cors',
-            headers:{
-                'Content-Type':'application/json',
+        fetch('/api/student', {
+            method: 'POST', mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
             body: JSON.stringify(addStudentRequest)
-        }).then(res=>{
+        }).then(res => {
             if (res.status !== 200 && res.status !== 201) {
-                if(res.status === 401){
-                    this.setState({loading: false})
+                if (res.status === 401) {
+                    this.setState({ loading: false })
                     this.props.history.push('/login')
                 }
-                this.setState({loading: false})
+                this.setState({ loading: false })
                 throw new Error(res.status)
             }
-            this.setState({loading:false})
+            this.setState({ loading: false })
             return res.json();
         })
-        .then(resData => {
-            this.setState({addedStudent: resData, loading: false})
-            this.props.history.push('/list')
-        })
-        .catch(err=>{
-            this.setState({loading: false})
-            throw new Error(err)
-        })
+            .then(resData => {
+                this.setState({ addedStudent: resData, loading: false })
+                this.props.history.push('/list')
+            })
+            .catch(err => {
+                this.setState({ loading: false })
+                throw new Error(err)
+            })
     }
 
     render() {
-        
+
         return (this.state.loading) ? <MyLoader loading={this.state.loading} /> :
-                <AuthContext.Consumer>
-                    {context =>(
-                        <div className="d-lg-flex border justify-content-center p-3">
-                            <form onSubmit={this.handleAddForm}>
-                                <div className="row py-3">
-                                    <div className="col">
-                                    <input type="text" ref={this.firstNameEl} className="form-control" placeholder="First name" required/>
-                                    </div>
-                                    <div className="col">
-                                    <input type="text" ref={this.lastNameEl} className="form-control" placeholder="Last name" required/>
-                                    </div>
+            <AuthContext.Consumer>
+                {context => (
+                    <div className="d-lg-flex border justify-content-center p-3">
+                        <form onSubmit={this.handleAddForm}>
+                            <div className="row py-3">
+                                <div className="col">
+                                    <input type="text" ref={this.firstNameEl} className="form-control" placeholder="First name" required />
                                 </div>
-                                <div className="form-group">
-                                    <label htmlFor="InputAddress">Address</label>
-                                    <input type="text" ref={this.addressEl} className="form-control" id="InputAddress" placeholder="Address" required/>
+                                <div className="col">
+                                    <input type="text" className="form-control" placeholder="Middle name" />
                                 </div>
-                                <div className="form-group">
+                                <div className="col">
+                                    <input type="text" ref={this.lastNameEl} className="form-control" placeholder="Last name" required />
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="InputAddress">Address</label>
+                                <input type="text" ref={this.addressEl} className="form-control" id="InputAddress" placeholder="Address" required />
+                            </div>
+                            <div className="row">
+                                <div className="form-group col">
                                     <label htmlFor="Inputstandard">Standard</label>
                                     <select className="form-control form-control-sm" id="Inputstandard" ref={this.standardEl}>
                                         <option>5</option>
@@ -131,7 +135,7 @@ export default class AddStudent extends Component {
                                         <option>10</option>
                                     </select>
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group col">
                                     <label htmlFor="InputBoard">Board</label>
                                     <select className="form-control form-control-sm" id="InputBoard" ref={this.boardEl}>
                                         <option>MH</option>
@@ -139,49 +143,57 @@ export default class AddStudent extends Component {
                                         <option>CBSE</option>
                                     </select>
                                 </div>
-                                <div className="form-group">
-                                    <label htmlFor="InputDate">Date Of Joining </label>
-                                    {/* <input type="button" className="btn btn-primary btn-sm"><i class="far fa-calendar-alt"></i></input> */}
-                                    <i className="far fa-calendar-alt ml-2 mb-2 btn-lg" id="InputDate" onClick={this.openModal}></i>
-                                    <br/>
-                                    <p>Selected Date:- {this.state.date.toLocaleDateString()}</p>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="InputDate">Date Of Joining </label>
+                                <i className="far fa-calendar-alt ml-2 mr-4 mb-2 btn-lg" id="InputDate" onClick={this.openModal} />
+                                <span>Selected Date:- {this.state.date.toLocaleDateString()}</span>
+                            </div>
+                            <div>
+                                <h5>Last Year Marks</h5>
+                            </div>
+                            <div className="form-group row">
+                                <div className="col-md-4">
+                                    <label htmlFor="InputPhysics">Physics</label>
+                                    <input type="number" className="form-control" ref={this.physicsEl} id="InputPhysics" placeholder="Physics" required />
                                 </div>
-                                <div className="form-group">
-                                    <label htmlFor="InputPhysics">Physics Marks</label>
-                                    <input type="number" className="form-control" ref={this.physicsEl} id="InputPhysics" placeholder="Physics" required/>
-                                    <label htmlFor="InputEnglish">English Marks</label>
-                                    <input type="number" className="form-control" ref={this.englishEl} id="InputEnglish" placeholder="English" required/>
-                                    <label htmlFor="InputMaths">Maths Marks</label>
-                                    <input type="number" className="form-control" ref={this.mathsEl} id="InputMaths" placeholder="Maths" required/>
+                                <div className="col-md-4"><label htmlFor="InputEnglish">English</label>
+                                    <input type="number" className="form-control" ref={this.englishEl} id="InputEnglish" placeholder="English" required />
                                 </div>
-                                <div className="form-group">
-                                    <label htmlFor="InputSex">Sex</label>
+                                <div className="col-md-4"><label htmlFor="InputMaths">Maths</label>
+                                    <input type="number" className="form-control" ref={this.mathsEl} id="InputMaths" placeholder="Maths" required />
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="form-group col">
+                                    <label htmlFor="InputSex">Gender</label>
                                     <select className="form-control form-control-sm" id="InputSex" ref={this.sexEl}>
                                         <option>Male</option>
                                         <option>Female</option>
                                     </select>
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group col">
                                     <label htmlFor="InputFees">Total Fees</label>
-                                    <input type="text" className="form-control" ref={this.feesEl} id="InputFees" placeholder="Amout Of Fees Paid"/>
+                                    <input type="text" className="form-control" ref={this.feesEl} id="InputFees" placeholder="Amout Of Fees Paid" />
                                 </div>
-                                <button type="submit" className="btn btn-primary">Submit</button>
-                            </form>
-                            <Modal
-                                isOpen={this.state.modalIsOpen}
-                                onRequestClose={this.closeModal}
-                                style={customStyles}
-                                contentLabel="Date Picker Modal"
-                                ariaHideApp={false}
-                            >
-                                <MyCalendar
-                                    onChange={this.onChange}
-                                    value={this.state.date}
-                                />
-                            </Modal>
-                            
-                        </div>
-                    )}
-                </AuthContext.Consumer>
+                            </div>
+                            <button type="submit" className="btn btn-primary">Submit</button>
+                        </form>
+                        <Modal
+                            isOpen={this.state.modalIsOpen}
+                            onRequestClose={this.closeModal}
+                            style={customStyles}
+                            contentLabel="Date Picker Modal"
+                            ariaHideApp={false}
+                        >
+                            <MyCalendar
+                                onChange={this.onChange}
+                                value={this.state.date}
+                            />
+                        </Modal>
+
+                    </div>
+                )}
+            </AuthContext.Consumer>
     }
 }
