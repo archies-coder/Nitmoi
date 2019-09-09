@@ -19,7 +19,7 @@ const customStyles = {
 export default class AddStudent extends Component {
     constructor() {
         super()
-        this.firstNameEl = React.createRef(); this.lastNameEl = React.createRef();
+        this.firstNameEl = React.createRef(); this.middleNameEl = React.createRef(); this.lastNameEl = React.createRef();
         this.addressEl = React.createRef(); this.standardEl = React.createRef();
         this.boardEl = React.createRef(); this.physicsEl = React.createRef();
         this.englishEl = React.createRef(); this.mathsEl = React.createRef();
@@ -49,6 +49,7 @@ export default class AddStudent extends Component {
         e.preventDefault();
         this.setState({ loading: true })
         const fName = this.firstNameEl.current.value;
+        const mName = this.firstNameEl.current.value;
         const lName = this.lastNameEl.current.value;
         const std = this.standardEl.current.value;
         const addr = this.addressEl.current.value;
@@ -60,7 +61,7 @@ export default class AddStudent extends Component {
         const fees = this.feesEl.current.value;
 
         const addStudentRequest = {
-            "firstName": fName, "lastName": lName,
+            "firstName": fName, "middleName": mName, "lastName": lName,
             "Address": addr, "standard": std,
             "Board": brd,
             "lastYearmarks": {
@@ -105,15 +106,15 @@ export default class AddStudent extends Component {
         return (this.state.loading) ? <MyLoader loading={this.state.loading} /> :
             <AuthContext.Consumer>
                 {context => (
-                    <div className="d-lg-flex border justify-content-center p-3">
+                    <div className="d-lg-flex justify-content-center p-3">
                         <h3>Add New Student</h3>
-                        <form onSubmit={this.handleAddForm}>
+                        <form className="py-3" onSubmit={this.handleAddForm}>
                             <div className="row py-3">
                                 <div className="col">
                                     <input type="text" ref={this.firstNameEl} className="form-control" placeholder="First name" required />
                                 </div>
                                 <div className="col">
-                                    <input type="text" className="form-control" placeholder="Middle name" />
+                                    <input type="text" ref={this.middleNameEl} className="form-control" placeholder="Middle name" />
                                 </div>
                                 <div className="col">
                                     <input type="text" ref={this.lastNameEl} className="form-control" placeholder="Last name" required />
