@@ -13,5 +13,5 @@ export const Logout = () => {
 
 const logoutFromBrowser = (context) => {
     localStorage.clear();
-    // context.handleLogout()
+    context.handleLogout()
 }

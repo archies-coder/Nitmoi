@@ -28,8 +28,7 @@ export class AuthProvider extends Component{
     }
 
 
-    handleLogout = (e)=>{
-        e.preventDefault();
+    handleLogout = ()=>{
         this.setState({isAuth:false})
         localStorage.clear()
         fetch('/api/logout',{
