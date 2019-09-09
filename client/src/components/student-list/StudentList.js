@@ -101,6 +101,7 @@ export default class StudentList extends Component {
                                             <Student className=''
                                                 id={stud._id}
                                                 fName={stud.firstName}
+                                                mName={stud.middleName}
                                                 lName={stud.lastName}
                                                 Std={stud.standard}
                                                 Addr={stud.Address}

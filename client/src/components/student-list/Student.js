@@ -51,7 +51,7 @@ export default class Student extends Component {
     }
 
     render(){
-        const {id,fName,lName,Std,Addr,brd,phy,eng,maths,sex,fees}= this.props;
+        const {id,fName,mName,lName,Std,Addr,brd,phy,eng,maths,sex,fees}= this.props;
         return (
             <AuthContext.Consumer>
                 {context=>
@@ -67,7 +67,7 @@ export default class Student extends Component {
                             </Link>
                             <i className="fas fa-trash-alt float-right mb-1 mr-3 delete-btn" title='Delete' onClick={this.openDeleteModal}/>
                         </div>
-                        
+
                         <Modal
                             isOpen={this.state.modalDetailsIsOpen}
                             onRequestClose={this.closeModal}
@@ -82,7 +82,7 @@ export default class Student extends Component {
                                         letterSpacing:'2px',
                                         textAlign:'center',
                                         color:'#8989dc'
-                                        }}>{fName} {lName}</span>    
+                                        }}>{fName} {mName} {lName}</span>
                                     <span className="float-right close-btn" onClick={this.closeModal}>x</span>
                                 </header>
                                 <hr/>
@@ -95,7 +95,7 @@ export default class Student extends Component {
                                 <h5>Total Fee : {fees}</h5>
                             </div>
                         </Modal>
-                        
+
                         {/* Delete modal */}
                         <Modal
                             isOpen={this.state.modalDeleteIsOpen}
