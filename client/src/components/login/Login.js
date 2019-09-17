@@ -126,7 +126,7 @@ class AppLogin extends Component {
                   <div className="d-flex justify-content-center links">
                     Don't have an account?<Link to="/register">Sign Up</Link>
                   </div>
-                  <div className="d-flex justify-content-center">
+                  <div className="d-flex justify-content-center links">
                     <a href='google.com'>Forgot your password?</a>
                   </div>
                 </div>

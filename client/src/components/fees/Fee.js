@@ -17,11 +17,14 @@ const customStyles = {
 
 const Fee = (props) => {
     const [students, setStudents] = useState([])
+    const [totalInstallments, setTotalInstallments] = useState(0)
     const [loading, setLoading] = useState(false)
     const [selectedStudent, setSelectedStudent] = useState({})
     const [date, setDate] = useState(new Date())
     const [amount, setAmount] = useState(Number)
+    const [remAmount, setRemAmount] = useState(0)
     const [dateModalOpen, setDateModalOpen] = useState(false)
+    const [error, setError] = useState([])
 
     useEffect(() => getStudents(), [])
 
@@ -61,6 +64,12 @@ const Fee = (props) => {
 
     const selectStudent = (obj, e) => {
         e.preventDefault();
+        const {installments} = obj.fees
+        let temp = 0;
+        installments.map(i => {
+            return temp=temp+ i.amount
+        })
+        setTotalInstallments(temp)
         setSelectedStudent(obj)
     }
 
@@ -86,6 +95,21 @@ const Fee = (props) => {
     const handleSubmit = e => {
         e.preventDefault();
         setLoading(true)
+        if(error && error.length!==0 && error.length > 0){
+            error.map(err=>console.log(err))
+            setLoading(false)
+            return null
+        }
+        if(amount < 1){
+            console.log('Too Small installment')
+            setLoading(false)
+            return null
+        }
+        if(remAmount-amount<0){
+            console.log('Too Big installment')
+            setLoading(false)
+            return null
+        }
         const body = {
             "date": date,
             "amount": amount
@@ -124,11 +148,34 @@ const Fee = (props) => {
             })
     }
 
+    const getRemFees=(installments)=> {
+        let temp = selectedStudent.fees.total;
+        installments.map(inst => {
+            temp = temp - inst.amount
+            return temp
+        })
+        return setRemAmount(temp)
+    }
+
     const remainingFees = () => {
         const { total, installments } = selectedStudent.fees;
         let temp = total;
-        installments.map(inst => (temp = temp - inst.amount))
+        installments.map(inst => {
+            temp = temp - inst.amount
+            return temp
+        })
         return <h6>{temp}</h6>
+    }
+
+    const installmentInputHandler = e => {
+        setError()
+        const {total, installments} = selectedStudent.fees
+        getRemFees(installments)
+        
+        if (totalInstallments + parseInt(e.target.value) > total || parseInt(e.target.value) > remAmount) {
+            setError(['Invalid installment'])
+        }
+        setAmount(e.target.value)
     }
 
     const { fees } = selectedStudent;
@@ -185,12 +232,20 @@ const Fee = (props) => {
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
                                 <label htmlFor="installment">Amount</label>
-                                <input type="tel" onChange={e => setAmount(e.target.value)} className='form-control form-control-sm' name="installment" required />
-                                <label htmlFor="date">Date</label>
-                                <i className="far fa-calendar-alt btn-lg" id="date" onClick={openModal}></i>
+                                <div className="row">
+                                
+                                </div>
+                                <div class="input-group mb-3 w-75">
+                                    <input type="tel" onChange={installmentInputHandler} className='form-control form-control-sm' name="installment" required />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <i className="far fa-calendar-alt" id="date" onClick={openModal}></i>
+                                        </span>
+                                    </div>
+                                </div>
                                 <p>Selected Date:- {date.toLocaleString('en-IN').split(',')[0]}</p>
                             </div>
-                            <input type="submit" className='btn btn-sm btn-light mt-3' value="Add Installment" />
+                            <input type="submit" className='btn btn-sm btn-light' value="Add" />
                         </form>
                     </div>
                 </div>}

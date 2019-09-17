@@ -19,7 +19,6 @@ export default class AppNavbar extends Component {
     };
   }
   toggle = ()=> {
-    let status = this.state.isOpen
     this.setState({
       isOpen: !this.state.isOpen
     });
@@ -29,7 +28,7 @@ export default class AppNavbar extends Component {
       <AuthContext.Consumer>
         {context =>(
           <Navbar color='dark' dark expand='md'>
-            {context.state.isAuth && <Redirect from='/login' to='/' />}
+            {context.state.isAuth && <Redirect from='/login' to='/add' />}
             {!context.state.isAuth && <Redirect from='/' to='/login' />}
             <NavbarBrand tag={Link} to='/'>
                 <span className='navbar-brand'>NitMoi</span>

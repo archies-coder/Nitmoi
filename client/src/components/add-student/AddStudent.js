@@ -28,8 +28,29 @@ export default class AddStudent extends Component {
             modalIsOpen: false,
             date: new Date(),
             addedStudent: {},
-            loading: false
+            loading: false,
+            loggedIn: false
         }
+    }
+
+    componentDidMount=()=>{
+        this.setState({loading: true})
+        fetch('/auth', {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'content-type': 'application/json'
+            }
+        }).then(res => {
+            if (res.status === 200) {
+                this.setState({loggedIn: true, loading:false})
+            } else {
+                this.setState({ loggedIn: false, loading:false})
+            }
+        }).catch(err => {
+            this.setState({loggedIn: false,loading:false})
+            throw new Error(err)
+        })
     }
 
     onChange = date => {
@@ -43,6 +64,15 @@ export default class AddStudent extends Component {
 
     closeModal = () => {
         this.setState({ modalIsOpen: false });
+    }
+
+    redirectHome = (e) => {
+        e.preventDefault();
+        this.props.history.push('/')
+    }
+    redirectLogin = (e) => {
+        e.preventDefault();
+        this.props.history.push('/login')
     }
 
     handleAddForm = (e) => {
@@ -85,9 +115,9 @@ export default class AddStudent extends Component {
                 if (res.status === 401) {
                     this.setState({ loading: false })
                     this.props.history.push('/login')
+                } else {
+                    this.setState({ loading: false })
                 }
-                this.setState({ loading: false })
-                throw new Error(res.status)
             }
             this.setState({ loading: false })
             return res.json();
@@ -98,88 +128,94 @@ export default class AddStudent extends Component {
             })
             .catch(err => {
                 this.setState({ loading: false })
-                throw new Error(err)
             })
     }
 
     render() {
-        return (this.state.loading) ? <MyLoader loading={this.state.loading} /> :
-            <AuthContext.Consumer>
-                {context => (
-                    <div className="d-lg-flex justify-content-center p-3">
-                        <h3>Add New Student</h3>
-                        <form className="py-3" onSubmit={this.handleAddForm}>
-                            <div className="row py-3">
-                                <div className="col">
-                                    <input type="text" ref={this.firstNameEl} className="form-control" placeholder="First name" required />
+        return  (this.state.loading) ? <MyLoader loading={this.state.loading} /> :
+            this.state.loggedIn ? <AuthContext.Consumer>
+                {context =>  (
+                    <div className="container text-align-center p-3">
+                        <div className="container w-75 text-align-center">
+                        <div className="container" style={{textAlign:'center',fontSize:'25px'}}>Add New Student</div>
+                            <form className="py-3" onSubmit={this.handleAddForm}>
+                                <div className="row py-3">
+                                    <div className="col">
+                                        <input type="text" ref={this.firstNameEl} className="form-control form-control-sm" placeholder="First name" required />
+                                    </div>
+                                    <div className="col">
+                                        <input type="text" ref={this.middleNameEl} className="form-control form-control-sm" placeholder="Middle name" />
+                                    </div>
+                                    <div className="col">
+                                        <input type="text" ref={this.lastNameEl} className="form-control form-control-sm" placeholder="Last name" required />
+                                    </div>
                                 </div>
-                                <div className="col">
-                                    <input type="text" ref={this.middleNameEl} className="form-control" placeholder="Middle name" />
+                                <div className="form-group">
+                                    <input type="text" ref={this.addressEl} className="form-control form-control-sm" id="InputAddress" placeholder="Address" required />
                                 </div>
-                                <div className="col">
-                                    <input type="text" ref={this.lastNameEl} className="form-control" placeholder="Last name" required />
+                                <hr />
+                                <div className="row">
+                                    <div className="form-group col">
+                                        <label htmlFor="Inputstandard">Standard</label>
+                                        <select className="form-control form-control-sm" id="Inputstandard" ref={this.standardEl}>
+                                            <option>5</option>
+                                            <option>6</option>
+                                            <option>7</option>
+                                            <option>8</option>
+                                            <option>9</option>
+                                            <option>10</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-group col">
+                                        <label htmlFor="InputBoard">Board</label>
+                                        <select className="form-control form-control-sm" id="InputBoard" ref={this.boardEl}>
+                                            <option>MH</option>
+                                            <option>MH Semi-Eng</option>
+                                            <option>ICSC</option>
+                                            <option>CBSE</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="InputAddress">Address</label>
-                                <input type="text" ref={this.addressEl} className="form-control" id="InputAddress" placeholder="Address" required />
-                            </div>
-                            <div className="row">
-                                <div className="form-group col">
-                                    <label htmlFor="Inputstandard">Standard</label>
-                                    <select className="form-control form-control-sm" id="Inputstandard" ref={this.standardEl}>
-                                        <option>5</option>
-                                        <option>6</option>
-                                        <option>7</option>
-                                        <option>8</option>
-                                        <option>9</option>
-                                        <option>10</option>
-                                    </select>
+                                <div className="form-group">
+                                    <label htmlFor="InputDate">Date Of Joining </label>
+                                    <i className="far fa-calendar-alt ml-2 mr-4 mb-2 btn-lg" id="InputDate" onClick={this.openModal} />
+                                    <span>Selected Date:- {this.state.date.toLocaleString('en-IN').split(',')[0]}</span>
                                 </div>
-                                <div className="form-group col">
-                                    <label htmlFor="InputBoard">Board</label>
-                                    <select className="form-control form-control-sm" id="InputBoard" ref={this.boardEl}>
-                                        <option>MH</option>
-                                        <option>ICSC</option>
-                                        <option>CBSE</option>
-                                    </select>
+                                <hr />
+                                <div>
+                                    <h5>Last Year Marks / Grades</h5>
                                 </div>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="InputDate">Date Of Joining </label>
-                                <i className="far fa-calendar-alt ml-2 mr-4 mb-2 btn-lg" id="InputDate" onClick={this.openModal} />
-                                <span>Selected Date:- {this.state.date.toLocaleString('en-IN').split(',')[0]}</span>
-                            </div>
-                            <div>
-                                <h5>Last Year Marks</h5>
-                            </div>
-                            <div className="form-group row">
-                                <div className="col-md-4">
-                                    <label htmlFor="InputPhysics">Physics</label>
-                                    <input type="number" className="form-control" ref={this.physicsEl} id="InputPhysics" placeholder="Physics" required />
+                                <div className="form-group row">
+                                    <div className="col-md-4">
+                                        <input type="text" className="form-control form-control-sm" ref={this.physicsEl} id="InputPhysics" placeholder="Physics" required />
+                                    </div>
+                                    <div className="col-md-4">
+                                        <input type="text" className="form-control form-control-sm" ref={this.englishEl} id="InputEnglish" placeholder="English" required />
+                                    </div>
+                                    <div className="col-md-4">
+                                        <input type="text" className="form-control form-control-sm" ref={this.mathsEl} id="InputMaths" placeholder="Maths" required />
+                                    </div>
                                 </div>
-                                <div className="col-md-4"><label htmlFor="InputEnglish">English</label>
-                                    <input type="number" className="form-control" ref={this.englishEl} id="InputEnglish" placeholder="English" required />
+                                <hr/>
+                                <div className="row">
+                                    <div className="form-group col">
+                                        <label htmlFor="InputSex">Gender</label>
+                                        <select className="form-control form-control-sm" id="InputSex" ref={this.sexEl}>
+                                            <option>Male</option>
+                                            <option>Female</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-group col">
+                                        <label htmlFor="InputFees">Total Fees</label>
+                                        <input type="number" className="form-control form-control-sm" ref={this.feesEl} id="InputFees" placeholder="Total Fees" />
+                                    </div>
                                 </div>
-                                <div className="col-md-4"><label htmlFor="InputMaths">Maths</label>
-                                    <input type="number" className="form-control" ref={this.mathsEl} id="InputMaths" placeholder="Maths" required />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group col">
-                                    <label htmlFor="InputSex">Gender</label>
-                                    <select className="form-control form-control-sm" id="InputSex" ref={this.sexEl}>
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                    </select>
-                                </div>
-                                <div className="form-group col">
-                                    <label htmlFor="InputFees">Total Fees</label>
-                                    <input type="text" className="form-control" ref={this.feesEl} id="InputFees" placeholder="Amout Of Fees Paid" />
-                                </div>
-                            </div>
-                            <button type="submit" className="btn btn-primary">Submit</button>
-                        </form>
+                                <hr/>
+                                <button type="button" onClick={this.redirectHome} className="btn btn-light float-right ml-3">Cancel</button>
+                                <button type="submit" className="btn btn-primary float-right">Submit</button>
+                            </form>
+                        </div>
+
                         <Modal
                             isOpen={this.state.modalIsOpen}
                             onRequestClose={this.closeModal}
@@ -192,9 +228,11 @@ export default class AddStudent extends Component {
                                 value={this.state.date}
                             />
                         </Modal>
-
                     </div>
                 )}
-            </AuthContext.Consumer>
-    }
+            </AuthContext.Consumer>: <div className='container p-5'>
+                <h3>OOPS !! <br/> Not Logged In</h3>
+                <a href="/login" onClick={this.redirectLogin}>Login</a>
+                </div>
+    } 
 }

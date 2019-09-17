@@ -31,11 +31,19 @@ router.post('/api/login',async (req, res)=>{
 router.post('/api/logout',(req, res)=>{
     req.session.destroy(err=>{
         if(err){
-             console.log('Couldnt destroy');             
+             console.log('Couldnt destroy');
         }
         res.clearCookie('SESS_SID')
         res.send('logged out')
     })
+})
+
+router.get('/auth', (req, res)=>{
+    if (req.session.userId) {
+        res.status(200).send('Authenticated')
+    }else{
+        res.status(401).send('Not Authenticated')
+    }
 })
 
 module.exports = router;
