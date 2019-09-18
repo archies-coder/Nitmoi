@@ -103,9 +103,11 @@ export default class StudentList extends Component {
                                                 fName={stud.firstName}
                                                 mName={stud.middleName}
                                                 lName={stud.lastName}
+                                                DOB={stud.dateOfBirth}
                                                 Std={stud.standard}
                                                 Addr={stud.Address}
                                                 brd={stud.Board}
+                                                joinedOn={stud.joinedOn}
                                                 phy={stud.lastYearmarks.physics}
                                                 eng={stud.lastYearmarks.english}
                                                 maths={stud.lastYearmarks.maths}

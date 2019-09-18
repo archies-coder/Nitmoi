@@ -238,7 +238,7 @@ const Fee = (props) => {
                                 <div class="input-group mb-3 w-75">
                                     <input type="tel" onChange={installmentInputHandler} className='form-control form-control-sm' name="installment" required />
                                     <div class="input-group-append">
-                                        <span class="input-group-text" id="basic-addon1">
+                                        <span class="input-group-text" title='Date Of Installment' id="basic-addon1">
                                             <i className="far fa-calendar-alt" id="date" onClick={openModal}></i>
                                         </span>
                                     </div>

@@ -12,6 +12,7 @@ const StudentSchema = new mongoose.Schema({
     type: String,
     require: [true, 'name required mann!!']
   },
+  dateOfBirth: Date,
   Address: {
     type: String,
     require: [true, 'name required mann!!']

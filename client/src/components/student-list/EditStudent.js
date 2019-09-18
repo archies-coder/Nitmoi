@@ -7,57 +7,78 @@ import {Link} from 'react-router-dom';
 
 const customStyles = {
     content : {
-      top                   : '50%',
+        top                   : '50%',
       left                  : '50%',
       right                 : 'auto',
       bottom                : 'auto',
       marginRight           : '-50%',
       transform             : 'translate(-50%, -50%)'
     }
-  };
+};
 
 const EditStudent = (props)=> {
     const studentContext = useContext(AuthContext);
-    const [modalOpen, setModalOpen] = useState(false)
+    const {fName,mName,lName,Std,Addr,brd, phy,eng,maths,sex,fees} = studentContext.state.selectedForEdit;
+    const [modalJoinIsOpen, setModalJoinIsOpen] = useState(false)
+    const [modalDOBIsOpen, setModalDOBIsOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [date, setDate] = useState(new Date())
-
-    const openModal = () =>{
-        setModalOpen(true)
+    const [dateOfBirth, setDateOfBirth] = useState(new Date())
+    
+    const openJoiningModal = () =>{
+        setModalJoinIsOpen(true)
     }
-
+    const openDOBModal = () =>{
+        setModalDOBIsOpen(true)
+    }
+    
     const closeModal=()=>{
-        setModalOpen(false)
+        setModalJoinIsOpen(false)
+        setModalDOBIsOpen(false)
     }
-
-    const onChangeDate=(date)=>{
+    
+    const onChange=(date)=>{
         setDate(date)
         closeModal()
     }
-
-    const firstNameEl = React.createRef();const lastNameEl = React.createRef();
+    const onDOBChange=(date)=>{
+        setDateOfBirth(date)
+        closeModal()
+    }
+    
+    const redirectHome = (e)=>{
+        e.preventDefault();
+        props.history.push('/list')
+    }
+    
+    const firstNameEl = React.createRef(); const middleNameEl = React.createRef();const lastNameEl = React.createRef();
     const addressEl = React.createRef();const standardEl = React.createRef();
     const boardEl = React.createRef();const physicsEl = React.createRef();
     const englishEl = React.createRef();const mathsEl = React.createRef();
     const sexEl = React.createRef();const feesEl = React.createRef();
-
+    
     const handleUpdateSubmit=(e)=>{
         e.preventDefault();
+        console.log(date.toLocaleDateString())
         setLoading(true)
-        const fName = firstNameEl.current.value;const lName = lastNameEl.current.value;
+        const fName = firstNameEl.current.value; const mName = middleNameEl.current.value;const lName = lastNameEl.current.value;
         const std = standardEl.current.value;const addr = addressEl.current.value;
-        const brd = boardEl.current.value;const phy = physicsEl.current.value;
+        const brd = boardEl.current.value;
+        const dateOfJoining = date;
+        const phy = physicsEl.current.value;
         const eng = englishEl.current.value;const maths = mathsEl.current.value;
         const sex = sexEl.current.value;const fees = feesEl.current.value;
-
+        
         const updateStudentData = {
-            "firstName":fName, "lastName":lName,
+            "firstName":fName,"middleName": mName, "lastName":lName,
+            "dateOfBirth": dateOfBirth,
             "Address":addr,"standard":std,
             "Board":brd,
+            "joinedOn": dateOfJoining,
             "lastYearmarks":{
                 "physics":phy, "english":eng,"maths":maths
             },
-            "sex":sex,"feesPaid":fees
+            "sex":sex,"fees":{"total": fees}
         }
         fetch(`/api/student/?id=${studentContext.state.selectedForEdit.id}`,{
             method: 'PUT',
@@ -84,9 +105,8 @@ const EditStudent = (props)=> {
             throw new Error(err)            
         })
     }
-    const {fName,lName,Std,Addr,brd,phy,eng,maths,sex,fees} = studentContext.state.selectedForEdit;
     return (loading) ? <MyLoader loading={loading} /> :
-        <React.Fragment>
+    <React.Fragment>
             <div>
                 <Link to='/list'>
                     <button className='btn btn-link float-left mx-3 my-3' title='back to list'>
@@ -94,77 +114,125 @@ const EditStudent = (props)=> {
                     </button>
                 </Link>
             </div>
-            <div className="d-lg-flex justify-content-center p-3">
-                <form onSubmit={handleUpdateSubmit}>
-                    <div className="row py-3">
-                        <div className="col">
-                        <input type="text" ref={firstNameEl} defaultValue ={fName} className="form-control" placeholder="First name" required/>
+            <div className="container text-align-center p-3">
+                <div className="container w-75 text-align-center">
+                    <div className="container" style={{ textAlign: 'center', fontSize: '25px' }}>Add New Student</div>
+                    <form className="py-3" onSubmit={handleUpdateSubmit}>
+                        <hr />
+                        <div className="row py-3">
+                            <div className="col">
+                                <input type="text" ref={firstNameEl} defaultValue={fName} className="form-control form-control-sm" placeholder="First name" required />
+                            </div>
+                            <div className="col">
+                                <input type="text" ref={middleNameEl} defaultValue={mName} className="form-control form-control-sm" placeholder="Middle name" />
+                            </div>
+                            <div className="col">
+                                <input type="text" ref={lastNameEl} defaultValue={lName} className="form-control form-control-sm" placeholder="Last name" required />
+                            </div>
                         </div>
-                        <div className="col">
-                        <input type="text" ref={lastNameEl} defaultValue ={lName} className="form-control" placeholder="Last name" required/>
+                        <div className="form-group">
+                            <input type="text" ref={addressEl} defaultValue={Addr} className="form-control form-control-sm" id="InputAddress" placeholder="Address" required />
+                            <div className="input-group w-25">
+                                <label htmlFor="dateOfBirth">Date Of Birth </label>
+                                <div className="w-100"></div>
+                                <input type="text" className='form-control form-control-sm' value={dateOfBirth.toLocaleString('en-IN').split(',')[0]} name="dateOfBirth" readOnly />
+                                <div className="input-group-append">
+                                    <span className="input-group-text" title='Date Of Joining' id="basic-addon1" onClick={openDOBModal}>
+                                        <i className="far fa-calendar-alt" id="date" />
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="InputAddress">Address</label>
-                        <input type="text" ref={addressEl} defaultValue ={Addr} className="form-control" id="InputAddress" placeholder="Address" required/>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="Inputstandard">Standard</label>
-                        <select className="form-control form-control-sm" id="Inputstandard" defaultValue ={Std} ref={standardEl}>
-                            <option>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                            <option>10</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="InputBoard">Board</label>
-                        <select className="form-control form-control-sm" id="InputBoard" defaultValue ={brd} ref={boardEl}>
-                            <option>MH</option>
-                            <option>ICSC</option>
-                            <option>CBSE</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="InputDate">Date Of Joining </label>
-                        {/* <input type="button" className="btn btn-primary btn-sm"><i class="far fa-calendar-alt"></i></input> */}
-                        <i className="far fa-calendar-alt ml-2 mb-2 btn-lg" id="InputDate" onClick={openModal}></i>
-                        <br/>
-                        <p>Selected Date:- {date.toLocaleDateString()}</p>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="InputPhysics">Physics Marks</label>
-                        <input type="text" className="form-control" ref={physicsEl} defaultValue ={phy} id="InputPhysics" placeholder="Physics" required/>
-                        <label htmlFor="InputEnglish">English Marks</label>
-                        <input type="text" className="form-control" ref={englishEl} defaultValue ={eng} id="InputEnglish" placeholder="English" required/>
-                        <label htmlFor="InputMaths">Maths Marks</label>
-                        <input type="text" className="form-control" ref={mathsEl} defaultValue ={maths} id="InputMaths" placeholder="Maths" required/>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="InputSex">Sex</label>
-                        <select className="form-control form-control-sm" id="InputSex" defaultValue ={sex} ref={sexEl}>
-                            <option>Male</option>
-                            <option>Female</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="InputFees">Fees Paid</label>
-                        <input type="text" className="form-control" ref={feesEl} defaultValue ={fees} id="InputFees" placeholder="Amout Of Fees Paid"/>
-                    </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
-                </form>
-                {/* calendar modal */}
+                        <hr />
+                        <div className="row">
+                            <div className="form-group col">
+                                <label htmlFor="Inputstandard">Standard</label>
+                                <select className="form-control form-control-sm" id="Inputstandard" ref={standardEl} defaultValue={Std}>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                </select>
+                            </div>
+                            <div className="form-group col">
+                                <label htmlFor="InputBoard">Board</label>
+                                <select className="form-control form-control-sm" id="InputBoard" ref={boardEl} defaultValue={brd}>
+                                    <option>MH</option>
+                                    <option>MH Semi-Eng</option>
+                                    <option>ICSC</option>
+                                    <option>CBSE</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="input-group w-25">
+                            <label htmlFor="dateOfJoining">Date Of Joining </label>
+                            <div className="w-100"></div>
+                            <input type="text" className='form-control form-control-sm' value={date.toLocaleString('en-IN').split(',')[0]} name="dateOfJoining" readOnly />
+                            <div className="input-group-append">
+                                <span className="input-group-text" title='Date Of Joining' id="basic-addon1" onClick={openJoiningModal}>
+                                    <i className="far fa-calendar-alt" id="date" />
+                                </span>
+                            </div>
+                        </div>
+                        <hr />
+                        <div>
+                            <h5>Last Year Marks / Grades</h5>
+                        </div>
+                        <div className="form-group row">
+                            <div className="col-md-4">
+                                <input type="text" className="form-control form-control-sm" ref={physicsEl} defaultValue={phy} id="InputPhysics" placeholder="Physics" required />
+                            </div>
+                            <div className="col-md-4">
+                                <input type="text" className="form-control form-control-sm" ref={englishEl} defaultValue={eng} id="InputEnglish" placeholder="English" required />
+                            </div>
+                            <div className="col-md-4">
+                                <input type="text" className="form-control form-control-sm" ref={mathsEl} defaultValue={maths} id="InputMaths" placeholder="Maths" required />
+                            </div>
+                        </div>
+                        <hr />
+                        <div className="row">
+                            <div className="form-group col">
+                                <label htmlFor="InputSex">Gender</label>
+                                <select className="form-control form-control-sm" id="InputSex" ref={sexEl} defaultValue={sex}>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select>
+                            </div>
+                            <div className="form-group col">
+                                <label htmlFor="InputFees">Total Fees</label>
+                                <input type="number" className="form-control form-control-sm" ref={feesEl} defaultValue={fees} id="InputFees" placeholder="Total Fees" />
+                            </div>
+                        </div>
+                        <hr />
+                        <button type="button" onClick={redirectHome} className="btn btn-light float-right ml-3">Cancel</button>
+                        <button type="submit" className="btn btn-primary float-right">Submit</button>
+                    </form>
+                </div>
+
                 <Modal
-                    isOpen={modalOpen}
+                    isOpen={modalJoinIsOpen}
                     onRequestClose={closeModal}
                     style={customStyles}
                     contentLabel="Date Picker Modal"
+                    ariaHideApp={false}
                 >
                     <MyCalendar
-                        onChange={onChangeDate}
+                        onChange={onChange}
                         value={date}
+                    />
+                </Modal>
+                <Modal
+                    isOpen={modalDOBIsOpen}
+                    onRequestClose={closeModal}
+                    style={customStyles}
+                    contentLabel="Date Picker Modal"
+                    ariaHideApp={false}
+                >
+                    <MyCalendar
+                        onChange={onDOBChange}
+                        value={dateOfBirth}
                     />
                 </Modal>
             </div>

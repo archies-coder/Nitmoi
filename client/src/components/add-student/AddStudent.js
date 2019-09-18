@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import Modal from 'react-modal';
 import MyCalendar from '../reusables/Calendar'
 import { AuthContext } from '../../context'
-import MyLoader from '../reusables/MyLoader';
-
+import MyLoader from '../reusables/MyLoader'
 
 const customStyles = {
     content: {
@@ -25,16 +24,15 @@ export default class AddStudent extends Component {
         this.englishEl = React.createRef(); this.mathsEl = React.createRef();
         this.sexEl = React.createRef(); this.feesEl = React.createRef();
         this.state = {
-            modalIsOpen: false,
+            modalJoinIsOpen: false, modalDOBIsOpen: false,
             date: new Date(),
-            addedStudent: {},
-            loading: false,
-            loggedIn: false
+            loading: false,loggedIn: false,
+            dateOfJoining: 'pick a date',dateOfBirth: new Date()
         }
     }
 
-    componentDidMount=()=>{
-        this.setState({loading: true})
+    componentDidMount = () => {
+        this.setState({ loading: true })
         fetch('/auth', {
             method: 'GET',
             mode: 'cors',
@@ -43,27 +41,36 @@ export default class AddStudent extends Component {
             }
         }).then(res => {
             if (res.status === 200) {
-                this.setState({loggedIn: true, loading:false})
+                this.setState({ loggedIn: true, loading: false })
             } else {
-                this.setState({ loggedIn: false, loading:false})
+                this.setState({ loggedIn: false, loading: false })
             }
         }).catch(err => {
-            this.setState({loggedIn: false,loading:false})
+            this.setState({ loggedIn: false, loading: false })
             throw new Error(err)
         })
     }
 
     onChange = date => {
-        this.setState({ date })
+        this.setState({ dateOfJoining: date })
         this.closeModal()
     }
 
-    openModal = () => {
-        this.setState({ modalIsOpen: true });
+    onDOBChange = date => {
+        this.setState({ dateOfBirth: date })
+        this.closeModal()
+    }
+
+    openJoiningModal = () => {
+        this.setState({ modalJoinIsOpen: true });
+    }
+
+    openDOBModal = () => {
+        this.setState({ modalDOBIsOpen: true });
     }
 
     closeModal = () => {
-        this.setState({ modalIsOpen: false });
+        this.setState({ modalJoinIsOpen: false, modalDOBIsOpen: false });
     }
 
     redirectHome = (e) => {
@@ -78,52 +85,41 @@ export default class AddStudent extends Component {
     handleAddForm = (e) => {
         e.preventDefault();
         this.setState({ loading: true })
-        const fName = this.firstNameEl.current.value;
-        const mName = this.firstNameEl.current.value;
-        const lName = this.lastNameEl.current.value;
-        const std = this.standardEl.current.value;
-        const addr = this.addressEl.current.value;
-        const brd = this.boardEl.current.value;
-        const phy = this.physicsEl.current.value;
-        const eng = this.englishEl.current.value;
-        const maths = this.mathsEl.current.value;
-        const sex = this.sexEl.current.value;
-        const fees = this.feesEl.current.value;
+        const fName = this.firstNameEl.current.value; const mName = this.firstNameEl.current.value;
+        const lName = this.lastNameEl.current.value; const std = this.standardEl.current.value;
+        const addr = this.addressEl.current.value; const brd = this.boardEl.current.value;
+        const phy = this.physicsEl.current.value; const eng = this.englishEl.current.value;
+        const maths = this.mathsEl.current.value; const sex = this.sexEl.current.value; const fees = this.feesEl.current.value;
 
         const addStudentRequest = {
             "firstName": fName, "middleName": mName, "lastName": lName,
-            "Address": addr, "standard": std,
-            "Board": brd,
-            "lastYearmarks": {
-                "physics": phy,
-                "english": eng,
-                "maths": maths
-            }, "sex": sex,
-            "fees": {
-                "total": fees
-            }
+            "dateOfBirth": this.state.dateOfBirth,
+            "joinedOn": this.state.dateOfJoining,
+            "Address": addr, "standard": std, "Board": brd,
+            "lastYearmarks": { "physics": phy, "english": eng, "maths": maths },
+            "sex": sex, "fees": { "total": fees }
         }
         fetch('/api/student', {
             method: 'POST', mode: 'cors',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
-            },
-            body: JSON.stringify(addStudentRequest)
-        }).then(res => {
-            if (res.status !== 200 && res.status !== 201) {
-                if (res.status === 401) {
-                    this.setState({ loading: false })
-                    this.props.history.push('/login')
-                } else {
-                    this.setState({ loading: false })
-                }
-            }
-            this.setState({ loading: false })
-            return res.json();
+            }, body: JSON.stringify(addStudentRequest)
         })
+            .then(res => {
+                if (res.status !== 200 && res.status !== 201) {
+                    if (res.status === 401) {
+                        this.setState({ loading: false })
+                        this.props.history.push('/login')
+                    } else {
+                        this.setState({ loading: false })
+                    }
+                }
+                this.setState({ loading: false })
+                return res.json();
+            })
             .then(resData => {
-                this.setState({ addedStudent: resData, loading: false })
+                this.setState({ loading: false })
                 this.props.history.push('/list')
             })
             .catch(err => {
@@ -132,13 +128,14 @@ export default class AddStudent extends Component {
     }
 
     render() {
-        return  (this.state.loading) ? <MyLoader loading={this.state.loading} /> :
+        return (this.state.loading) ? <MyLoader loading={this.state.loading} /> :
             this.state.loggedIn ? <AuthContext.Consumer>
-                {context =>  (
+                {context => (
                     <div className="container text-align-center p-3">
                         <div className="container w-75 text-align-center">
-                        <div className="container" style={{textAlign:'center',fontSize:'25px'}}>Add New Student</div>
+                            <div className="container" style={{ textAlign: 'center', fontSize: '25px' }}>Add New Student</div>
                             <form className="py-3" onSubmit={this.handleAddForm}>
+                                <hr />
                                 <div className="row py-3">
                                     <div className="col">
                                         <input type="text" ref={this.firstNameEl} className="form-control form-control-sm" placeholder="First name" required />
@@ -152,6 +149,16 @@ export default class AddStudent extends Component {
                                 </div>
                                 <div className="form-group">
                                     <input type="text" ref={this.addressEl} className="form-control form-control-sm" id="InputAddress" placeholder="Address" required />
+                                    <div className="input-group w-25">
+                                        <label htmlFor="dateOfBirth">Date Of Birth </label>
+                                        <div className="w-100"></div>
+                                        <input type="text" className='form-control form-control-sm' value={this.state.dateOfBirth.toLocaleString('en-IN').split(',')[0]} name="dateOfBirth" readOnly />
+                                        <div className="input-group-append">
+                                            <span className="input-group-text" title='Date Of Joining' id="basic-addon1" onClick={this.openDOBModal}>
+                                                <i className="far fa-calendar-alt" id="date" />
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <hr />
                                 <div className="row">
@@ -176,10 +183,15 @@ export default class AddStudent extends Component {
                                         </select>
                                     </div>
                                 </div>
-                                <div className="form-group">
-                                    <label htmlFor="InputDate">Date Of Joining </label>
-                                    <i className="far fa-calendar-alt ml-2 mr-4 mb-2 btn-lg" id="InputDate" onClick={this.openModal} />
-                                    <span>Selected Date:- {this.state.date.toLocaleString('en-IN').split(',')[0]}</span>
+                                <div className="input-group w-25">
+                                    <label htmlFor="dateOfJoining">Date Of Joining </label>
+                                    <div className="w-100"></div>
+                                    <input type="text" className='form-control form-control-sm' value={this.state.dateOfJoining.toLocaleString('en-IN').split(',')[0]} name="dateOfJoining" readOnly />
+                                    <div className="input-group-append">
+                                        <span className="input-group-text" title='Date Of Joining' id="basic-addon1" onClick={this.openJoiningModal}>
+                                            <i className="far fa-calendar-alt" id="date" />
+                                        </span>
+                                    </div>
                                 </div>
                                 <hr />
                                 <div>
@@ -196,7 +208,7 @@ export default class AddStudent extends Component {
                                         <input type="text" className="form-control form-control-sm" ref={this.mathsEl} id="InputMaths" placeholder="Maths" required />
                                     </div>
                                 </div>
-                                <hr/>
+                                <hr />
                                 <div className="row">
                                     <div className="form-group col">
                                         <label htmlFor="InputSex">Gender</label>
@@ -210,14 +222,14 @@ export default class AddStudent extends Component {
                                         <input type="number" className="form-control form-control-sm" ref={this.feesEl} id="InputFees" placeholder="Total Fees" />
                                     </div>
                                 </div>
-                                <hr/>
+                                <hr />
                                 <button type="button" onClick={this.redirectHome} className="btn btn-light float-right ml-3">Cancel</button>
                                 <button type="submit" className="btn btn-primary float-right">Submit</button>
                             </form>
                         </div>
 
                         <Modal
-                            isOpen={this.state.modalIsOpen}
+                            isOpen={this.state.modalJoinIsOpen}
                             onRequestClose={this.closeModal}
                             style={customStyles}
                             contentLabel="Date Picker Modal"
@@ -228,11 +240,23 @@ export default class AddStudent extends Component {
                                 value={this.state.date}
                             />
                         </Modal>
+                        <Modal
+                            isOpen={this.state.modalDOBIsOpen}
+                            onRequestClose={this.closeModal}
+                            style={customStyles}
+                            contentLabel="Date Picker Modal"
+                            ariaHideApp={false}
+                        >
+                            <MyCalendar
+                                onChange={this.onDOBChange}
+                                value={this.state.date}
+                            />
+                        </Modal>
                     </div>
                 )}
-            </AuthContext.Consumer>: <div className='container p-5'>
-                <h3>OOPS !! <br/> Not Logged In</h3>
-                <a href="/login" onClick={this.redirectLogin}>Login</a>
+            </AuthContext.Consumer> : <div className='container p-5'>
+                    <h3>OOPS !! <br /> Not Logged In</h3>
+                    <a href="/login" onClick={this.redirectLogin}>Login</a>
                 </div>
-    } 
+    }
 }

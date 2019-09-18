@@ -5,18 +5,18 @@ import MyLoader from '../reusables/MyLoader';
 import './attendance.css'
 import Checkbox from './Checkbox'
 
-const customStylesContainer = {
-    'fontSize': '18px',
-    'border': '1px solid black',
-    'textAlign': 'left',
-    'height': 'auto',
-    'width': '50%',
-    'minWidth': '350px',
-    'top': '50%',
-    'margin': '100px auto 0 auto',
-    'padding': '20px',
-    'backgroundColor': 'white'
-}
+// const customStylesContainer = {
+//     'fontSize': '18px',
+//     'border': '1px solid black',
+//     'textAlign': 'left',
+//     'height': 'auto',
+//     'width': '50%',
+//     'minWidth': '350px',
+//     'top': '50%',
+//     'margin': '100px auto 0 auto',
+//     'padding': '20px',
+//     'backgroundColor': 'white'
+// }
 
 const customStyles = {
     content: {
@@ -67,7 +67,7 @@ export default class AddAttendance extends Component {
         }
     }
 
-    componentWillMount = () => {
+    componentDidMount = () => {
         this.setState({ loading: true })
         fetch('/api/students', {
             method: 'GET',
@@ -99,7 +99,9 @@ export default class AddAttendance extends Component {
 
     handleCheckboxChange = (student) => {
         if (this.state.present.indexOf(student) === -1) {
-            this.setState({ present: [...this.state.present, student] })
+            this.setState({ present: [...this.state.present, student] },()=>{
+                console.log(this.state.present)
+            })
         }
     }
 
@@ -248,7 +250,7 @@ export default class AddAttendance extends Component {
                             <br />
                             <h4 className='selected-date'>Selected Date {this.state.viewDate.toDateString()}</h4>
                             <button type="submit" className="btn btn-primary" onClick={this.getAttendanceByDate}>Find Attendance</button>
-                            {this.state.errors.length === 0 && this.state.presentStuds.map((stud, i) => <div className='border' style={{ margin: '20px auto' }}>
+                            {this.state.errors.length === 0 && this.state.presentStuds.map((stud, i) => <div key={i} className='border' style={{ margin: '20px auto' }}>
                                 {/* <Student key={i}
                                     fName={stud.firstName}
                                     lName={stud.lastName}

@@ -42,6 +42,10 @@ const sess = {
 //use sessions for tracking login
 app.use(session(sess));
 
+app.get('/',(req,res)=>{
+  res.send('Hi there')
+})
+
 //Routes
 const loginRoute = require('./app/Routes/login');
 app.use(loginRoute);

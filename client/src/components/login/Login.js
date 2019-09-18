@@ -96,6 +96,7 @@ class AppLogin extends Component {
                         type="email"
                         className="form-control"
                         placeholder="email"
+                        autoComplete='email'
                         ref={this.emailEl}
                       />
                     </div>

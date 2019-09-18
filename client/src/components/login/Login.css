@@ -6,6 +6,7 @@ html,body{
     height: 100%;
     font-family: 'Numans', sans-serif, Courier, "Courier New", "Palatino Linotype","Franklin Gothic Medium";
     background-color: rgb(202, 215, 255);
+    font-size: 14px !important;
 }
 
 .login-container{
