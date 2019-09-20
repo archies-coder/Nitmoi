@@ -4,15 +4,14 @@ export default class Checkbox extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            checked: false
+            checked: props.checked
         }
     }
 
     handleClick = (e) => {
-        console.log(this.props)
         const { handleChange, stud, clearList } = this.props;
         this.setState({ checked: !this.state.checked },()=>{
-            if (this.state.checked) {
+            if (!this.state.checked) {
                 handleChange(stud)
             } else {
                 clearList(stud)

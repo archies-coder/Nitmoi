@@ -59,8 +59,7 @@ export default class AddAttendance extends Component {
         this.state = {
             students: [], date: new Date(),
             viewDate: new Date(), checked: false,
-            present: [], viewVisible: false,
-            addVisible: false, presentStuds: [],
+            present: [],  presentStuds: [],
             errors: [], modalIsOpen: false,
             alertModalIsOpen: false, successModalIsOpen: false,
             loading: false
@@ -90,7 +89,9 @@ export default class AddAttendance extends Component {
             }
             return res.json()
         }).then(resdata => {
-            this.setState({ students: resdata, errors: [], loading: false })
+            this.setState({ students: resdata, present:resdata, errors: [], loading: false },()=>{
+                console.log(this.state.present)
+            })
         }).catch(err => {
             console.log(err)
             this.setState({ loading: false })
@@ -98,21 +99,18 @@ export default class AddAttendance extends Component {
     }
 
     handleCheckboxChange = (student) => {
-        if (this.state.present.indexOf(student) === -1) {
-            this.setState({ present: [...this.state.present, student] },()=>{
-                console.log(this.state.present)
-            })
-        }
+        let arr = this.state.present.filter(item => item !== student)
+        this.setState({ present: arr })
     }
 
-    clearListItem = (stud) => {
-        let arr = this.state.present.filter(item => item !== stud)
-        this.setState({ present: arr })
+    clearListItem = (student) => {
+        if (this.state.present.indexOf(student) === -1) {
+            this.setState({ present: [...this.state.present, student] })
+        }
     }
 
     handleFormSubmit = e => {
         e.preventDefault();
-        console.log(this.state.present)
         const attendanceRequest = {
             "date": this.state.date.toLocaleDateString(),
             "present": this.state.present
@@ -168,19 +166,6 @@ export default class AddAttendance extends Component {
         this.setState({ successModalIsOpen: true })
     }
 
-    toggleView = () => {
-        this.setState({ viewVisible: !this.state.viewVisible })
-        if (this.state.addVisible) {
-            this.setState({ addVisible: false })
-        }
-    }
-
-    toggleAdd = () => {
-        this.setState({ addVisible: !this.state.addVisible })
-        if (this.state.viewVisible) {
-            this.setState({ viewVisible: false })
-        }
-    }
 
     getAttendanceByDate = (e) => {
         e.preventDefault();
@@ -221,7 +206,7 @@ export default class AddAttendance extends Component {
 
     render() {
         const listItem = this.state.students.map(stud => (
-            <Checkbox key={stud._id} stud={stud} handleChange={this.handleCheckboxChange} clearList={this.clearListItem} />
+            <Checkbox key={stud._id} stud={stud} checked={true} handleChange={this.handleCheckboxChange} clearList={this.clearListItem} />
         ))
         return (this.state.loading) ? <MyLoader loading={this.state.loading} /> :
             <div className="container bg-light mt-5">
@@ -251,18 +236,6 @@ export default class AddAttendance extends Component {
                             <h4 className='selected-date'>Selected Date {this.state.viewDate.toDateString()}</h4>
                             <button type="submit" className="btn btn-primary" onClick={this.getAttendanceByDate}>Find Attendance</button>
                             {this.state.errors.length === 0 && this.state.presentStuds.map((stud, i) => <div key={i} className='border' style={{ margin: '20px auto' }}>
-                                {/* <Student key={i}
-                                    fName={stud.firstName}
-                                    lName={stud.lastName}
-                                    Std={stud.standard}
-                                    Addr={stud.Address}
-                                    brd={stud.Board}
-                                    phy={stud.lastYearmarks.physics}
-                                    eng={stud.lastYearmarks.english}
-                                    maths={stud.lastYearmarks.maths}
-                                    sex={stud.sex}
-                                    fees={stud.fees.total}
-                                /> */}
                                 <h4>{stud.firstName} {stud.lastName}</h4>
                             </div>)}
                         </div>
