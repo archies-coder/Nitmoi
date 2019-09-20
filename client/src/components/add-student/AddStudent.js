@@ -187,7 +187,7 @@ export default class AddStudent extends Component {
                                         <select className="form-control form-control-sm" id="InputBoard" ref={this.boardEl}>
                                             <option>MH</option>
                                             <option>MH Semi-Eng</option>
-                                            <option>ICSC</option>
+                                            <option>ICSE</option>
                                             <option>CBSE</option>
                                         </select>
                                     </div>
