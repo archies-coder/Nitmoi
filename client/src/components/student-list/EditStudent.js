@@ -12,13 +12,13 @@ const customStyles = {
       right                 : 'auto',
       bottom                : 'auto',
       marginRight           : '-50%',
-      transform             : 'translate(-50%, -50%)'
+      transform             : 'translate(-50%, -5%)'
     }
 };
 
 const EditStudent = (props)=> {
     const studentContext = useContext(AuthContext);
-    const {fName,mName,lName,Std,Addr,brd, phy,eng,maths,sex,fees} = studentContext.state.selectedForEdit;
+    const {fName,mName,lName,Std,Addr,School,brd, phy,eng,maths,sex,fees} = studentContext.state.selectedForEdit;
     const [modalJoinIsOpen, setModalJoinIsOpen] = useState(false)
     const [modalDOBIsOpen, setModalDOBIsOpen] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -53,7 +53,9 @@ const EditStudent = (props)=> {
     
     const firstNameEl = React.createRef(); const middleNameEl = React.createRef();const lastNameEl = React.createRef();
     const addressEl = React.createRef();const standardEl = React.createRef();
-    const boardEl = React.createRef();const physicsEl = React.createRef();
+    const boardEl = React.createRef();
+    const schoolEl = React.createRef();
+    const physicsEl = React.createRef();
     const englishEl = React.createRef();const mathsEl = React.createRef();
     const sexEl = React.createRef();const feesEl = React.createRef();
     
@@ -64,6 +66,7 @@ const EditStudent = (props)=> {
         const fName = firstNameEl.current.value; const mName = middleNameEl.current.value;const lName = lastNameEl.current.value;
         const std = standardEl.current.value;const addr = addressEl.current.value;
         const brd = boardEl.current.value;
+        const schl = schoolEl.current.value;
         const dateOfJoining = date;
         const phy = physicsEl.current.value;
         const eng = englishEl.current.value;const maths = mathsEl.current.value;
@@ -73,7 +76,7 @@ const EditStudent = (props)=> {
             "firstName":fName,"middleName": mName, "lastName":lName,
             "dateOfBirth": dateOfBirth,
             "Address":addr,"standard":std,
-            "Board":brd,
+            "Board":brd,"school": schl,
             "joinedOn": dateOfJoining,
             "lastYearmarks":{
                 "physics":phy, "english":eng,"maths":maths
@@ -176,6 +179,8 @@ const EditStudent = (props)=> {
                                 </span>
                             </div>
                         </div>
+                        <label htmlFor="InputSchool">School</label>
+                        <input type="text" ref={schoolEl} defaultValue={School} className="form-control form-control-sm" id="InputSchool" placeholder="School" required />
                         <hr />
                         <div>
                             <h5>Last Year Marks / Grades</h5>

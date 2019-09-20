@@ -106,6 +106,7 @@ export default class StudentList extends Component {
                                                 DOB={stud.dateOfBirth}
                                                 Std={stud.standard}
                                                 Addr={stud.Address}
+                                                School={stud.school}
                                                 brd={stud.Board}
                                                 joinedOn={stud.joinedOn}
                                                 phy={stud.lastYearmarks.physics}

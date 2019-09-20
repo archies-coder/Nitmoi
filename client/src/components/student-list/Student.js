@@ -51,7 +51,7 @@ export default class Student extends Component {
     }
 
     render(){
-        const {id,fName,mName,lName,DOB,Std,Addr,brd,joinedOn,phy,eng,maths,sex,fees}= this.props;
+        const {id,fName,mName,lName,DOB,Std,Addr,brd,School,joinedOn,phy,eng,maths,sex,fees}= this.props;
         return (
             <AuthContext.Consumer>
                 {context=>
@@ -87,9 +87,10 @@ export default class Student extends Component {
                                 </header>
                                 <hr/>
                                 <h5>Date of birth : {DOB}</h5>
-                                <h5>Address : {Addr}</h5>   
                                 <h5>Sex : {sex}</h5>
+                                <h5>Address : {Addr}</h5>   
                                 <h5>Board : {brd}</h5>
+                                <h5>School : {School}</h5>
                                 <h5>Date Of Joining : {joinedOn}</h5>
                                 <h5>Physics Marks : {phy}</h5>
                                 <h5>English Marks : {eng}</h5>
