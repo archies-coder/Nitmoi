@@ -32,6 +32,7 @@ router.post('/api/attendance', (req, res, next)=>{
     if(!req.body){
         return res.status(400).send('req body missing');
     }
+    
     const day = new AttendanceModel(req.body);
     day.save()
     .then(doc => {

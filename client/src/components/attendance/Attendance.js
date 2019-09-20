@@ -62,7 +62,7 @@ export default class AddAttendance extends Component {
             present: [],  presentStuds: [],
             errors: [], modalIsOpen: false,
             alertModalIsOpen: false, successModalIsOpen: false,
-            loading: false
+            loading: false, saving: false
         }
     }
 
@@ -89,9 +89,7 @@ export default class AddAttendance extends Component {
             }
             return res.json()
         }).then(resdata => {
-            this.setState({ students: resdata, present:resdata, errors: [], loading: false },()=>{
-                console.log(this.state.present)
-            })
+            this.setState({ students: resdata, present:resdata, errors: [], loading: false })
         }).catch(err => {
             console.log(err)
             this.setState({ loading: false })
@@ -111,6 +109,8 @@ export default class AddAttendance extends Component {
 
     handleFormSubmit = e => {
         e.preventDefault();
+        this.setState({saving: true})
+        this.openSuccessModal()
         const attendanceRequest = {
             "date": this.state.date.toLocaleDateString(),
             "present": this.state.present
@@ -131,10 +131,9 @@ export default class AddAttendance extends Component {
                 this.setState({ loading: false })
                 throw new Error(res.status)
             }
-            this.setState({ loading: false })
+            this.setState({ loading: false, saving: false })
             return res.json()
         })
-            .then(data => this.openSuccessModal())
             .catch(err => {
                 this.setState({ loading: false })
                 console.log(err)
@@ -155,7 +154,7 @@ export default class AddAttendance extends Component {
     };
 
     closeModal = () => {
-        this.setState({ modalIsOpen: false, alertModalIsOpen: false, successModalIsOpen: false });
+        this.setState({ modalIsOpen: false, alertModalIsOpen: false, successModalIsOpen: false, errors:[] });
     };
 
     openAlertModal = () => {
@@ -178,30 +177,45 @@ export default class AddAttendance extends Component {
             }
         }).then(res => {
             if (res.status !== 200 && res.status !== 201) {
-                if (res.status === 401) {
-                    this.setState({ loading: false })
-                    this.props.history.push('/login')
+                switch (res.status) {
+                    case 400 : 
+                        console.log(400)
+                        this.setState({ loading: false, errors: [...this.state.errors, 'Request Body Missing'] })
+                        this.openAlertModal()
+                    
+                    break;
+                    case 401: 
+                        // Not authenticated Error
+                        console.log(401)
+                        this.setState({ loading: false})
+                        this.props.history.push('/login')
+                    
+                    break;
+                    case 404: 
+                        this.setState({ loading: false, errors: [...this.state.errors, 'Not Found'] })
+                        console.log(404)
+                        this.openAlertModal()
+                    
+                    break;
+                    default: 
+                        this.setState({ loading: false })
+                        throw new Error(res.status)
+                    
                 }
-                if (res.status === 404) {
-                    throw new Error(res.status)
-
-                }
-                this.setState({ loading: true })
-                throw new Error(res.status)
+                
             }
             return res.json()
         }).then(data => {
-            this.setState({
-                presentStuds: data.present,
-                errors: [],
-                loading: false
-            })
+            if(this.state.errors.length===0)
+                this.setState({
+                    presentStuds: data.present,
+                    errors: [],
+                    loading: false
+                })
+        }).catch(err=>{
+            console.log(err)
+            this.setState({loading: false})
         })
-            .catch(err => {
-                this.setState({ loading: false, errors: [...this.state.errors, err] })
-                console.log(err)
-                this.openAlertModal()
-            })
     }
 
     render() {
@@ -209,7 +223,8 @@ export default class AddAttendance extends Component {
             <Checkbox key={stud._id} stud={stud} checked={true} handleChange={this.handleCheckboxChange} clearList={this.clearListItem} />
         ))
         return (this.state.loading) ? <MyLoader loading={this.state.loading} /> :
-            <div className="container bg-light mt-5">
+            <div className="container bg-light pt-5 h-100">
+                <h3>Attendance Ppge</h3>
                 <div className="row">
                     <div className="col-md p-5">
                         <form onSubmit={this.handleFormSubmit}>
@@ -269,8 +284,8 @@ export default class AddAttendance extends Component {
                                 Error
                             <span className="float-right" style={{ cursor: 'pointer' }} onClick={this.closeModal}>X</span>
                             </div><hr />
-                            <div className="panel-body"><p>Something Went Wrong!!</p></div><hr />
-                            <div className="panel-footer"><span className='float-right mr-2 text-danger'>{this.state.errors.length} Errors</span></div>
+                            <div className="panel-body"><p>Something Went Wrong!!<br/> {this.state.errors.map((err, i)=><span key={i}>{err.toString()}</span>)} </p></div><hr />
+                        <div className="panel-footer"><span className='float-right mr-2 text-danger'>{this.state.errors.length} Errors</span></div>
                         </div>
                     }
                 </Modal>
@@ -284,10 +299,10 @@ export default class AddAttendance extends Component {
                 >
                     <div className="panel panel-success">
                         <div className='panel-heading'>
-                            Success
+                            Saving Attendance
                             <span className="float-right" style={{ cursor: 'pointer' }} onClick={this.closeModal}>X</span>
                         </div><hr />
-                        <div className="panel-body"><p>SuccessFully Marked Attendance!!</p></div><hr />
+                        {this.state.saving ? <div className="panel-body"><i className="fas fa-spinner"/> Saving...</div> : <div className="panel-body"><p>SuccessFully Marked Attendance!!</p></div>}<hr />
                         <div className="panel-footer"><button className="btn btn-success" onClick={this.closeModal}>Ok</button></div>
                     </div>
                 </Modal>

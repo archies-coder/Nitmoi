@@ -197,8 +197,8 @@ const Fee = (props) => {
                             {
                                 students.sort((a, b) => { return a.standard - b.standard }).map((stud, i) => (
                                     <tr key={i} onClick={e => selectStudent(stud, e)}>
-                                        <th scope='row'>{i}</th>
-                                        <td>{stud.firstName} {stud.lastName}</td>
+                                        <th scope='row'>{i+1}</th>
+                                        <td>{stud.firstName.toLowerCase()} {stud.lastName.toLowerCase()}</td>
                                     </tr>
                                 ))
                             }
@@ -223,7 +223,7 @@ const Fee = (props) => {
                         <h5>Installments Paid</h5>
                         <hr className='border' />
                         {!isEmpty(selectedStudent) && <h6>{fees.installments
-                            .map((inst, i) => <div key={i}>{inst.amount}</div>)}</h6>}
+                            .map((inst, i) => <div key={i}>{inst.amount} &nbsp;&nbsp;  - &nbsp;&nbsp; {new Date(inst.date).toLocaleString('en-IN').split(',')[0]}</div>)}</h6>}
                     </div>
 
                     <div className="col new">
@@ -235,10 +235,10 @@ const Fee = (props) => {
                                 <div className="row">
                                 
                                 </div>
-                                <div class="input-group mb-3 w-75">
+                                <div className="input-group mb-3 w-75">
                                     <input type="tel" onChange={installmentInputHandler} className='form-control form-control-sm' name="installment" required />
-                                    <div class="input-group-append">
-                                        <span class="input-group-text" title='Date Of Installment' id="basic-addon1">
+                                    <div className="input-group-append">
+                                        <span className="input-group-text" title='Date Of Installment' id="basic-addon1">
                                             <i className="far fa-calendar-alt" id="date" onClick={openModal}></i>
                                         </span>
                                     </div>

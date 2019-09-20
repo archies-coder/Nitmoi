@@ -21,6 +21,7 @@ export default class AddStudent extends Component {
         this.firstNameEl = React.createRef(); this.middleNameEl = React.createRef(); this.lastNameEl = React.createRef();
         this.addressEl = React.createRef(); this.standardEl = React.createRef();
         this.boardEl = React.createRef(); this.physicsEl = React.createRef();
+        this.schoolEl = React.createRef();
         this.englishEl = React.createRef(); this.mathsEl = React.createRef();
         this.sexEl = React.createRef(); this.feesEl = React.createRef();
         this.state = {
@@ -88,6 +89,7 @@ export default class AddStudent extends Component {
         const fName = this.firstNameEl.current.value; const mName = this.firstNameEl.current.value;
         const lName = this.lastNameEl.current.value; const std = this.standardEl.current.value;
         const addr = this.addressEl.current.value; const brd = this.boardEl.current.value;
+        const schl = this.schoolEl.current.value;
         const phy = this.physicsEl.current.value; const eng = this.englishEl.current.value;
         const maths = this.mathsEl.current.value; const sex = this.sexEl.current.value; const fees = this.feesEl.current.value;
 
@@ -95,7 +97,7 @@ export default class AddStudent extends Component {
             "firstName": fName, "middleName": mName, "lastName": lName,
             "dateOfBirth": this.state.dateOfBirth,
             "joinedOn": this.state.dateOfJoining,
-            "Address": addr, "standard": std, "Board": brd,
+            "Address": addr, "standard": std, "Board": brd,"school": schl,
             "lastYearmarks": { "physics": phy, "english": eng, "maths": maths },
             "sex": sex, "fees": { "total": fees }
         }
@@ -147,19 +149,26 @@ export default class AddStudent extends Component {
                                         <input type="text" ref={this.lastNameEl} className="form-control form-control-sm" placeholder="Last name" required />
                                     </div>
                                 </div>
-                                <div className="form-group">
-                                    <input type="text" ref={this.addressEl} className="form-control form-control-sm" id="InputAddress" placeholder="Address" required />
-                                    <div className="input-group w-25">
-                                        <label htmlFor="dateOfBirth">Date Of Birth </label>
-                                        <div className="w-100"></div>
-                                        <input type="text" className='form-control form-control-sm' value={this.state.dateOfBirth.toLocaleString('en-IN').split(',')[0]} name="dateOfBirth" readOnly />
-                                        <div className="input-group-append">
-                                            <span className="input-group-text" title='Date Of Joining' id="basic-addon1" onClick={this.openDOBModal}>
-                                                <i className="far fa-calendar-alt" id="date" />
-                                            </span>
+                                <div className="row">
+                                    <div className="form-group col">
+                                        <label htmlFor="InputAddress">Address</label>
+                                        <input type="text" ref={this.addressEl} className="form-control form-control-sm" id="InputAddress" placeholder="Address" required />
+                                    </div>
+                                    <div className="form-group col">
+                                        <div className="input-group">
+                                            <label htmlFor="dateOfBirth">Date Of Birth </label>
+                                            <div className="w-100"></div>
+                                            <input type="text" className='form-control form-control-sm' value={this.state.dateOfBirth.toLocaleString('en-IN').split(',')[0]} name="dateOfBirth" readOnly />
+                                            <div className="input-group-append">
+                                                <span className="input-group-text" title='Date Of Joining' id="basic-addon1" onClick={this.openDOBModal}>
+                                                    <i className="far fa-calendar-alt" id="date" />
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
+                                
                                 </div>
+                                
                                 <hr />
                                 <div className="row">
                                     <div className="form-group col">
@@ -182,18 +191,21 @@ export default class AddStudent extends Component {
                                             <option>CBSE</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div className="input-group w-25">
-                                    <label htmlFor="dateOfJoining">Date Of Joining </label>
-                                    <div className="w-100"></div>
-                                    <input type="text" className='form-control form-control-sm' value={this.state.dateOfJoining.toLocaleString('en-IN').split(',')[0]} name="dateOfJoining" readOnly />
-                                    <div className="input-group-append">
-                                        <span className="input-group-text" title='Date Of Joining' id="basic-addon1" onClick={this.openJoiningModal}>
-                                            <i className="far fa-calendar-alt" id="date" />
-                                        </span>
+                                    <div className="form-group col">
+                                        <label htmlFor="dateOfJoining">Date Of Joining </label>
+                                        <div className="input-group">
+                                            <input type="text" className='form-control form-control-sm' value={this.state.dateOfJoining.toLocaleString('en-IN').split(',')[0]} name="dateOfJoining" readOnly />
+                                            <div className="input-group-append">
+                                                <span className="input-group-text" title='Date Of Joining' id="basic-addon1" onClick={this.openJoiningModal}>
+                                                    <i className="far fa-calendar-alt" id="date" />
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <hr />
+                                    <label htmlFor="InputSchool">School</label>
+                                    <input type="text" ref={this.schoolEl} className="form-control form-control-sm" id="InputSchool" placeholder="School" required />
+                                <hr/>
                                 <div>
                                     <h5>Last Year Marks / Grades</h5>
                                 </div>

@@ -21,6 +21,7 @@ const StudentSchema = new mongoose.Schema({
     type: Number,
     require: [true, 'std required mann!!']
   },
+  school: String,
   Board: String,
   joinedOn: Date,
   lastYearmarks: {
