@@ -119,7 +119,7 @@ const EditStudent = (props)=> {
             </div>
             <div className="container text-align-center p-3">
                 <div className="container w-75 text-align-center">
-                    <div className="container" style={{ textAlign: 'center', fontSize: '25px' }}>Add New Student</div>
+                    <div className="container" style={{ textAlign: 'center', fontSize: '25px' }}>Edit Student Data</div>
                     <form className="py-3" onSubmit={handleUpdateSubmit}>
                         <hr />
                         <div className="row py-3">
@@ -127,7 +127,7 @@ const EditStudent = (props)=> {
                                 <input type="text" ref={firstNameEl} defaultValue={fName} className="form-control form-control-sm" placeholder="First name" required />
                             </div>
                             <div className="col">
-                                <input type="text" ref={middleNameEl} defaultValue={mName} className="form-control form-control-sm" placeholder="Middle name" />
+                                <input type="text" ref={middleNameEl} defaultValue={mName} className="form-control form-control-sm" placeholder="Middle name" required/>
                             </div>
                             <div className="col">
                                 <input type="text" ref={lastNameEl} defaultValue={lName} className="form-control form-control-sm" placeholder="Last name" required />
@@ -207,7 +207,7 @@ const EditStudent = (props)=> {
                             </div>
                             <div className="form-group col">
                                 <label htmlFor="InputFees">Total Fees</label>
-                                <input type="number" className="form-control form-control-sm" ref={feesEl} defaultValue={fees} id="InputFees" placeholder="Total Fees" />
+                                <input type="number" className="form-control form-control-sm" ref={feesEl} defaultValue={fees} id="InputFees" placeholder="Total Fees" required/>
                             </div>
                         </div>
                         <hr />

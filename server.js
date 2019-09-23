@@ -37,6 +37,9 @@ const sess = {
   secret: SECRET,
   resave: false,
   saveUninitialized: false,
+  cookie: {
+    maxAge: 1000*60*60*24*7
+  }
 }
 
 //use sessions for tracking login

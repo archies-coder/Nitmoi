@@ -140,13 +140,16 @@ export default class AddStudent extends Component {
                                 <hr />
                                 <div className="row py-3">
                                     <div className="col">
-                                        <input type="text" ref={this.firstNameEl} className="form-control form-control-sm" placeholder="First name" required />
+                                        <label htmlFor="FirstName">First Name</label>
+                                        <input type="text" ref={this.firstNameEl} id="FirstName" className="form-control form-control-sm" placeholder="First name" required />
                                     </div>
                                     <div className="col">
-                                        <input type="text" ref={this.middleNameEl} className="form-control form-control-sm" placeholder="Middle name" />
+                                        <label htmlFor="MiddleName">Middle Name</label>
+                                        <input type="text" ref={this.middleNameEl} id="MiddleName" className="form-control form-control-sm" placeholder="Middle name" />
                                     </div>
                                     <div className="col">
-                                        <input type="text" ref={this.lastNameEl} className="form-control form-control-sm" placeholder="Last name" required />
+                                        <label htmlFor="LastName">Last Name</label>
+                                        <input type="text" ref={this.lastNameEl} id='LastName' className="form-control form-control-sm" placeholder="Last name" required />
                                     </div>
                                 </div>
                                 <div className="row">
@@ -166,9 +169,7 @@ export default class AddStudent extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                
                                 </div>
-                                
                                 <hr />
                                 <div className="row">
                                     <div className="form-group col">
@@ -206,18 +207,18 @@ export default class AddStudent extends Component {
                                     <label htmlFor="InputSchool">School</label>
                                     <input type="text" ref={this.schoolEl} className="form-control form-control-sm" id="InputSchool" placeholder="School" required />
                                 <hr/>
-                                <div>
-                                    <h5>Last Year Marks / Grades</h5>
-                                </div>
                                 <div className="form-group row">
                                     <div className="col-md-4">
-                                        <input type="text" className="form-control form-control-sm" ref={this.physicsEl} id="InputPhysics" placeholder="Physics" required />
+                                        <label htmlFor="Physics">Physics</label>
+                                        <input type="text" className="form-control form-control-sm" id='Physics' ref={this.physicsEl} id="InputPhysics" placeholder="Physics" required />
                                     </div>
                                     <div className="col-md-4">
-                                        <input type="text" className="form-control form-control-sm" ref={this.englishEl} id="InputEnglish" placeholder="English" required />
+                                        <label htmlFor="English">English</label>
+                                        <input type="text" className="form-control form-control-sm" id='English' ref={this.englishEl} id="InputEnglish" placeholder="English" required />
                                     </div>
                                     <div className="col-md-4">
-                                        <input type="text" className="form-control form-control-sm" ref={this.mathsEl} id="InputMaths" placeholder="Maths" required />
+                                        <label htmlFor="Maths">Maths</label>
+                                        <input type="text" className="form-control form-control-sm" id= 'Maths' ref={this.mathsEl} id="InputMaths" placeholder="Maths" required />
                                     </div>
                                 </div>
                                 <hr />
