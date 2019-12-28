@@ -27,11 +27,14 @@ const StudentSchema = new mongoose.Schema({
   lastYearmarks: {
     physics: Number,
     english: Number,
-    maths: Number
+    maths: Number,
+    chemistry: Number,
+    biology: Number,
   },
   sex: String,
   fees: {
     total: Number,
+    grammer: Number,
     installments: [{
       date: {
         type: Date,

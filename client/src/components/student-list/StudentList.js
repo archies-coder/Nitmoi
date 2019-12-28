@@ -97,6 +97,7 @@ export default class StudentList extends Component {
                                     : this.state.students.sort((a, b) => {
                                         return a.standard - b.standard;
                                     }).map(stud => {
+                                        console.log(stud)
                                         return <div key={stud._id} className='col col-md-auto col-sm-auto'>
                                             <Student className=''
                                                 id={stud._id}
@@ -112,6 +113,8 @@ export default class StudentList extends Component {
                                                 phy={stud.lastYearmarks.physics}
                                                 eng={stud.lastYearmarks.english}
                                                 maths={stud.lastYearmarks.maths}
+                                                chem={stud.lastYearmarks.chemistry}
+                                                bio={stud.lastYearmarks.biology}
                                                 sex={stud.sex}
                                                 fees={stud.fees.total}
                                                 deleteStudent={this.deleteStudent}

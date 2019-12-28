@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import * as Sentry from '@sentry/browser';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { AuthProvider } from './context';
 
+Sentry.init({ dsn: "https://a8cac587c0ea4df09fdcb92515d93de8@sentry.io/1516296" });
 
 ReactDOM.render(
     <AuthProvider>

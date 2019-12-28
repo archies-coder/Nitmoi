@@ -28,7 +28,7 @@ if(process.env.NODE_ENV === 'production') {
 
 const options = {
   url: dbURI,
-  ttl: 7*24*60*60
+  ttl: 365*24*60*60
 }
 
 const sess = {
@@ -38,7 +38,7 @@ const sess = {
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 1000*60*60*24*7
+    maxAge: 1000*60*60*24*365
   }
 }
 

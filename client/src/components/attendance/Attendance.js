@@ -5,19 +5,6 @@ import MyLoader from '../reusables/MyLoader';
 import './attendance.css'
 import Checkbox from './Checkbox'
 
-// const customStylesContainer = {
-//     'fontSize': '18px',
-//     'border': '1px solid black',
-//     'textAlign': 'left',
-//     'height': 'auto',
-//     'width': '50%',
-//     'minWidth': '350px',
-//     'top': '50%',
-//     'margin': '100px auto 0 auto',
-//     'padding': '20px',
-//     'backgroundColor': 'white'
-// }
-
 const customStyles = {
     content: {
         width: '500px',
@@ -57,15 +44,13 @@ export default class AddAttendance extends Component {
     constructor() {
         super();
         this.state = {
-            students: [], date: new Date(),
-            viewDate: new Date(), checked: false,
-            present: [],  presentStuds: [],
+            students: [], date: new Date(), checked: false,
+            present: [], presentStuds: [],
             errors: [], modalIsOpen: false,
             alertModalIsOpen: false, successModalIsOpen: false,
             loading: false, saving: false
         }
     }
-
     componentDidMount = () => {
         this.setState({ loading: true })
         fetch('/api/students', {
@@ -89,34 +74,31 @@ export default class AddAttendance extends Component {
             }
             return res.json()
         }).then(resdata => {
-            this.setState({ students: resdata, present:resdata, errors: [], loading: false })
+            this.setState({ students: resdata, present: resdata, errors: [], loading: false })
         }).catch(err => {
             console.log(err)
             this.setState({ loading: false })
         })
     }
-
     handleCheckboxChange = (student) => {
         let arr = this.state.present.filter(item => item !== student)
         this.setState({ present: arr })
     }
-
     clearListItem = (student) => {
         if (this.state.present.indexOf(student) === -1) {
             this.setState({ present: [...this.state.present, student] })
         }
     }
-
     handleFormSubmit = e => {
         e.preventDefault();
-        this.setState({saving: true})
+        this.setState({ saving: true })
         this.openSuccessModal()
         const attendanceRequest = {
             "date": this.state.date.toLocaleDateString(),
             "present": this.state.present
         }
         fetch('/api/attendance', {
-            method: 'POST',
+            method: 'PUT',
             mode: 'cors',
             headers: {
                 'content-type': 'application/json'
@@ -139,36 +121,25 @@ export default class AddAttendance extends Component {
                 console.log(err)
             })
     }
-
     onChange = date => {
-        this.setState({ date })
+        this.setState({ date: date ,presentStuds:[] })
         this.closeModal()
     }
-    onChangeView = date => {
-        this.setState({ viewDate: date })
-        this.closeModal()
-    }
-
     openModal = () => {
         this.setState({ modalIsOpen: true });
     };
-
     closeModal = () => {
-        this.setState({ modalIsOpen: false, alertModalIsOpen: false, successModalIsOpen: false, errors:[] });
+        this.setState({ modalIsOpen: false, alertModalIsOpen: false, successModalIsOpen: false, errors: [] });
     };
-
     openAlertModal = () => {
         this.setState({ alertModalIsOpen: true })
     }
-
     openSuccessModal = () => {
         this.setState({ successModalIsOpen: true })
     }
-
-
     getAttendanceByDate = (e) => {
         e.preventDefault();
-        const date = this.state.viewDate.toLocaleDateString()
+        const date = this.state.date.toLocaleDateString()
         fetch(`/api/attendance/?date="${date}"`, {
             method: 'GET',
             mode: 'cors',
@@ -178,60 +149,55 @@ export default class AddAttendance extends Component {
         }).then(res => {
             if (res.status !== 200 && res.status !== 201) {
                 switch (res.status) {
-                    case 400 : 
+                    case 400:
                         console.log(400)
                         this.setState({ loading: false, errors: [...this.state.errors, 'Request Body Missing'] })
                         this.openAlertModal()
-                    
-                    break;
-                    case 401: 
+
+                        break;
+                    case 401:
                         // Not authenticated Error
                         console.log(401)
-                        this.setState({ loading: false})
+                        this.setState({ loading: false })
                         this.props.history.push('/login')
-                    
-                    break;
-                    case 404: 
+
+                        break;
+                    case 404:
                         this.setState({ loading: false, errors: [...this.state.errors, 'Not Found'] })
                         console.log(404)
                         this.openAlertModal()
-                    
-                    break;
-                    default: 
+
+                        break;
+                    default:
                         this.setState({ loading: false })
                         throw new Error(res.status)
-                    
+
                 }
-                
             }
             return res.json()
         }).then(data => {
-            if(this.state.errors.length===0)
+            if (this.state.errors.length === 0)
                 this.setState({
                     presentStuds: data.present,
                     errors: [],
                     loading: false
                 })
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err)
-            this.setState({loading: false})
+            this.setState({ loading: false })
         })
     }
-
     render() {
         const listItem = this.state.students.map(stud => (
             <Checkbox key={stud._id} stud={stud} checked={true} handleChange={this.handleCheckboxChange} clearList={this.clearListItem} />
         ))
         return (this.state.loading) ? <MyLoader loading={this.state.loading} /> :
-            <div className="container bg-light pt-5 h-100">
-                <h3>Attendance Ppge</h3>
+            <div className="container">
+                <h3 style={{ textAlign: 'center',margin:'30px auto' }}>Attendance Page</h3>
                 <div className="row">
                     <div className="col-md p-5">
                         <form onSubmit={this.handleFormSubmit}>
                             <div className="form-group">
-                                <label htmlFor="InputDate" className=''><h5>Pick Date</h5></label>
-                                <i className="far fa-calendar-alt ml-2 mb-2 date-picker" id="InputDate" onClick={this.openModal} />
-                                <h4 className='selected-date'>{this.state.date.toDateString()}</h4>
                                 <div>
                                     <ul style={{ listStyle: 'none' }}><li>{listItem}</li></ul>
                                 </div>
@@ -239,17 +205,18 @@ export default class AddAttendance extends Component {
                             </div>
                         </form>
                     </div>
-                    <div className="h-100"></div>
+                    <div className="col-md">
+                         <MyCalendar
+                                className='calendar'
+                                onChange={this.onChange}
+                                value={this.state.date}
+                            />
+                            <br/>
+                        <h4 className='selected-date mt-5'>Selected Date {this.state.date.toDateString()}</h4>
+                    </div>
                     <div className="col-md p-5">
                         <div style={{ textAlign: 'center' }}>
-                            <MyCalendar
-                                className='calendar'
-                                onChange={this.onChangeView}
-                                value={this.state.viewDate}
-                            />
-                            <br />
-                            <h4 className='selected-date'>Selected Date {this.state.viewDate.toDateString()}</h4>
-                            <button type="submit" className="btn btn-primary" onClick={this.getAttendanceByDate}>Find Attendance</button>
+                            <button type="submit" className="btn btn-primary" onClick={this.getAttendanceByDate}>View Attendance</button>
                             {this.state.errors.length === 0 && this.state.presentStuds.map((stud, i) => <div key={i} className='border' style={{ margin: '20px auto' }}>
                                 <h4>{stud.firstName} {stud.lastName}</h4>
                             </div>)}
@@ -284,8 +251,8 @@ export default class AddAttendance extends Component {
                                 Error
                             <span className="float-right" style={{ cursor: 'pointer' }} onClick={this.closeModal}>X</span>
                             </div><hr />
-                            <div className="panel-body"><p>Something Went Wrong!!<br/> {this.state.errors.map((err, i)=><span key={i}>{err.toString()}</span>)} </p></div><hr />
-                        <div className="panel-footer"><span className='float-right mr-2 text-danger'>{this.state.errors.length} Errors</span></div>
+                            <div className="panel-body"><p>Something Went Wrong!!<br /> {this.state.errors.map((err, i) => <span key={i}>{err.toString()}</span>)} </p></div><hr />
+                            <div className="panel-footer"><span className='float-right mr-2 text-danger'>{this.state.errors.length} Errors</span></div>
                         </div>
                     }
                 </Modal>
@@ -302,7 +269,7 @@ export default class AddAttendance extends Component {
                             Saving Attendance
                             <span className="float-right" style={{ cursor: 'pointer' }} onClick={this.closeModal}>X</span>
                         </div><hr />
-                        {this.state.saving ? <div className="panel-body"><i className="fas fa-spinner"/> Saving...</div> : <div className="panel-body"><p>SuccessFully Marked Attendance!!</p></div>}<hr />
+                        {this.state.saving ? <div className="panel-body"><i className="fas fa-spinner" /> Saving...</div> : <div className="panel-body"><p>SuccessFully Marked Attendance!!</p></div>}<hr />
                         <div className="panel-footer"><button className="btn btn-success" onClick={this.closeModal}>Ok</button></div>
                     </div>
                 </Modal>

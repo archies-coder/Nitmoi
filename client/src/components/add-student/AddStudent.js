@@ -18,17 +18,26 @@ const customStyles = {
 export default class AddStudent extends Component {
     constructor() {
         super()
-        this.firstNameEl = React.createRef(); this.middleNameEl = React.createRef(); this.lastNameEl = React.createRef();
-        this.addressEl = React.createRef(); this.standardEl = React.createRef();
-        this.boardEl = React.createRef(); this.physicsEl = React.createRef();
+        this.firstNameEl = React.createRef(); 
+        this.middleNameEl = React.createRef(); 
+        this.lastNameEl = React.createRef();
+        this.addressEl = React.createRef(); 
+        this.standardEl = React.createRef();
+        this.boardEl = React.createRef(); 
         this.schoolEl = React.createRef();
-        this.englishEl = React.createRef(); this.mathsEl = React.createRef();
-        this.sexEl = React.createRef(); this.feesEl = React.createRef();
+        this.physicsEl = React.createRef();
+        this.englishEl = React.createRef(); 
+        this.mathsEl = React.createRef();
+        this.chemEl = React.createRef();
+        this.bioEl = React.createRef();
+        this.sexEl = React.createRef(); 
+        this.feesEl = React.createRef();
         this.state = {
             modalJoinIsOpen: false, modalDOBIsOpen: false,
             date: new Date(),
             loading: false,loggedIn: false,
-            dateOfJoining: 'pick a date',dateOfBirth: new Date()
+            dateOfJoining: 'pick a date',dateOfBirth: new Date(),
+            age:'Age'
         }
     }
 
@@ -58,7 +67,8 @@ export default class AddStudent extends Component {
     }
 
     onDOBChange = date => {
-        this.setState({ dateOfBirth: date })
+        const age = new Date().getFullYear() - date.getFullYear()
+        this.setState({ dateOfBirth: date, age })
         this.closeModal()
     }
 
@@ -86,20 +96,42 @@ export default class AddStudent extends Component {
     handleAddForm = (e) => {
         e.preventDefault();
         this.setState({ loading: true })
-        const fName = this.firstNameEl.current.value; const mName = this.firstNameEl.current.value;
-        const lName = this.lastNameEl.current.value; const std = this.standardEl.current.value;
-        const addr = this.addressEl.current.value; const brd = this.boardEl.current.value;
+        const fName = this.firstNameEl.current.value; 
+        const mName = this.firstNameEl.current.value;
+        const lName = this.lastNameEl.current.value; 
+        const std = this.standardEl.current.value;
+        const addr = this.addressEl.current.value; 
+        const brd = this.boardEl.current.value;
         const schl = this.schoolEl.current.value;
-        const phy = this.physicsEl.current.value; const eng = this.englishEl.current.value;
-        const maths = this.mathsEl.current.value; const sex = this.sexEl.current.value; const fees = this.feesEl.current.value;
+        const phy = this.physicsEl.current.value; 
+        const eng = this.englishEl.current.value;
+        const maths = this.mathsEl.current.value; 
+        const chem = this.chemEl.current.value; 
+        const bio = this.bioEl.current.value; 
+        const sex = this.sexEl.current.value; 
+        const fees = this.feesEl.current.value;
 
         const addStudentRequest = {
-            "firstName": fName, "middleName": mName, "lastName": lName,
+            "firstName": fName, 
+            "middleName": mName, 
+            "lastName": lName,
             "dateOfBirth": this.state.dateOfBirth,
             "joinedOn": this.state.dateOfJoining,
-            "Address": addr, "standard": std, "Board": brd,"school": schl,
-            "lastYearmarks": { "physics": phy, "english": eng, "maths": maths },
-            "sex": sex, "fees": { "total": fees }
+            "Address": addr, 
+            "standard": std, 
+            "Board": brd,
+            "school": schl,
+            "lastYearmarks": { 
+                "physics": phy, 
+                "english": eng, 
+                "maths": maths ,
+                "chemistry": chem ,
+                "biology": bio ,
+            },
+            "sex": sex, 
+            "fees": { 
+                "total": fees 
+            }
         }
         fetch('/api/student', {
             method: 'POST', mode: 'cors',
@@ -153,11 +185,11 @@ export default class AddStudent extends Component {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="form-group col">
+                                    <div className="form-group col-6">
                                         <label htmlFor="InputAddress">Address</label>
                                         <input type="text" ref={this.addressEl} className="form-control form-control-sm" id="InputAddress" placeholder="Address" required />
                                     </div>
-                                    <div className="form-group col">
+                                    <div className="form-group col-4">
                                         <div className="input-group">
                                             <label htmlFor="dateOfBirth">Date Of Birth </label>
                                             <div className="w-100"></div>
@@ -167,6 +199,13 @@ export default class AddStudent extends Component {
                                                     <i className="far fa-calendar-alt" id="date" />
                                                 </span>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-2">
+                                        <div className="input-group">
+                                            <label htmlFor="Age">Age</label>
+                                            <div className="w-100"></div>
+                                            <input type="text" className='form-control form-control-sm' name="Age" value={this.state.age} readOnly/>
                                         </div>
                                     </div>
                                 </div>
@@ -219,6 +258,22 @@ export default class AddStudent extends Component {
                                     <div className="col-md-4">
                                         <label htmlFor="Maths">Maths</label>
                                         <input type="text" className="form-control form-control-sm" id= 'Maths' ref={this.mathsEl} id="InputMaths" placeholder="Maths" required />
+                                    </div>
+                                </div>
+                                <div className="form-group row">
+                                    <div className="col-md-4">
+                                        <label htmlFor="Chemistry">Chemistry</label>
+                                        <input type="text" 
+                                        className="form-control form-control-sm" 
+                                        id='Chemistry' ref={this.chemEl}
+                                         placeholder="Chemistry" required />
+                                    </div>
+                                    <div className="col-md-4">
+                                        <label htmlFor="Biology">Biology</label>
+                                        <input type="text" 
+                                        className="form-control form-control-sm" 
+                                        id='Biology' ref={this.bioEl} 
+                                        placeholder="Biology" required />
                                     </div>
                                 </div>
                                 <hr />

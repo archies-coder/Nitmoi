@@ -51,7 +51,7 @@ export default class Student extends Component {
     }
 
     render(){
-        const {id,fName,mName,lName,DOB,Std,Addr,brd,School,joinedOn,phy,eng,maths,sex,fees}= this.props;
+        const {id,fName,mName,lName,DOB,Std,Addr,brd,School,joinedOn,phy,eng,maths,chem,bio,sex,fees}= this.props;
         return (
             <AuthContext.Consumer>
                 {context=>
@@ -95,6 +95,8 @@ export default class Student extends Component {
                                 <h5>Physics Marks : {phy}</h5>
                                 <h5>English Marks : {eng}</h5>
                                 <h5>Maths Marks : {maths}</h5>
+                                <h5>Chemistry Marks : {chem}</h5>
+                                <h5>Biology Marks : {bio}</h5>
                                 <h5>Total Fee : {fees}</h5>
                             </div>
                         </Modal>
