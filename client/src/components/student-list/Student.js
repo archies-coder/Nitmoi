@@ -55,17 +55,17 @@ export default class Student extends Component {
         return (
             <AuthContext.Consumer>
                 {context=>
-                    <div className="card stud-card">
-                        <h4 className="card-title pt-2"><b style={{color:"aliceblue",}}>{fName.toUpperCase()} {lName.toUpperCase()}</b></h4>
-                        <h5 className="card-text">Standard {Std}</h5>
-                        <button className='btn border-0 bg-dark text-monospace text-white view-details-link' title='Details' onClick={this.openModal}>
+                    <div className="card stud-card bg-primary">
+                        <h5 className="card-title">{fName} {lName}</h5>
+                        <h6 className="card-subtitle mb-2">Standard {Std}</h6>
+                        <button className='btn btn-secondary view-details-link' title='Details' onClick={this.openModal}>
                             Details
                         </button>
                         <div className='mt-2'>
                             <Link to='/edit'>
-                                <i className="fas fa-user-edit float-right mb-1 mr-1 edit-btn" title='Edit' onClick={e=>context.studentEdit(this.props)}/>
+                                <i className="fas fa-user-edit float-right mb-1 mr-1 text-secondary" title='Edit' onClick={e=>context.studentEdit(this.props)}/>
                             </Link>
-                            <i className="fas fa-trash-alt float-right mb-1 mr-3 delete-btn" title='Delete' onClick={this.openDeleteModal}/>
+                            <i style={{cursor: "pointer"}} className="fas fa-trash-alt float-right mb-1 mr-3 text-secondary" title='Delete' onClick={this.openDeleteModal}/>
                         </div>
 
                         <Modal
@@ -75,29 +75,32 @@ export default class Student extends Component {
                             contentLabel="Details Modal"
                             ariaHideApp={false}
                         >
-                            <div className="container">
-                                <header>
-                                    <span style={{
-                                        font:'bold 20px/150% Helvetica',
-                                        letterSpacing:'2px',
-                                        textAlign:'center',
-                                        color:'#8989dc'
-                                        }}>{fName} {mName} {lName}</span>
-                                    <span className="float-right close-btn" onClick={this.closeModal}>x</span>
-                                </header>
+                            <div className="panel-heading">
+                                <span className="text-primary" style={{
+                                    font:'bold 20px/150% Helvetica',
+                                    letterSpacing:'2px',
+                                    textAlign:'center',
+                                    }}>{fName} {mName} {lName}</span>
+                                <span className="float-right close-btn text-primary" onClick={this.closeModal}>x</span>
                                 <hr/>
-                                <h5>Date of birth : {DOB}</h5>
-                                <h5>Sex : {sex}</h5>
-                                <h5>Address : {Addr}</h5>   
-                                <h5>Board : {brd}</h5>
-                                <h5>School : {School}</h5>
-                                <h5>Date Of Joining : {joinedOn}</h5>
-                                <h5>Physics Marks : {phy}</h5>
-                                <h5>English Marks : {eng}</h5>
-                                <h5>Maths Marks : {maths}</h5>
-                                <h5>Chemistry Marks : {chem}</h5>
-                                <h5>Biology Marks : {bio}</h5>
-                                <h5>Total Fee : {fees}</h5>
+                            </div>
+                            <div className="panel-body text-secondary">
+                                <table className="table table-borderless text-secondary">
+                                    <tbody>
+                                        <tr><td>Date of birth</td><td>{DOB.split('T')[0]}</td></tr>
+                                        <tr><td>Sex</td><td>{sex}</td></tr>
+                                        <tr><td>Address</td><td>{Addr}</td></tr>
+                                        <tr><td>Board</td><td>{brd}</td></tr>
+                                        <tr><td>School</td><td>{School}</td></tr>
+                                        <tr><td>Date of Joining</td><td>{joinedOn.split('T')[0]}</td></tr>
+                                        <tr><td>Physics</td><td>{phy}</td></tr>
+                                        <tr><td>English</td><td>{eng}</td></tr>
+                                        <tr><td>Maths</td><td>{maths}</td></tr>
+                                        <tr><td>Chemistry</td><td>{chem}</td></tr>
+                                        <tr><td>Biology</td><td>{bio}</td></tr>
+                                        <tr><td>Total fees</td><td>{fees}</td></tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </Modal>
 
@@ -109,7 +112,7 @@ export default class Student extends Component {
                             contentLabel="Edit Modal"
                             ariaHideApp={false}
                         >
-                            <div className="panel panel-danger">
+                            <div className="panel panel-danger text-secondary">
                                 <div className="panel-heading"><b>Alert!</b><span className="float-right" style={{cursor:'pointer'}} onClick={this.closeModal}>X</span></div>
                                 <hr/>
                                 <div className="panel-body">Are You Sure You Want To Delete?</div>

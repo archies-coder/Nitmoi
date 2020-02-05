@@ -1,6 +1,5 @@
 .stud-card {
     width: 100%;
-    background-color: #ababe6 !important;
     font: 16px/100% Ebrima !important;
     min-width: 225px;
     display: inline-block;
@@ -8,19 +7,19 @@
     text-align: center;
 }
 
-.stud-card:hover {
-    background-color: #9292e2 !important;
-}
+/* .stud-card:hover {
+    background-color: #9292e2;
+} */
 
-.edit-btn, .delete-btn {
+/* .edit-btn, .delete-btn {
     color: #555555;
     cursor: pointer;
     font-size: 16px;
-}
+} */
 
-.delete-btn:hover, .edit-btn:hover {
+/* .delete-btn:hover, .edit-btn:hover {
     color: #0f0f0f;
-}
+} */
 
 .close-btn {
     top: 0;
@@ -32,11 +31,11 @@
     color: white;
 }
 
-.view-details-link {
+/* .view-details-link {
     width: 100px;
     text-align: center;
     margin: auto;
-}
+} */
 
 @media screen and (min-width: 1px) and (max-width: 767px){
     .stud-card{

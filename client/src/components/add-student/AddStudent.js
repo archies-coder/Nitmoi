@@ -14,7 +14,7 @@ const customStyles = {
         transform: 'translate(-50%, -50%)'
     }
 };
-
+//TODO make this app better
 export default class AddStudent extends Component {
     constructor() {
         super()

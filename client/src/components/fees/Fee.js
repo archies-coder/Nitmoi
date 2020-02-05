@@ -171,7 +171,7 @@ const Fee = (props) => {
         setError()
         const {total, installments} = selectedStudent.fees
         getRemFees(installments)
-        
+
         if (totalInstallments + parseInt(e.target.value) > total || parseInt(e.target.value) > remAmount) {
             setError(['Invalid installment'])
         }
@@ -233,7 +233,7 @@ const Fee = (props) => {
                             <div className="form-group">
                                 <label htmlFor="installment">Amount</label>
                                 <div className="row">
-                                
+
                                 </div>
                                 <div className="input-group mb-3 w-75">
                                     <input type="tel" onChange={installmentInputHandler} className='form-control form-control-sm' name="installment" required />

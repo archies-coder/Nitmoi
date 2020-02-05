@@ -23,12 +23,12 @@ export default class AppNavbar extends Component {
       isOpen: !this.state.isOpen
     });
   }
-  render() {    
+  render() {
     return (
       <AuthContext.Consumer>
         {context =>(
           <Navbar color='dark' dark expand='md'>
-            {context.state.isAuth && <Redirect from='/login' to='/add' />}
+            {context.state.isAuth && <Redirect from='/login' to='/list' />}
             {!context.state.isAuth && <Redirect from='/' to='/login' />}
             <NavbarBrand tag={Link} to='/'>
                 <span className='navbar-brand'>NitMoi</span>

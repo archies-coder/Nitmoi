@@ -18,25 +18,25 @@ const customStyles = {
 
 const EditStudent = (props)=> {
     const studentContext = useContext(AuthContext);
-    const {fName,mName,lName,Std,Addr,School,brd, phy,eng,maths,sex,fees} = studentContext.state.selectedForEdit;
+    const {fName,mName,lName,Std,Addr,School,brd, phy,eng,maths, chem, bio,sex,fees} = studentContext.state.selectedForEdit;
     const [modalJoinIsOpen, setModalJoinIsOpen] = useState(false)
     const [modalDOBIsOpen, setModalDOBIsOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [date, setDate] = useState(new Date())
     const [dateOfBirth, setDateOfBirth] = useState(new Date())
-    
+
     const openJoiningModal = () =>{
         setModalJoinIsOpen(true)
     }
     const openDOBModal = () =>{
         setModalDOBIsOpen(true)
     }
-    
+
     const closeModal=()=>{
         setModalJoinIsOpen(false)
         setModalDOBIsOpen(false)
     }
-    
+
     const onChange=(date)=>{
         setDate(date)
         closeModal()
@@ -45,41 +45,58 @@ const EditStudent = (props)=> {
         setDateOfBirth(date)
         closeModal()
     }
-    
+
     const redirectHome = (e)=>{
         e.preventDefault();
         props.history.push('/list')
     }
-    
+
     const firstNameEl = React.createRef(); const middleNameEl = React.createRef();const lastNameEl = React.createRef();
     const addressEl = React.createRef();const standardEl = React.createRef();
     const boardEl = React.createRef();
     const schoolEl = React.createRef();
     const physicsEl = React.createRef();
-    const englishEl = React.createRef();const mathsEl = React.createRef();
+    const englishEl = React.createRef();
+    const mathsEl = React.createRef();
+    const chemEl = React.createRef();
+    const bioEl = React.createRef();
     const sexEl = React.createRef();const feesEl = React.createRef();
-    
+
     const handleUpdateSubmit=(e)=>{
         e.preventDefault();
-        console.log(date.toLocaleDateString())
         setLoading(true)
-        const fName = firstNameEl.current.value; const mName = middleNameEl.current.value;const lName = lastNameEl.current.value;
-        const std = standardEl.current.value;const addr = addressEl.current.value;
+        const fName = firstNameEl.current.value;
+        const mName = middleNameEl.current.value;
+        const lName = lastNameEl.current.value;
+        const std = standardEl.current.value;
+        const addr = addressEl.current.value;
         const brd = boardEl.current.value;
         const schl = schoolEl.current.value;
         const dateOfJoining = date;
         const phy = physicsEl.current.value;
-        const eng = englishEl.current.value;const maths = mathsEl.current.value;
-        const sex = sexEl.current.value;const fees = feesEl.current.value;
-        
+        const eng = englishEl.current.value;
+        const maths = mathsEl.current.value;
+        const chem = chemEl.current.value;
+        const bio = bioEl.current.value;
+        const sex = sexEl.current.value;
+        const fees = feesEl.current.value;
+
         const updateStudentData = {
-            "firstName":fName,"middleName": mName, "lastName":lName,
+            "firstName":fName,
+            "middleName": mName,
+            "lastName":lName,
             "dateOfBirth": dateOfBirth,
-            "Address":addr,"standard":std,
-            "Board":brd,"school": schl,
+            "Address":addr,
+            "standard":std,
+            "Board":brd,
+            "school": schl,
             "joinedOn": dateOfJoining,
             "lastYearmarks":{
-                "physics":phy, "english":eng,"maths":maths
+                "physics":phy,
+                "english":eng,
+                "maths":maths,
+                "chemistry": chem,
+                "biology": bio
             },
             "sex":sex,"fees":{"total": fees}
         }
@@ -105,7 +122,7 @@ const EditStudent = (props)=> {
             props.history.push('/list')
         }).catch(err=>{
             setLoading(false)
-            throw new Error(err)            
+            throw new Error(err)
         })
     }
     return (loading) ? <MyLoader loading={loading} /> :
@@ -194,6 +211,23 @@ const EditStudent = (props)=> {
                             </div>
                             <div className="col-md-4">
                                 <input type="text" className="form-control form-control-sm" ref={mathsEl} defaultValue={maths} id="InputMaths" placeholder="Maths" required />
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <div className="col-md-4">
+                                <label htmlFor="Chemistry">Chemistry</label>
+                                <input type="text"
+                                    className="form-control form-control-sm"
+                                    id='Chemistry' ref={chemEl}
+                                    defaultValue={chem}
+                                    placeholder="Chemistry" required />
+                            </div>
+                            <div className="col-md-4">
+                                <label htmlFor="Biology">Biology</label>
+                                <input type="text"
+                                    className="form-control form-control-sm"
+                                    id='Biology' defaultValue={bio} ref={bioEl}
+                                    placeholder="Biology" required />
                             </div>
                         </div>
                         <hr />

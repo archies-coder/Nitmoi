@@ -29,7 +29,7 @@ class AppLogin extends Component {
     }
     const loginRequest = {
       "email": email,
-      "password":password  
+      "password":password
     };
 
     fetch("/api/login", {
@@ -62,7 +62,7 @@ class AppLogin extends Component {
         this.setState({loading: false})
       });
   };
-  
+
   render() {
     return (
       <AuthContext.Consumer>
@@ -119,7 +119,7 @@ class AppLogin extends Component {
                       Remember Me
                     </div>
                     <div className="form-group">
-                      <button type='submit' className="btn float-right login_btn bg-dark text-white">Login</button>
+                      <button type='submit' className="btn float-right btn-primary">Login</button>
                     </div>
                   </form>
                 </div>
